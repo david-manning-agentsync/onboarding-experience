@@ -1,197 +1,835 @@
 <!-- om-producer-record.html — Producer Record (Onboarding theme) -->
 <style>
-  .om-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
-  .om-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
-  .om-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
-  .om-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
-  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
-  .om-layout { display: flex; flex: 1; }
-  .om-sidebar { width: var(--sidebar-width); flex-shrink: 0; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; }
-  .om-main { flex: 1; background: var(--color-bg-page); padding: var(--space-8); overflow-y: auto; }
-  .stat-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); margin-bottom: var(--space-6); }
-  .stat-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5); box-shadow: var(--shadow-xs); }
-  .stat-card__label { font-size: var(--font-size-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-wide); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-1); }
-  .stat-card__value { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
-  .task-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-3); cursor: pointer; transition: box-shadow var(--transition-fast); display: flex; align-items: flex-start; gap: var(--space-3); }
-  .task-card:hover { box-shadow: var(--shadow-md); }
-  .task-card__icon { width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--color-primary-50); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
-  .task-card__icon--done { background: var(--color-success-100); }
-  .task-card__body { flex: 1; }
-  .task-card__name { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-1); }
-  .task-card__meta { display: flex; align-items: center; gap: var(--space-3); font-size: var(--font-size-xs); color: var(--color-text-muted); }
-  .detail-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
-  .detail-field__label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px; }
-  .detail-field__value { font-size: var(--font-size-sm); color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
-  /* Tab panel visibility */
+  /* Shell */
+  .om-shell { display: flex; flex-direction: column; height: calc(100vh - 44px); }
+
+  /* Top Nav */
+  .om-topnav {
+    position: sticky; top: 44px; z-index: 200;
+    background: var(--color-bg-surface);
+    border-bottom: 1px solid var(--color-border-default);
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--space-6);
+  }
+  .om-topnav__brand {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: var(--font-size-base); font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
+  .om-topnav__brand-icon {
+    width: 28px; height: 28px; border-radius: var(--radius-md);
+    background: var(--color-primary-600); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+  .om-topnav__right { display: flex; align-items: center; gap: var(--space-3); }
+  .om-topnav__org {
+    display: flex; align-items: center; gap: var(--space-1);
+    font-size: var(--font-size-sm); color: var(--color-text-secondary);
+    padding: 4px 10px; border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md); cursor: pointer;
+    background: var(--color-bg-input);
+  }
+  .om-topnav__org svg { color: var(--color-text-muted); }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-default);
+    background: var(--color-bg-input);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--color-text-secondary);
+  }
+  .om-topnav__avatar {
+    width: 32px; height: 32px; border-radius: var(--radius-full);
+    background: var(--color-primary-600); color: #fff;
+    font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Layout */
+  .om-layout { display: flex; flex: 1; min-height: 0; }
+
+  /* Sidebar */
+  .om-sidebar {
+    width: 220px; flex-shrink: 0;
+    background: var(--color-bg-nav);
+    border-right: 1px solid var(--color-border-default);
+    display: flex; flex-direction: column;
+    padding: var(--space-4) 0 var(--space-4);
+    overflow-y: auto;
+  }
+  .om-sidebar__group { margin-bottom: var(--space-1); }
+  .om-sidebar__group-label {
+    padding: var(--space-3) var(--space-5) var(--space-1);
+    font-size: 10px; font-weight: var(--font-weight-bold);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted);
+  }
+  .om-sidebar__spacer { flex: 1; }
+
+  /* Main */
+  .om-main {
+    flex: 1; background: var(--color-bg-page);
+    overflow-y: auto; min-height: 0; min-width: 0;
+  }
+  .om-main__inner { padding: var(--space-6) var(--space-8); }
+
+  /* Breadcrumb */
+  .pr-breadcrumb {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: var(--font-size-sm); color: var(--color-text-muted);
+    margin-bottom: var(--space-5);
+  }
+  .pr-breadcrumb a {
+    color: var(--color-primary-600); cursor: pointer; text-decoration: none;
+  }
+  .pr-breadcrumb a:hover { text-decoration: underline; }
+  .pr-breadcrumb__sep { color: var(--color-border-strong); }
+
+  /* Header Card */
+  .pr-header {
+    position: relative;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-7);
+    margin-bottom: var(--space-6);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .pr-header::before {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: var(--radius-full);
+    border: 40px solid var(--color-primary-50);
+    pointer-events: none;
+  }
+  .pr-header::after {
+    content: '';
+    position: absolute; top: 20px; right: 40px;
+    width: 120px; height: 120px;
+    border-radius: var(--radius-full);
+    border: 28px solid var(--color-primary-100);
+    pointer-events: none;
+  }
+  .pr-header__row { display: flex; align-items: flex-start; gap: var(--space-5); position: relative; z-index: 1; }
+  .pr-header__avatar {
+    width: 64px; height: 64px; border-radius: var(--radius-full);
+    background: var(--color-primary-600); color: #fff;
+    font-size: var(--font-size-xl); font-weight: var(--font-weight-bold);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; border: 3px solid var(--color-bg-surface);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
+  }
+  .pr-header__body { flex: 1; }
+  .pr-header__name {
+    font-size: 22px; font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary); line-height: 1.2;
+    margin-bottom: var(--space-2);
+  }
+  .pr-header__meta {
+    display: flex; align-items: center; gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .pr-meta-item { display: flex; align-items: center; gap: var(--space-1); }
+  .pr-meta-item__label {
+    font-size: var(--font-size-xs); color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+  }
+  .pr-meta-item__sep { color: var(--color-border-strong); font-size: var(--font-size-xs); }
+  .pr-meta-item__value {
+    font-size: var(--font-size-sm); color: var(--color-text-secondary);
+    font-weight: var(--font-weight-semibold);
+  }
+  .pr-header__actions {
+    display: flex; align-items: center; gap: var(--space-3);
+    position: relative; z-index: 1;
+  }
+  .pr-status-select {
+    padding: 6px 12px; border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-default);
+    background: var(--color-bg-input);
+    font-size: var(--font-size-sm); color: var(--color-text-primary);
+    font-family: inherit; cursor: pointer;
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Tab Bar */
+  .pr-tabs {
+    display: flex; align-items: center;
+    border-bottom: 2px solid var(--color-border-default);
+    margin-bottom: var(--space-6); gap: 0;
+  }
+  .pr-tab {
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted); cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    white-space: nowrap; transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+  .pr-tab:hover { color: var(--color-text-primary); }
+  .pr-tab.active {
+    color: var(--color-primary-600);
+    border-bottom-color: var(--color-primary-600);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* Tab panels */
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
+
+  /* ── Tasks Tab — Two-panel layout ── */
+  .pr-task-pane {
+    display: flex; gap: var(--space-5); align-items: flex-start;
+    min-height: 500px;
+  }
+  .pr-task-list { width: 280px; flex-shrink: 0; }
+  .pr-progress-wrap { margin-bottom: var(--space-4); }
+  .pr-progress-label {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: var(--font-size-xs); color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+  .pr-progress-pct {
+    font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
+    color: var(--color-primary-600);
+  }
+  .pr-progress-bar {
+    height: 6px; border-radius: var(--radius-full);
+    background: var(--color-gray-100); overflow: hidden;
+  }
+  .pr-progress-bar__fill {
+    height: 100%; border-radius: var(--radius-full);
+    background: var(--color-primary-600);
+    transition: width 300ms ease;
+  }
+  .pr-task-item {
+    display: flex; align-items: flex-start; gap: var(--space-3);
+    padding: var(--space-3) var(--space-3);
+    border-radius: var(--radius-md); cursor: pointer;
+    transition: background var(--transition-fast);
+    border: 1px solid transparent;
+    margin-bottom: var(--space-1);
+  }
+  .pr-task-item:hover { background: var(--color-bg-hover); }
+  .pr-task-item.active {
+    background: var(--color-primary-50);
+    border-color: var(--color-primary-200);
+  }
+  .pr-task-circle {
+    width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-border-strong);
+    background: var(--color-bg-surface);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pr-task-circle--done {
+    background: var(--color-success-600);
+    border-color: var(--color-success-600);
+  }
+  .pr-task-circle--done svg { display: block; }
+  .pr-task-circle--empty svg { display: none; }
+  .pr-task-circle--progress {
+    border-color: var(--color-warning-400);
+    background: var(--color-warning-50);
+  }
+  .pr-task-item__body { flex: 1; min-width: 0; }
+  .pr-task-item__name {
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary); line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  .pr-task-item__sub {
+    font-size: 11px; color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+  }
+  .pr-task-item__sub--req { color: var(--color-danger-500); }
+
+  /* Task Detail Panel (right side) */
+  .pr-task-detail {
+    flex: 1; min-width: 0;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+  .pr-task-detail-panel { display: none; }
+  .pr-task-detail-panel.active { display: block; }
+  .pr-detail-head {
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-default);
+    background: var(--color-bg-page);
+  }
+  .pr-detail-head__title {
+    font-size: var(--font-size-base); font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary); margin-bottom: var(--space-2);
+  }
+  .pr-detail-head__meta { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+  .pr-detail-body { padding: var(--space-5) var(--space-6); }
+  .pr-detail-section { margin-bottom: var(--space-5); }
+  .pr-detail-section__head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-3); cursor: pointer;
+  }
+  .pr-detail-section__title {
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+  .pr-detail-section__chevron {
+    color: var(--color-text-muted);
+    transition: transform var(--transition-fast);
+  }
+  .pr-detail-section__content { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .pr-detail-field { margin-bottom: var(--space-3); }
+  .pr-detail-field__label {
+    font-size: var(--font-size-xs); color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium); margin-bottom: 2px;
+    text-transform: uppercase; letter-spacing: var(--tracking-wide);
+  }
+  .pr-detail-field__value {
+    font-size: var(--font-size-sm); color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+  }
+  .pr-detail-empty {
+    padding: var(--space-6);
+    text-align: center; color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  /* ── Details Tab — Floating-label form ── */
+  .pr-details-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-7); align-items: start; }
+  .pr-details-col {}
+  .pr-details-col__title {
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary); margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .pr-field-group { margin-bottom: var(--space-4); }
+  .pr-float-field {
+    position: relative;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-input);
+    padding: 22px var(--space-4) 8px;
+  }
+  .pr-float-field:focus-within {
+    border-color: var(--color-primary-400);
+    box-shadow: 0 0 0 3px var(--color-primary-50);
+  }
+  .pr-float-label {
+    position: absolute; top: 8px; left: var(--space-4);
+    font-size: 10px; font-weight: var(--font-weight-semibold);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted); pointer-events: none;
+  }
+  .pr-float-value {
+    font-size: var(--font-size-sm); color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+    background: none; border: none; outline: none; width: 100%;
+    font-family: inherit;
+    padding: 0;
+  }
+  .pr-float-value::placeholder { color: var(--color-text-muted); font-weight: 400; }
+  .pr-field-2col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+
+  /* Firms empty state */
+  .pr-empty-card {
+    border: 1px dashed var(--color-border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-7) var(--space-5);
+    text-align: center;
+    background: var(--color-bg-page);
+  }
+  .pr-empty-card__icon {
+    width: 40px; height: 40px; border-radius: var(--radius-full);
+    background: var(--color-gray-100); margin: 0 auto var(--space-3);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--color-text-muted);
+  }
+  .pr-empty-card__title {
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary); margin-bottom: var(--space-1);
+  }
+  .pr-empty-card__sub { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+
+  /* Upload area */
+  .pr-upload-area {
+    border: 2px dashed var(--color-border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) var(--space-5);
+    text-align: center; cursor: pointer;
+    background: var(--color-bg-page);
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+    margin-top: var(--space-4);
+  }
+  .pr-upload-area:hover {
+    border-color: var(--color-primary-400);
+    background: var(--color-primary-50);
+  }
+  .pr-upload-area__icon { font-size: 24px; margin-bottom: var(--space-2); }
+  .pr-upload-area__text {
+    font-size: var(--font-size-sm); color: var(--color-text-muted);
+  }
+  .pr-upload-area__link { color: var(--color-primary-600); font-weight: var(--font-weight-semibold); }
+
 </style>
 
 <div class="om-shell">
+
+  <!-- Top Nav -->
   <div class="om-topnav">
-    <div class="om-topnav__logo">AgentSync Onboarding</div>
+    <div class="om-topnav__brand">
+      <div class="om-topnav__brand-icon">AS</div>
+      AgentSync Onboarding
+    </div>
     <div class="om-topnav__right">
-      <span>Globe Life Insurance</span>
-      <div class="avatar-sm">JT</div>
-      <span>Jamie Torres</span>
+      <div class="om-topnav__org">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+        Beacon Insurance
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+      </div>
+      <div class="icon-btn">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 016 6c0 3.5 1 5 1.5 6H2.5C3 13 4 11.5 4 8a6 6 0 016-6zm0 16a2 2 0 002-2H8a2 2 0 002 2z"/></svg>
+      </div>
+      <div class="om-topnav__avatar">JT</div>
     </div>
   </div>
 
   <div class="om-layout">
+
+    <!-- Sidebar -->
     <div class="om-sidebar">
-      <div class="sidebar__section-label">Navigation</div>
-      <div class="nav-item active" onclick="go('screen-om-producers')">
-        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2 17c0-3.3 2.7-6 6-6h0m4 5l2 2 4-4"/></svg>
-        Producers
+      <div class="om-sidebar__group">
+        <div class="nav-item" onclick="go('screen-om-welcome')">
+          <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="16" height="14" rx="2"/><path d="M7 8h6M7 12h4"/></svg>
+          Dashboard
+        </div>
       </div>
-      <div class="nav-item" onclick="go('screen-om-tasks')">
-        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10l2 2 4-4"/></svg>
-        Tasks
+      <div class="om-sidebar__group">
+        <div class="sidebar__section-label" style="padding:var(--space-3) var(--space-5) var(--space-1);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted);">Beacon Insurance</div>
+        <div class="nav-item" onclick="go('screen-om-tasks')">
+          <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10l2 2 4-4"/></svg>
+          Tasks
+        </div>
+        <div class="nav-item" onclick="go('screen-om-tasks')">
+          <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h12M4 11h8M4 15h6"/></svg>
+          Contracts
+        </div>
+        <div class="nav-item" onclick="go('screen-om-tasks')">
+          <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3a4 4 0 100 8 4 4 0 000-8zm-7 14s-1-6 7-6 7 6 7 6"/></svg>
+          Hierarchies
+        </div>
+        <div class="nav-item active" onclick="go('screen-om-producers')">
+          <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2 17c0-3.3 2.7-6 6-6h0m4 5l2 2 4-4"/></svg>
+          Producers
+        </div>
+      </div>
+      <div class="om-sidebar__spacer"></div>
+      <div class="nav-item" style="color:var(--color-text-muted);">
+        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 10H5m5-5l-5 5 5 5"/></svg>
+        Collapse Panel
       </div>
     </div>
 
+    <!-- Main Content -->
     <div class="om-main">
-      <!-- Breadcrumb -->
-      <div class="breadcrumb">
-        <a onclick="go('screen-om-producers')" class="text-link" style="cursor:pointer">Producers</a>
-        <span class="breadcrumb__separator">/</span>
-        <span class="breadcrumb__current">Claire Sutton</span>
-      </div>
+      <div class="om-main__inner">
 
-      <!-- Entity Header -->
-      <div class="entity-header" style="margin-bottom:var(--space-6);">
-        <div class="entity-header__avatar">CS</div>
-        <div style="flex:1;">
-          <div class="entity-header__name">Claire Sutton</div>
-          <div class="entity-header__meta">
-            <div>
-              <div class="entity-meta-item__label">NPN</div>
-              <div class="entity-meta-item__value">18472910</div>
+        <!-- Breadcrumb -->
+        <div class="pr-breadcrumb">
+          <a onclick="go('screen-om-producers')">Producers</a>
+          <span class="pr-breadcrumb__sep">/</span>
+          <span>Claire Sutton</span>
+        </div>
+
+        <!-- Header Card -->
+        <div class="pr-header">
+          <div class="pr-header__row">
+            <div class="pr-header__avatar">CS</div>
+            <div class="pr-header__body">
+              <div class="pr-header__name">Claire Sutton</div>
+              <div class="pr-header__meta">
+                <div class="pr-meta-item">
+                  <span class="pr-meta-item__label">NPN</span>
+                  <span class="pr-meta-item__sep">·</span>
+                  <span class="pr-meta-item__value">18472910</span>
+                </div>
+                <div class="pr-meta-item">
+                  <span class="pr-meta-item__label">Type</span>
+                  <span class="pr-meta-item__sep">·</span>
+                  <span class="pr-meta-item__value">Individual</span>
+                </div>
+                <div class="pr-meta-item">
+                  <span class="pr-meta-item__label">Onboarding</span>
+                  <span class="pr-meta-item__sep">·</span>
+                  <span class="pr-meta-item__value" style="color:var(--color-primary-600)">40%</span>
+                </div>
+                <div class="pr-meta-item">
+                  <span class="pr-meta-item__label">Last Activity</span>
+                  <span class="pr-meta-item__sep">·</span>
+                  <span class="pr-meta-item__value">Mar 9, 2026</span>
+                </div>
+                <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span>
+              </div>
             </div>
-            <div>
-              <div class="entity-meta-item__label">Readiness</div>
-              <div class="entity-meta-item__value"><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></div>
-            </div>
-            <div>
-              <div class="entity-meta-item__label">Status</div>
-              <div class="entity-meta-item__value"><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></div>
+            <div class="pr-header__actions">
+              <select class="pr-status-select">
+                <option>In Progress</option>
+                <option>Active</option>
+                <option>Suspended</option>
+                <option>Inactive</option>
+              </select>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Stats -->
-      <div class="stat-row">
-        <div class="stat-card">
-          <div class="stat-card__label">Tasks Complete</div>
-          <div class="stat-card__value">2 <span style="font-size:var(--font-size-sm);color:var(--color-text-muted);font-weight:400">of 5 required</span></div>
+        <!-- Tab Bar -->
+        <div class="pr-tabs">
+          <div class="pr-tab" onclick="switchTab(this,'tab-pr-details')">Details</div>
+          <div class="pr-tab active" onclick="switchTab(this,'tab-pr-tasks')">Tasks</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-card__label">Invited</div>
-          <div class="stat-card__value" style="font-size:var(--font-size-base)">Mar 3, 2026</div>
-        </div>
-      </div>
 
-      <!-- Tabs -->
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'tab-tasks')">Tasks</div>
-        <div class="tab" onclick="switchTab(this,'tab-details')">Details</div>
-      </div>
+        <!-- ── TASKS TAB ── -->
+        <div id="tab-pr-tasks" class="tab-panel active">
+          <div class="pr-task-pane">
 
-      <!-- Tasks Tab -->
-      <div id="tab-tasks" class="tab-panel active">
-        <div class="progress-bar" style="margin-bottom:var(--space-2);">
-          <div class="progress-bar__fill" style="width:40%"></div>
-        </div>
-        <div class="progress-label" style="margin-bottom:var(--space-5);">2 of 5 required tasks complete</div>
+            <!-- Left: Task List -->
+            <div class="pr-task-list">
+              <div class="pr-progress-wrap">
+                <div class="pr-progress-label">
+                  <span>2 of 5 required tasks complete</span>
+                  <span class="pr-progress-pct">40%</span>
+                </div>
+                <div class="pr-progress-bar">
+                  <div class="pr-progress-bar__fill" style="width:40%"></div>
+                </div>
+              </div>
 
-        <div class="task-card" onclick="go('screen-om-task-detail')">
-          <div class="task-card__icon">📋</div>
-          <div class="task-card__body">
-            <div class="task-card__name">License Verification</div>
-            <div class="task-card__meta">
-              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
-              <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:10px;">Complete</span>
-              <span>Completed Mar 6, 2026</span>
-            </div>
-          </div>
-        </div>
-        <div class="task-card" onclick="go('screen-om-task-detail')">
-          <div class="task-card__icon">🛡️</div>
-          <div class="task-card__body">
-            <div class="task-card__name">E&O Insurance Upload</div>
-            <div class="task-card__meta">
-              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
-              <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:10px;">Complete</span>
-              <span>Completed Mar 8, 2026</span>
-            </div>
-          </div>
-        </div>
-        <div class="task-card" onclick="go('screen-om-task-detail')">
-          <div class="task-card__icon">📄</div>
-          <div class="task-card__body">
-            <div class="task-card__name">LOA Confirmation — Property &amp; Casualty</div>
-            <div class="task-card__meta">
-              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
-              <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);font-size:10px;">In Progress</span>
-              <span>Started Mar 9, 2026</span>
-            </div>
-          </div>
-        </div>
-        <div class="task-card">
-          <div class="task-card__icon">📁</div>
-          <div class="task-card__body">
-            <div class="task-card__name">Background Check Consent</div>
-            <div class="task-card__meta">
-              <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Optional</span>
-              <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Not Started</span>
-            </div>
-          </div>
-        </div>
-        <div class="task-card">
-          <div class="task-card__icon">✍️</div>
-          <div class="task-card__body">
-            <div class="task-card__name">Producer Agreement Signature</div>
-            <div class="task-card__meta">
-              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
-              <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Not Started</span>
-            </div>
-          </div>
-        </div>
-      </div>
+              <!-- Task 1 — Complete -->
+              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-license')">
+                <div class="pr-task-circle pr-task-circle--done">
+                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                </div>
+                <div class="pr-task-item__body">
+                  <div class="pr-task-item__name">License Verification</div>
+                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · Completed Mar 6</div>
+                </div>
+              </div>
 
-      <!-- Details Tab -->
-      <div id="tab-details" class="tab-panel">
-        <div class="card">
-          <div class="detail-field-grid">
-            <div class="detail-field">
-              <div class="detail-field__label">Full Name</div>
-              <div class="detail-field__value">Claire Sutton</div>
-            </div>
-            <div class="detail-field">
-              <div class="detail-field__label">Email</div>
-              <div class="detail-field__value" style="color:var(--color-primary-600)">c.sutton@email.com</div>
-            </div>
-            <div class="detail-field">
-              <div class="detail-field__label">NPN</div>
-              <div class="detail-field__value">18472910</div>
-            </div>
-            <div class="detail-field">
-              <div class="detail-field__label">Resident State</div>
-              <div class="detail-field__value">Colorado</div>
-            </div>
-            <div class="detail-field">
-              <div class="detail-field__label">License Type</div>
-              <div class="detail-field__value">Property &amp; Casualty</div>
-            </div>
-            <div class="detail-field">
-              <div class="detail-field__label">Policy Set</div>
-              <div class="detail-field__value">Standard Agent Onboarding</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+              <!-- Task 2 — Complete -->
+              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-eo')">
+                <div class="pr-task-circle pr-task-circle--done">
+                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                </div>
+                <div class="pr-task-item__body">
+                  <div class="pr-task-item__name">E&amp;O Insurance Upload</div>
+                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · Completed Mar 8</div>
+                </div>
+              </div>
 
+              <!-- Task 3 — In Progress (active/selected) -->
+              <div class="pr-task-item active" onclick="selectPrTask(this,'pr-td-loa')">
+                <div class="pr-task-circle pr-task-circle--progress">
+                  <svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="var(--color-warning-500)" stroke-width="2"><circle cx="10" cy="10" r="4"/></svg>
+                </div>
+                <div class="pr-task-item__body">
+                  <div class="pr-task-item__name">LOA Confirmation — P&amp;C</div>
+                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · In Progress</div>
+                </div>
+              </div>
+
+              <!-- Task 4 — Not Started -->
+              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-bgcheck')">
+                <div class="pr-task-circle pr-task-circle--empty">
+                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10l5 5 7-7"/></svg>
+                </div>
+                <div class="pr-task-item__body">
+                  <div class="pr-task-item__name">Background Check Consent</div>
+                  <div class="pr-task-item__sub">Optional · Not Started</div>
+                </div>
+              </div>
+
+              <!-- Task 5 — Not Started -->
+              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-agreement')">
+                <div class="pr-task-circle pr-task-circle--empty">
+                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10l5 5 7-7"/></svg>
+                </div>
+                <div class="pr-task-item__body">
+                  <div class="pr-task-item__name">Producer Agreement Signature</div>
+                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Task Detail Panels -->
+            <div class="pr-task-detail">
+
+              <!-- LOA Confirmation Detail (default active) -->
+              <div id="pr-td-loa" class="pr-task-detail-panel active">
+                <div class="pr-detail-head">
+                  <div class="pr-detail-head__title">LOA Confirmation — Property &amp; Casualty</div>
+                  <div class="pr-detail-head__meta">
+                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
+                    <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);font-size:11px;">In Progress</span>
+                    <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Started Mar 9, 2026</span>
+                  </div>
+                </div>
+                <div class="pr-detail-body">
+                  <div class="pr-detail-section">
+                    <div class="pr-detail-section__head">
+                      <div class="pr-detail-section__title">Task Information</div>
+                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                    </div>
+                    <div class="pr-detail-section__content">
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Description</div>
+                        <div class="pr-detail-field__value">Confirm producer holds active Property &amp; Casualty LOA in their resident state. AgentSync will verify against NIPR automatically.</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Assigned To</div>
+                        <div class="pr-detail-field__value">Claire Sutton</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Due Date</div>
+                        <div class="pr-detail-field__value">Mar 17, 2026</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pr-detail-section">
+                    <div class="pr-detail-section__head">
+                      <div class="pr-detail-section__title">Policy Set Requirements</div>
+                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                    </div>
+                    <div class="pr-detail-section__content">
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Policy Set</div>
+                        <div class="pr-detail-field__value">Standard Agent Onboarding</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Rule</div>
+                        <div class="pr-detail-field__value">Active LOA required in resident state before appointment can be submitted</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pr-detail-section">
+                    <div class="pr-detail-section__head">
+                      <div class="pr-detail-section__title">Activity</div>
+                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                    </div>
+                    <div class="pr-detail-section__content">
+                      <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);padding:var(--space-2) 0;">
+                        <span style="color:var(--color-text-secondary);font-weight:600;">Mar 9</span> — Producer acknowledged task and began LOA review
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- License Verification Detail -->
+              <div id="pr-td-license" class="pr-task-detail-panel">
+                <div class="pr-detail-head">
+                  <div class="pr-detail-head__title">License Verification</div>
+                  <div class="pr-detail-head__meta">
+                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
+                    <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:11px;">Complete</span>
+                    <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Completed Mar 6, 2026</span>
+                  </div>
+                </div>
+                <div class="pr-detail-body">
+                  <div class="pr-detail-section">
+                    <div class="pr-detail-section__head">
+                      <div class="pr-detail-section__title">Verification Result</div>
+                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                    </div>
+                    <div class="pr-detail-section__content">
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">License Number</div>
+                        <div class="pr-detail-field__value">CO-3847219</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Resident State</div>
+                        <div class="pr-detail-field__value">Colorado</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Expiration</div>
+                        <div class="pr-detail-field__value">Dec 31, 2027</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Source</div>
+                        <div class="pr-detail-field__value">NIPR (verified automatically)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- E&O Upload Detail -->
+              <div id="pr-td-eo" class="pr-task-detail-panel">
+                <div class="pr-detail-head">
+                  <div class="pr-detail-head__title">E&amp;O Insurance Upload</div>
+                  <div class="pr-detail-head__meta">
+                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
+                    <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:11px;">Complete</span>
+                    <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Completed Mar 8, 2026</span>
+                  </div>
+                </div>
+                <div class="pr-detail-body">
+                  <div class="pr-detail-section">
+                    <div class="pr-detail-section__head">
+                      <div class="pr-detail-section__title">Uploaded Document</div>
+                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                    </div>
+                    <div class="pr-detail-section__content">
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">File</div>
+                        <div class="pr-detail-field__value" style="color:var(--color-primary-600);cursor:pointer;">eo_certificate_sutton_2026.pdf</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Coverage Amount</div>
+                        <div class="pr-detail-field__value">$1,000,000 / $3,000,000</div>
+                      </div>
+                      <div class="pr-detail-field">
+                        <div class="pr-detail-field__label">Policy Expiration</div>
+                        <div class="pr-detail-field__value">Jan 15, 2027</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Background Check Detail -->
+              <div id="pr-td-bgcheck" class="pr-task-detail-panel">
+                <div class="pr-detail-head">
+                  <div class="pr-detail-head__title">Background Check Consent</div>
+                  <div class="pr-detail-head__meta">
+                    <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Optional</span>
+                    <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
+                  </div>
+                </div>
+                <div class="pr-detail-body">
+                  <div class="pr-detail-empty">Producer has not yet completed this task.</div>
+                </div>
+              </div>
+
+              <!-- Agreement Detail -->
+              <div id="pr-td-agreement" class="pr-task-detail-panel">
+                <div class="pr-detail-head">
+                  <div class="pr-detail-head__title">Producer Agreement Signature</div>
+                  <div class="pr-detail-head__meta">
+                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
+                    <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
+                  </div>
+                </div>
+                <div class="pr-detail-body">
+                  <div class="pr-detail-empty">Producer has not yet completed this task.</div>
+                </div>
+              </div>
+
+            </div><!-- end .pr-task-detail -->
+          </div><!-- end .pr-task-pane -->
+        </div><!-- end #tab-pr-tasks -->
+
+        <!-- ── DETAILS TAB ── -->
+        <div id="tab-pr-details" class="tab-panel">
+          <div class="pr-details-layout">
+
+            <!-- Left: Personal Info -->
+            <div class="pr-details-col">
+              <div class="pr-details-col__title">Personal Information</div>
+              <div class="pr-field-2col">
+                <div class="pr-field-group">
+                  <div class="pr-float-field">
+                    <span class="pr-float-label">First Name</span>
+                    <input class="pr-float-value" type="text" value="Claire" readonly>
+                  </div>
+                </div>
+                <div class="pr-field-group">
+                  <div class="pr-float-field">
+                    <span class="pr-float-label">Middle Name</span>
+                    <input class="pr-float-value" type="text" placeholder="—" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="pr-field-group">
+                <div class="pr-float-field">
+                  <span class="pr-float-label">Last Name</span>
+                  <input class="pr-float-value" type="text" value="Sutton" readonly>
+                </div>
+              </div>
+              <div class="pr-field-group">
+                <div class="pr-float-field">
+                  <span class="pr-float-label">Email Address</span>
+                  <input class="pr-float-value" type="email" value="c.sutton@email.com" readonly>
+                </div>
+              </div>
+              <div class="pr-field-group">
+                <div class="pr-float-field">
+                  <span class="pr-float-label">NPN</span>
+                  <input class="pr-float-value" type="text" value="18472910" readonly>
+                </div>
+              </div>
+              <div class="pr-field-2col">
+                <div class="pr-field-group">
+                  <div class="pr-float-field">
+                    <span class="pr-float-label">Hire Date</span>
+                    <input class="pr-float-value" type="text" value="Feb 15, 2026" readonly>
+                  </div>
+                </div>
+                <div class="pr-field-group">
+                  <div class="pr-float-field">
+                    <span class="pr-float-label">Resident State</span>
+                    <input class="pr-float-value" type="text" value="Colorado" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="pr-field-group">
+                <div class="pr-float-field">
+                  <span class="pr-float-label">Policy Set</span>
+                  <input class="pr-float-value" type="text" value="Standard Agent Onboarding" readonly>
+                </div>
+              </div>
+              <div class="pr-field-group">
+                <div class="pr-float-field">
+                  <span class="pr-float-label">License Type</span>
+                  <input class="pr-float-value" type="text" value="Property &amp; Casualty" readonly>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Firms + Signature -->
+            <div class="pr-details-col">
+              <div class="pr-details-col__title">Affiliated Firms</div>
+              <div class="pr-empty-card">
+                <div class="pr-empty-card__icon">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="16" height="12" rx="2"/><path d="M6 5V4a2 2 0 014 0v1"/></svg>
+                </div>
+                <div class="pr-empty-card__title">No firms associated</div>
+                <div class="pr-empty-card__sub">Firm associations appear here once producer completes onboarding intake</div>
+              </div>
+
+              <div style="margin-top:var(--space-6);">
+                <div class="pr-details-col__title">Producer Signature</div>
+                <div class="pr-upload-area">
+                  <div class="pr-upload-area__icon">📄</div>
+                  <div class="pr-upload-area__text">
+                    <span class="pr-upload-area__link">Upload signature document</span> or drag and drop
+                  </div>
+                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:var(--space-1);">PDF, PNG, or JPG up to 10MB</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- end #tab-pr-details -->
+
+
+      </div><!-- end .om-main__inner -->
+    </div><!-- end .om-main -->
+  </div><!-- end .om-layout -->
+</div><!-- end .om-shell -->

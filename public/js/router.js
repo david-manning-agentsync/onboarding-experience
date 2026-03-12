@@ -75,6 +75,15 @@ function switchPTab(tabEl, panelId) {
   if (panel) panel.classList.add('active');
 }
 
+// Task selector for om-producer-record two-panel layout
+function selectPrTask(taskEl, panelId) {
+  taskEl.closest('.pr-task-list').querySelectorAll('.pr-task-item').forEach(t => t.classList.remove('active'));
+  taskEl.classList.add('active');
+  taskEl.closest('.pr-task-pane').querySelectorAll('.pr-task-detail-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.add('active');
+}
+
 let _toastTimer = null;
 function showToast(message) {
   const toast = document.getElementById('toast');
