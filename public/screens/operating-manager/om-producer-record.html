@@ -1,0 +1,197 @@
+<!-- om-producer-record.html — Producer Record (Onboarding theme) -->
+<style>
+  .om-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .om-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
+  .om-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .om-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
+  .om-layout { display: flex; flex: 1; }
+  .om-sidebar { width: var(--sidebar-width); flex-shrink: 0; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; }
+  .om-main { flex: 1; background: var(--color-bg-page); padding: var(--space-8); overflow-y: auto; }
+  .stat-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); margin-bottom: var(--space-6); }
+  .stat-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5); box-shadow: var(--shadow-xs); }
+  .stat-card__label { font-size: var(--font-size-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-wide); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-1); }
+  .stat-card__value { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .task-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-3); cursor: pointer; transition: box-shadow var(--transition-fast); display: flex; align-items: flex-start; gap: var(--space-3); }
+  .task-card:hover { box-shadow: var(--shadow-md); }
+  .task-card__icon { width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--color-primary-50); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+  .task-card__icon--done { background: var(--color-success-100); }
+  .task-card__body { flex: 1; }
+  .task-card__name { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-1); }
+  .task-card__meta { display: flex; align-items: center; gap: var(--space-3); font-size: var(--font-size-xs); color: var(--color-text-muted); }
+  .detail-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  .detail-field__label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px; }
+  .detail-field__value { font-size: var(--font-size-sm); color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
+  /* Tab panel visibility */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+</style>
+
+<div class="om-shell">
+  <div class="om-topnav">
+    <div class="om-topnav__logo">AgentSync Onboarding</div>
+    <div class="om-topnav__right">
+      <span>Globe Life Insurance</span>
+      <div class="avatar-sm">JT</div>
+      <span>Jamie Torres</span>
+    </div>
+  </div>
+
+  <div class="om-layout">
+    <div class="om-sidebar">
+      <div class="sidebar__section-label">Navigation</div>
+      <div class="nav-item active" onclick="go('screen-om-producers')">
+        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2 17c0-3.3 2.7-6 6-6h0m4 5l2 2 4-4"/></svg>
+        Producers
+      </div>
+      <div class="nav-item" onclick="go('screen-om-tasks')">
+        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10l2 2 4-4"/></svg>
+        Tasks
+      </div>
+    </div>
+
+    <div class="om-main">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a onclick="go('screen-om-producers')" class="text-link" style="cursor:pointer">Producers</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Claire Sutton</span>
+      </div>
+
+      <!-- Entity Header -->
+      <div class="entity-header" style="margin-bottom:var(--space-6);">
+        <div class="entity-header__avatar">CS</div>
+        <div style="flex:1;">
+          <div class="entity-header__name">Claire Sutton</div>
+          <div class="entity-header__meta">
+            <div>
+              <div class="entity-meta-item__label">NPN</div>
+              <div class="entity-meta-item__value">18472910</div>
+            </div>
+            <div>
+              <div class="entity-meta-item__label">Readiness</div>
+              <div class="entity-meta-item__value"><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></div>
+            </div>
+            <div>
+              <div class="entity-meta-item__label">Status</div>
+              <div class="entity-meta-item__value"><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-card__label">Tasks Complete</div>
+          <div class="stat-card__value">2 <span style="font-size:var(--font-size-sm);color:var(--color-text-muted);font-weight:400">of 5 required</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Invited</div>
+          <div class="stat-card__value" style="font-size:var(--font-size-base)">Mar 3, 2026</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'tab-tasks')">Tasks</div>
+        <div class="tab" onclick="switchTab(this,'tab-details')">Details</div>
+      </div>
+
+      <!-- Tasks Tab -->
+      <div id="tab-tasks" class="tab-panel active">
+        <div class="progress-bar" style="margin-bottom:var(--space-2);">
+          <div class="progress-bar__fill" style="width:40%"></div>
+        </div>
+        <div class="progress-label" style="margin-bottom:var(--space-5);">2 of 5 required tasks complete</div>
+
+        <div class="task-card" onclick="go('screen-om-task-detail')">
+          <div class="task-card__icon">📋</div>
+          <div class="task-card__body">
+            <div class="task-card__name">License Verification</div>
+            <div class="task-card__meta">
+              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+              <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:10px;">Complete</span>
+              <span>Completed Mar 6, 2026</span>
+            </div>
+          </div>
+        </div>
+        <div class="task-card" onclick="go('screen-om-task-detail')">
+          <div class="task-card__icon">🛡️</div>
+          <div class="task-card__body">
+            <div class="task-card__name">E&O Insurance Upload</div>
+            <div class="task-card__meta">
+              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+              <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:10px;">Complete</span>
+              <span>Completed Mar 8, 2026</span>
+            </div>
+          </div>
+        </div>
+        <div class="task-card" onclick="go('screen-om-task-detail')">
+          <div class="task-card__icon">📄</div>
+          <div class="task-card__body">
+            <div class="task-card__name">LOA Confirmation — Property &amp; Casualty</div>
+            <div class="task-card__meta">
+              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+              <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);font-size:10px;">In Progress</span>
+              <span>Started Mar 9, 2026</span>
+            </div>
+          </div>
+        </div>
+        <div class="task-card">
+          <div class="task-card__icon">📁</div>
+          <div class="task-card__body">
+            <div class="task-card__name">Background Check Consent</div>
+            <div class="task-card__meta">
+              <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Optional</span>
+              <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Not Started</span>
+            </div>
+          </div>
+        </div>
+        <div class="task-card">
+          <div class="task-card__icon">✍️</div>
+          <div class="task-card__body">
+            <div class="task-card__name">Producer Agreement Signature</div>
+            <div class="task-card__meta">
+              <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+              <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Not Started</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Details Tab -->
+      <div id="tab-details" class="tab-panel">
+        <div class="card">
+          <div class="detail-field-grid">
+            <div class="detail-field">
+              <div class="detail-field__label">Full Name</div>
+              <div class="detail-field__value">Claire Sutton</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field__label">Email</div>
+              <div class="detail-field__value" style="color:var(--color-primary-600)">c.sutton@email.com</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field__label">NPN</div>
+              <div class="detail-field__value">18472910</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field__label">Resident State</div>
+              <div class="detail-field__value">Colorado</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field__label">License Type</div>
+              <div class="detail-field__value">Property &amp; Casualty</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field__label">Policy Set</div>
+              <div class="detail-field__value">Standard Agent Onboarding</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

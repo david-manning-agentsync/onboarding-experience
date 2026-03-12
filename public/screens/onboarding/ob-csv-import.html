@@ -1,0 +1,102 @@
+<!-- ob-csv-import.html — CSV Import (Onboarding theme inside Manage shell) -->
+<style>
+  /* Switch to Onboarding font/feel inside this screen */
+  #screen-ob-csv-import { font-family: 'Manrope Variable', 'Manrope', system-ui, sans-serif; }
+  .m-topnav-wrap { position: sticky; top: 44px; z-index: 200; }
+  .ob-import-body { padding: var(--space-8) var(--space-8); background: var(--color-bg-page); min-height: calc(100vh - 44px - 80px); }
+  .ob-breadcrumb { display:flex;align-items:center;gap:6px;font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:var(--space-6); }
+  .ob-breadcrumb a { color:var(--color-primary-600);cursor:pointer; }
+  .ob-breadcrumb a:hover { text-decoration:underline; }
+  .ob-page-title { font-size:var(--font-size-xl);font-weight:var(--font-weight-bold);color:var(--color-text-primary);margin-bottom:var(--space-2); }
+  .ob-page-subtitle { font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-8); }
+  .import-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-8); }
+  .step-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-xs); }
+  .step-card__num { display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:var(--radius-full);background:var(--color-primary-600);color:#fff;font-size:var(--font-size-sm);font-weight:var(--font-weight-bold);margin-bottom:var(--space-3); }
+  .step-card__title { font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);margin-bottom:var(--space-1); }
+  .step-card__desc { font-size:var(--font-size-xs);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed); }
+  .drop-zone { border: 2px dashed var(--color-border-strong); border-radius:var(--radius-md); padding:var(--space-6);text-align:center;background:var(--color-bg-subtle);cursor:pointer;transition:border-color var(--transition-fast),background var(--transition-fast); }
+  .drop-zone:hover { border-color:var(--color-primary-600);background:var(--color-primary-50); }
+  .drop-zone__icon { font-size:24px;margin-bottom:var(--space-2); }
+  .drop-zone__text { font-size:var(--font-size-sm);color:var(--color-text-secondary); }
+  .drop-zone__link { color:var(--color-primary-600);font-weight:var(--font-weight-medium);cursor:pointer; }
+  .template-link { display:inline-flex;align-items:center;gap:4px;margin-top:var(--space-3);font-size:var(--font-size-xs);color:var(--color-primary-600);cursor:pointer; }
+  .template-link:hover { text-decoration:underline; }
+  .import-actions { display:flex;align-items:center;justify-content:flex-end;gap:var(--space-3); }
+</style>
+
+<!-- Manage chrome stays — Onboarding styling inside -->
+<div class="m-topnav-wrap">
+  <div class="topnav" style="font-family:'Salesforce Sans',Arial,sans-serif;">
+    <div class="topnav__utility">
+      <span class="topnav__app-name">AgentSync Manage</span>
+      <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
+      <div class="topnav__icons">
+        <button class="topnav__icon-btn">⌂</button>
+        <button class="topnav__icon-btn">⚙</button>
+        <div class="topnav__avatar">JD</div>
+      </div>
+    </div>
+    <div class="topnav__app">
+      <div class="appnav-item" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
+      <div class="appnav-item active" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
+      <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
+      <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="ob-import-body">
+  <div class="ob-breadcrumb">
+    <a onclick="go('screen-m-policysets')">Policy Sets</a>
+    <span style="color:var(--color-text-muted)">/</span>
+    <span>Create Policy Set</span>
+  </div>
+  <h1 class="ob-page-title">Import Policy Set Configuration</h1>
+  <p class="ob-page-subtitle">Upload your GWBR rules, task definitions, and policy set template to generate a new policy set automatically.</p>
+
+  <div class="import-steps">
+    <!-- Step 1: GWBR -->
+    <div class="step-card">
+      <div class="step-card__num">1</div>
+      <div class="step-card__title">GWBR Rules</div>
+      <div class="step-card__desc">Upload a CSV of Gateway Business Rules. These determine which regulatory requirements apply per state and LOA.</div>
+      <div class="drop-zone">
+        <div class="drop-zone__icon">📄</div>
+        <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
+        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+      </div>
+      <a class="template-link">⬇ Download GWBR template</a>
+    </div>
+
+    <!-- Step 2: Tasks -->
+    <div class="step-card">
+      <div class="step-card__num">2</div>
+      <div class="step-card__title">Task Definitions</div>
+      <div class="step-card__desc">Upload a CSV defining the tasks and components that producers must complete. Required and optional tasks are both supported.</div>
+      <div class="drop-zone">
+        <div class="drop-zone__icon">📋</div>
+        <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
+        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+      </div>
+      <a class="template-link">⬇ Download Tasks template</a>
+    </div>
+
+    <!-- Step 3: Policy Set CSV -->
+    <div class="step-card">
+      <div class="step-card__num">3</div>
+      <div class="step-card__title">Policy Set CSV</div>
+      <div class="step-card__desc">Upload the policy set definition file that ties rules and tasks together into a named, versioned policy set.</div>
+      <div class="drop-zone">
+        <div class="drop-zone__icon">⚙️</div>
+        <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
+        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+      </div>
+      <a class="template-link">⬇ Download Policy Set template</a>
+    </div>
+  </div>
+
+  <div class="import-actions">
+    <button class="btn btn--secondary" onclick="go('screen-m-policysets')" style="height:40px;border-radius:var(--radius-md);font-family:'Manrope Variable','Manrope',system-ui,sans-serif;">Cancel</button>
+    <button class="btn btn--primary" onclick="go('screen-m-policysets');showToast('Policy set created successfully')" style="height:40px;border-radius:var(--radius-md);font-family:'Manrope Variable','Manrope',system-ui,sans-serif;">Import &amp; Create Policy Set</button>
+  </div>
+</div>

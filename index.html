@@ -1,13 +1,230 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>onboarding-experience</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentSync Demo</title>
+  <link rel="stylesheet" href="src/styles/tokens-onboarding.css">
+  <link rel="stylesheet" href="src/styles/tokens-manage.css">
+  <link rel="stylesheet" href="src/styles/components-onboarding.css">
+  <link rel="stylesheet" href="src/styles/components-manage.css">
+  <link rel="stylesheet" href="src/styles/base.css">
+  <style>
+    /* Demo nav */
+    #demo-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 44px;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 9999;
+      gap: 12px;
+      font-family: system-ui, sans-serif;
+    }
+    #demo-nav .demo-wordmark {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    #demo-nav .demo-nav-center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #demo-nav .demo-flow-btn {
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 120ms;
+      font-family: system-ui, sans-serif;
+    }
+    #demo-nav .demo-flow-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    #demo-nav .demo-flow-btn.active { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.5); }
+    #demo-nav .demo-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #demo-nav .demo-persona-badge {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+      white-space: nowrap;
+    }
+    .demo-persona-badge.persona-manage { background: #0176d3; color: #fff; }
+    .demo-persona-badge.persona-om     { background: #16a34a; color: #fff; }
+    .demo-persona-badge.persona-producer { background: #d97706; color: #fff; }
+    #demo-nav .demo-season-toggle {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-family: system-ui, sans-serif;
+    }
+    .season-btn {
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 11px;
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+    }
+    .season-btn.active  { background: rgba(255,255,255,0.2); color: #fff; }
+    .season-btn.disabled { background: transparent; color: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.1); cursor: default; }
+
+    /* Screen system */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* Offset for demo nav */
+    body { padding-top: 44px; }
+
+    /* Push Manage topnav below demo nav — components-manage.css sets position:fixed;top:0 */
+    .topnav { top: 44px !important; }
+    /* Offset Manage body content past the 80px fixed topnav */
+    .m-body { padding-top: 80px; }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      background: #16a34a;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,.15);
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 200ms, transform 200ms;
+      pointer-events: none;
+      font-family: system-ui, sans-serif;
+    }
+    #toast.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body class="theme-onboarding">
+
+<!-- Demo Nav -->
+<nav id="demo-nav">
+  <span class="demo-wordmark">AgentSync Demo</span>
+  <div class="demo-nav-center">
+    <button class="demo-flow-btn active" id="btn-flow-manage" onclick="goFlow('manage')">Manage Flow</button>
+    <button class="demo-flow-btn" id="btn-flow-om" onclick="goFlow('om')">Operating Manager Flow</button>
+    <button class="demo-flow-btn" id="btn-flow-producer" onclick="goFlow('producer')">Producer Flow</button>
+  </div>
+  <div class="demo-right">
+    <div class="demo-season-toggle">
+      <button class="season-btn active">Spring</button>
+      <button class="season-btn disabled">Fall</button>
+    </div>
+    <span id="persona-badge" class="demo-persona-badge persona-manage">Manage User</span>
+  </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- ============================================================
+     MANAGE SCREENS
+     ============================================================ -->
+<div id="screen-m-accounts"   class="screen active"></div>
+<div id="screen-m-new-account" class="screen"></div>
+<div id="screen-m-account-record" class="screen"></div>
+<div id="screen-m-invite"     class="screen"></div>
+<div id="screen-m-policysets" class="screen"></div>
+<div id="screen-m-policysets-new" class="screen"></div>
+
+<!-- ============================================================
+     ONBOARDING CSV IMPORT
+     ============================================================ -->
+<div id="screen-ob-csv-import" class="screen"></div>
+
+<!-- ============================================================
+     OPERATING MANAGER SCREENS
+     ============================================================ -->
+<div id="screen-om-email"           class="screen"></div>
+<div id="screen-om-login"           class="screen"></div>
+<div id="screen-om-transition"      class="screen"></div>
+<div id="screen-om-welcome"         class="screen"></div>
+<div id="screen-om-producers"       class="screen"></div>
+<div id="screen-om-producer-record" class="screen"></div>
+<div id="screen-om-task-detail"     class="screen"></div>
+<div id="screen-om-invite-producer" class="screen"></div>
+<div id="screen-om-tasks"           class="screen"></div>
+
+<!-- ============================================================
+     PRODUCER SCREENS
+     ============================================================ -->
+<div id="screen-p-email"        class="screen"></div>
+<div id="screen-p-login"        class="screen"></div>
+<div id="screen-p-transition"   class="screen"></div>
+<div id="screen-p-intake"       class="screen"></div>
+<div id="screen-p-welcome"      class="screen"></div>
+<div id="screen-p-tasks"        class="screen"></div>
+<div id="screen-p-task-detail-1" class="screen"></div>
+<div id="screen-p-task-detail-2" class="screen"></div>
+<div id="screen-p-task-detail-3" class="screen"></div>
+<div id="screen-p-done"         class="screen"></div>
+
+<script src="js/router.js"></script>
+<script src="js/demo-nav.js"></script>
+<script>
+  // Load all screen HTML files
+  const screens = [
+    { id: 'screen-m-accounts',        src: 'screens/manage/m-accounts.html' },
+    { id: 'screen-m-new-account',     src: 'screens/manage/m-new-account.html' },
+    { id: 'screen-m-account-record',  src: 'screens/manage/m-account-record.html' },
+    { id: 'screen-m-invite',          src: 'screens/manage/m-invite.html' },
+    { id: 'screen-m-policysets',      src: 'screens/manage/m-policysets.html' },
+    { id: 'screen-m-policysets-new',  src: 'screens/manage/m-policysets-new.html' },
+    { id: 'screen-ob-csv-import',     src: 'screens/onboarding/ob-csv-import.html' },
+    { id: 'screen-om-email',          src: 'screens/operating-manager/om-email.html' },
+    { id: 'screen-om-login',          src: 'screens/operating-manager/om-login.html' },
+    { id: 'screen-om-transition',     src: 'screens/operating-manager/om-transition.html' },
+    { id: 'screen-om-welcome',        src: 'screens/operating-manager/om-welcome.html' },
+    { id: 'screen-om-producers',      src: 'screens/operating-manager/om-producers.html' },
+    { id: 'screen-om-producer-record',src: 'screens/operating-manager/om-producer-record.html' },
+    { id: 'screen-om-task-detail',    src: 'screens/operating-manager/om-task-detail.html' },
+    { id: 'screen-om-invite-producer',src: 'screens/operating-manager/om-invite-producer.html' },
+    { id: 'screen-om-tasks',          src: 'screens/operating-manager/om-tasks.html' },
+    { id: 'screen-p-email',           src: 'screens/producer/p-email.html' },
+    { id: 'screen-p-login',           src: 'screens/producer/p-login.html' },
+    { id: 'screen-p-transition',      src: 'screens/producer/p-transition.html' },
+    { id: 'screen-p-intake',          src: 'screens/producer/p-intake.html' },
+    { id: 'screen-p-welcome',         src: 'screens/producer/p-welcome.html' },
+    { id: 'screen-p-tasks',           src: 'screens/producer/p-tasks.html' },
+    { id: 'screen-p-task-detail-1',   src: 'screens/producer/p-task-detail-1.html' },
+    { id: 'screen-p-task-detail-2',   src: 'screens/producer/p-task-detail-2.html' },
+    { id: 'screen-p-task-detail-3',   src: 'screens/producer/p-task-detail-3.html' },
+    { id: 'screen-p-done',            src: 'screens/producer/p-done.html' },
+  ];
+
+  Promise.all(screens.map(s =>
+    fetch(s.src).then(r => r.text()).then(html => {
+      document.getElementById(s.id).innerHTML = html;
+    }).catch(() => {
+      document.getElementById(s.id).innerHTML = `<div style="padding:48px;text-align:center;color:#9ca3af;font-family:system-ui">[${s.src} — not yet built]</div>`;
+    })
+  )).then(() => {
+    // Init nav after all screens loaded
+    if (typeof initDemoNav === 'function') initDemoNav();
+    go('screen-m-accounts');
+  });
+</script>
+</body>
 </html>

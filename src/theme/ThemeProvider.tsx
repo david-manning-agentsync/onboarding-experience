@@ -1,31 +1,39 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-type Theme = 'onboarding' | 'manage'
+export type Theme = 'onboarding' | 'manage'
 
-interface ThemeContextValue {
+type ThemeContextValue = {
   theme: Theme
   toggle: () => void
+  setTheme: (t: Theme) => void
 }
 
-const ThemeContext = createContext<ThemeContextValue>({
-  theme: 'onboarding',
-  toggle: () => {},
-})
+const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('onboarding')
+  const [theme, setThemeState] = useState<Theme>('onboarding')
+
+  const setTheme = (t: Theme) => {
+    setThemeState(t)
+  }
+
+  const toggle = () => {
+    setThemeState(t => (t === 'onboarding' ? 'manage' : 'onboarding'))
+  }
 
   useEffect(() => {
     document.body.className = `theme-${theme}`
   }, [theme])
 
   return (
-    <ThemeContext.Provider
-      value={{ theme, toggle: () => setTheme(t => (t === 'onboarding' ? 'manage' : 'onboarding')) }}
-    >
+    <ThemeContext.Provider value={{ theme, toggle, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )
 }
 
-export const useTheme = () => useContext(ThemeContext)
+export function useTheme() {
+  const ctx = useContext(ThemeContext)
+  if (!ctx) throw new Error('useTheme must be used inside ThemeProvider')
+  return ctx
+}

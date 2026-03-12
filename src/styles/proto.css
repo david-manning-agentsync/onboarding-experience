@@ -23,7 +23,7 @@
 /* ─── ProtoPanel ──────────────────────────────────────────────────────────── */
 
 .proto-panel {
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 100;
   display: flex;

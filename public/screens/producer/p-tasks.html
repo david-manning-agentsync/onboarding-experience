@@ -1,0 +1,163 @@
+<!-- p-tasks.html — Producer task list (Onboarding theme, no sidebar) -->
+<style>
+  .p-shell { min-height: calc(100vh - 44px); background: var(--color-bg-page); }
+  .p-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
+  .p-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-extrabold); color: var(--color-primary-600); }
+  .p-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
+  .p-body { max-width: 720px; margin: 0 auto; padding: var(--space-8); }
+  .p-entity-header { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); display: flex; align-items: center; gap: var(--space-4); }
+  .p-entity-avatar { width: 44px; height: 44px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-base); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .p-entity-name { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .p-entity-sub { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
+  /* Tab panel visibility */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  /* Task cards */
+  .task-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-3); cursor: pointer; transition: box-shadow var(--transition-fast), border-color var(--transition-fast); display: flex; align-items: flex-start; gap: var(--space-4); }
+  .task-card:hover { box-shadow: var(--shadow-md); border-color: var(--color-primary-200); }
+  .task-card--done { background: var(--color-success-50); border-color: var(--color-success-500); }
+  .task-card--done:hover { border-color: var(--color-success-600); }
+  .task-card--optional { opacity: 0.8; }
+  .task-card__icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .task-card__body { flex: 1; }
+  .task-card__name { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-1-5); }
+  .task-card--done .task-card__name { color: var(--color-success-700); }
+  .task-card__meta { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+  .task-card__arrow { color: var(--color-text-muted); flex-shrink: 0; font-size: 18px; align-self: center; }
+</style>
+
+<div class="p-shell">
+  <div class="p-topnav">
+    <div class="p-topnav__logo">AgentSync</div>
+    <div class="p-topnav__right">
+      <div class="avatar-sm">CS</div>
+      <span>Claire Sutton</span>
+    </div>
+  </div>
+
+  <div class="p-body">
+    <div class="p-entity-header">
+      <div class="p-entity-avatar">CS</div>
+      <div>
+        <div class="p-entity-name">Claire Sutton</div>
+        <div class="p-entity-sub">Globe Life Insurance · NPN 18472910</div>
+      </div>
+      <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);margin-left:auto;">Needs LOAs</span>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchPTab(this,'p-tab-tasks')">Tasks</div>
+      <div class="tab" onclick="switchPTab(this,'p-tab-details')">Details</div>
+    </div>
+
+    <!-- Tasks Tab -->
+    <div id="p-tab-tasks" class="tab-panel active">
+      <div class="progress-bar" style="margin-bottom:var(--space-2);">
+        <div class="progress-bar__fill" style="width:40%"></div>
+      </div>
+      <div class="progress-label" style="margin-bottom:var(--space-6);">2 of 5 required tasks complete</div>
+
+      <!-- Done -->
+      <div class="task-card task-card--done" onclick="go('screen-p-task-detail-1')">
+        <div class="task-card__icon">✅</div>
+        <div class="task-card__body">
+          <div class="task-card__name">License Verification</div>
+          <div class="task-card__meta">
+            <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+            <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:10px;">✓ Complete</span>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Completed Mar 6</span>
+          </div>
+        </div>
+        <div class="task-card__arrow">›</div>
+      </div>
+
+      <div class="task-card task-card--done" onclick="go('screen-p-task-detail-2')">
+        <div class="task-card__icon">✅</div>
+        <div class="task-card__body">
+          <div class="task-card__name">E&amp;O Insurance Upload</div>
+          <div class="task-card__meta">
+            <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+            <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:10px;">✓ Complete</span>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Completed Mar 8</span>
+          </div>
+        </div>
+        <div class="task-card__arrow">›</div>
+      </div>
+
+      <!-- In Progress -->
+      <div class="task-card" onclick="go('screen-p-task-detail-3')">
+        <div class="task-card__icon">📄</div>
+        <div class="task-card__body">
+          <div class="task-card__name">LOA Confirmation — Property &amp; Casualty</div>
+          <div class="task-card__meta">
+            <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+            <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);font-size:10px;">In Progress</span>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">1 of 3 components done</span>
+          </div>
+        </div>
+        <div class="task-card__arrow" style="color:var(--color-primary-600);">›</div>
+      </div>
+
+      <!-- Not started -->
+      <div class="task-card">
+        <div class="task-card__icon">✍️</div>
+        <div class="task-card__body">
+          <div class="task-card__name">Producer Agreement Signature</div>
+          <div class="task-card__meta">
+            <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+            <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Not Started</span>
+          </div>
+        </div>
+        <div class="task-card__arrow">›</div>
+      </div>
+
+      <!-- Optional -->
+      <div class="task-card task-card--optional">
+        <div class="task-card__icon">📁</div>
+        <div class="task-card__body">
+          <div class="task-card__name">Background Check Consent</div>
+          <div class="task-card__meta">
+            <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Optional</span>
+            <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;">Not Started</span>
+          </div>
+        </div>
+        <div class="task-card__arrow">›</div>
+      </div>
+    </div>
+
+    <!-- Details Tab -->
+    <div id="p-tab-details" class="tab-panel">
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);">
+          <div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;">Full Name</div>
+            <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Claire Sutton</div>
+          </div>
+          <div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;">Email</div>
+            <div style="font-size:var(--font-size-sm);color:var(--color-primary-600);">c.sutton@email.com</div>
+          </div>
+          <div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;">NPN</div>
+            <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">18472910</div>
+          </div>
+          <div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;">Resident State</div>
+            <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Colorado</div>
+          </div>
+          <div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;">License Type</div>
+            <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Property &amp; Casualty</div>
+          </div>
+          <div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;">Policy Set</div>
+            <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Standard Agent Onboarding</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,76 @@
+<!-- p-task-detail-1.html — Completed Task: License Verification (Onboarding theme, no sidebar) -->
+<style>
+  .p-shell { min-height: calc(100vh - 44px); background: var(--color-bg-page); }
+  .p-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
+  .p-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-extrabold); color: var(--color-primary-600); }
+  .p-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
+  .p-body { max-width: 720px; margin: 0 auto; padding: var(--space-8); }
+  .complete-banner { background: var(--color-success-100); border: 1px solid var(--color-success-500); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-6); margin-bottom: var(--space-6); display: flex; align-items: center; gap: var(--space-3); }
+  .complete-banner__icon { font-size: 24px; }
+  .complete-banner__text { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-success-700); }
+  .component-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border-default); }
+  .component-row:last-child { border-bottom: none; }
+</style>
+
+<div class="p-shell">
+  <div class="p-topnav">
+    <div class="p-topnav__logo">AgentSync</div>
+    <div class="p-topnav__right">
+      <div class="avatar-sm">CS</div>
+      <span>Claire Sutton</span>
+    </div>
+  </div>
+
+  <div class="p-body">
+    <div class="breadcrumb">
+      <a onclick="go('screen-p-tasks')" style="cursor:pointer;color:var(--color-primary-600);">My Tasks</a>
+      <span class="breadcrumb__separator">/</span>
+      <span class="breadcrumb__current">License Verification</span>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6);">
+      <h1 style="font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-text-primary);">License Verification</h1>
+      <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">✓ Complete</span>
+    </div>
+
+    <div class="complete-banner">
+      <div class="complete-banner__icon">✅</div>
+      <div class="complete-banner__text">This task is complete. Completed on March 6, 2026.</div>
+    </div>
+
+    <div class="card" style="margin-bottom:var(--space-6);">
+      <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">Task Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+        <div>
+          <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:var(--tracking-wide);font-weight:var(--font-weight-semibold);">Type</div>
+          <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Compliance Verification</div>
+        </div>
+        <div>
+          <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:var(--tracking-wide);font-weight:var(--font-weight-semibold);">Policy Set</div>
+          <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Standard Agent Onboarding</div>
+        </div>
+      </div>
+      <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--color-border-default);">
+        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:var(--space-2);text-transform:uppercase;letter-spacing:var(--tracking-wide);font-weight:var(--font-weight-semibold);">Description</div>
+        <p style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">Verify that you hold an active license in your resident state of Colorado for Property &amp; Casualty insurance.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:var(--space-6);">
+      <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">Components</div>
+      <div class="component-row">
+        <span style="font-size:18px;">✅</span>
+        <span style="flex:1;font-size:var(--font-size-sm);">Colorado P&amp;C License — Active</span>
+        <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Verified via NIPR</span>
+      </div>
+      <div class="component-row">
+        <span style="font-size:18px;">✅</span>
+        <span style="flex:1;font-size:var(--font-size-sm);">License Expiration Confirmed (Jan 1, 2027)</span>
+        <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Verified</span>
+      </div>
+    </div>
+
+    <button class="btn btn--secondary" onclick="go('screen-p-tasks')">← Back to Tasks</button>
+  </div>
+</div>

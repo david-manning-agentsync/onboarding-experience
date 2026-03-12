@@ -1,0 +1,137 @@
+<!-- om-producers.html — Producer Table (Onboarding theme) -->
+<style>
+  .om-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .om-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
+  .om-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .om-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
+  .om-layout { display: flex; flex: 1; }
+  .om-sidebar { width: var(--sidebar-width); flex-shrink: 0; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; }
+  .om-main { flex: 1; background: var(--color-bg-page); padding: var(--space-8); overflow-y: auto; }
+  .page-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6); }
+  .page-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .filter-row { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-5); flex-wrap: wrap; }
+  .filter-row .search-input input { width: 280px; }
+</style>
+
+<div class="om-shell">
+  <div class="om-topnav">
+    <div class="om-topnav__logo">AgentSync Onboarding</div>
+    <div class="om-topnav__right">
+      <span>Globe Life Insurance</span>
+      <div class="avatar-sm">JT</div>
+      <span>Jamie Torres</span>
+    </div>
+  </div>
+
+  <div class="om-layout">
+    <div class="om-sidebar">
+      <div class="sidebar__section-label">Navigation</div>
+      <div class="nav-item active" onclick="go('screen-om-producers')">
+        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2 17c0-3.3 2.7-6 6-6h0m4 5l2 2 4-4"/></svg>
+        Producers
+      </div>
+      <div class="nav-item" onclick="go('screen-om-tasks')">
+        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10l2 2 4-4"/></svg>
+        Tasks
+      </div>
+    </div>
+
+    <div class="om-main">
+      <div class="page-header-row">
+        <h1 class="page-title">Producers</h1>
+        <button class="btn btn--primary" onclick="go('screen-om-invite-producer')">+ Invite Producer</button>
+      </div>
+
+      <div class="filter-row">
+        <div class="search-input">
+          <svg class="search-input__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10 10l3 3"/></svg>
+          <input type="text" placeholder="Search producers...">
+        </div>
+        <select class="form-select" style="width:160px;">
+          <option>All Readiness</option>
+          <option>Needs License</option>
+          <option>Needs LOAs</option>
+          <option>Needs Org Req.</option>
+          <option>Ready</option>
+        </select>
+        <select class="form-select" style="width:160px;">
+          <option>All Statuses</option>
+          <option>Invited</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+        </select>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-toolbar">
+          <div class="table-toolbar__left">
+            <span class="table-row-count">12 producers</span>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th class="sorted">Name <span class="sort-icon">↑</span></th>
+              <th>NPN</th>
+              <th>Readiness</th>
+              <th>Process Status</th>
+              <th>Invited</th>
+              <th>Last Task</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr onclick="go('screen-om-producer-record')" style="cursor:pointer">
+              <td><a onclick="event.stopPropagation();go('screen-om-producer-record')" style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">Claire Sutton</a></td>
+              <td>18472910</td>
+              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></td>
+              <td><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></td>
+              <td>Mar 3, 2026</td>
+              <td>LOA Confirmation</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">Marcus Webb</a></td>
+              <td>20938471</td>
+              <td><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);">Needs License</span></td>
+              <td><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></td>
+              <td>Mar 5, 2026</td>
+              <td>License Upload</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">Priya Nair</a></td>
+              <td>33019847</td>
+              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Ready</span></td>
+              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Completed</span></td>
+              <td>Feb 14, 2026</td>
+              <td>E&O Upload</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">Diego Flores</a></td>
+              <td>19472837</td>
+              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs Org Requirements</span></td>
+              <td><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></td>
+              <td>Mar 1, 2026</td>
+              <td>Background Check</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">Lena Kim</a></td>
+              <td>27384910</td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);">Invited</span></td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);">Invited</span></td>
+              <td>Mar 10, 2026</td>
+              <td>—</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">James O'Brien</a></td>
+              <td>38472019</td>
+              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Ready</span></td>
+              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Completed</span></td>
+              <td>Feb 22, 2026</td>
+              <td>All Tasks</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

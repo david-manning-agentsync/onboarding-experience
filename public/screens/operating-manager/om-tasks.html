@@ -1,0 +1,191 @@
+<!-- om-tasks.html — Task Table with inline drawer (Onboarding theme) -->
+<style>
+  .om-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .om-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
+  .om-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .om-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
+  .om-layout { display: flex; flex: 1; }
+  .om-sidebar { width: var(--sidebar-width); flex-shrink: 0; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; }
+  .om-main { flex: 1; background: var(--color-bg-page); padding: var(--space-8); overflow-y: auto; }
+  .page-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-6); }
+  .filter-row { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); flex-wrap: wrap; }
+  /* Inline drawer row */
+  .task-drawer-row { display: none; background: var(--color-primary-50); border-bottom: 2px solid var(--color-primary-200); }
+  .task-drawer-row.open { display: table-row; }
+  .task-drawer-inner { padding: var(--space-5) var(--space-6); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
+  .task-drawer-meta { flex: 1; }
+  .task-drawer-title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-2); }
+  .task-drawer-desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); }
+  .task-row-clickable { cursor: pointer; }
+  .task-row-clickable:hover { background: var(--color-gray-50); }
+  .task-row-clickable.selected { background: var(--color-primary-50); }
+</style>
+
+<div class="om-shell">
+  <div class="om-topnav">
+    <div class="om-topnav__logo">AgentSync Onboarding</div>
+    <div class="om-topnav__right">
+      <span>Globe Life Insurance</span>
+      <div class="avatar-sm">JT</div>
+      <span>Jamie Torres</span>
+    </div>
+  </div>
+
+  <div class="om-layout">
+    <div class="om-sidebar">
+      <div class="sidebar__section-label">Navigation</div>
+      <div class="nav-item" onclick="go('screen-om-producers')">
+        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2 17c0-3.3 2.7-6 6-6h0m4 5l2 2 4-4"/></svg>
+        Producers
+      </div>
+      <div class="nav-item active" onclick="go('screen-om-tasks')">
+        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10l2 2 4-4"/></svg>
+        Tasks
+      </div>
+    </div>
+
+    <div class="om-main">
+      <h1 class="page-title">Tasks</h1>
+
+      <!-- Full-width search -->
+      <div class="search-input" style="width:100%;margin-bottom:var(--space-4);">
+        <svg class="search-input__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10 10l3 3"/></svg>
+        <input type="text" placeholder="Search tasks by name or producer..." style="width:100%;">
+      </div>
+
+      <!-- Filter row -->
+      <div class="filter-row">
+        <select class="form-select" style="width:140px;">
+          <option>All Statuses</option>
+          <option>Not Started</option>
+          <option>In Progress</option>
+          <option>Complete</option>
+        </select>
+        <select class="form-select" style="width:140px;">
+          <option>All Types</option>
+          <option>Compliance</option>
+          <option>Document</option>
+          <option>Agreement</option>
+        </select>
+        <select class="form-select" style="width:160px;">
+          <option>All Readiness</option>
+          <option>Needs License</option>
+          <option>Needs LOAs</option>
+          <option>Ready</option>
+        </select>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-toolbar">
+          <div class="table-toolbar__left">
+            <span class="table-row-count">18 tasks across 6 producers</span>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th class="sorted">Task Name <span class="sort-icon">↑</span></th>
+              <th>Producer</th>
+              <th>NPN</th>
+              <th>Readiness</th>
+              <th>Status</th>
+              <th>Type</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody id="tasks-tbody">
+            <!-- Row 1 -->
+            <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-1', this)">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">LOA Confirmation — P&amp;C</a></td>
+              <td><a onclick="event.stopPropagation();go('screen-om-producer-record')" style="color:var(--color-primary-600);">Claire Sutton</a></td>
+              <td>18472910</td>
+              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></td>
+              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">In Progress</span></td>
+              <td>Compliance</td>
+              <td>Producer</td>
+            </tr>
+            <tr id="drawer-1" class="task-drawer-row">
+              <td colspan="7">
+                <div class="task-drawer-inner">
+                  <div class="task-drawer-meta">
+                    <div class="task-drawer-title">LOA Confirmation — Property &amp; Casualty</div>
+                    <div class="task-drawer-desc">Confirm that Claire Sutton holds active LOAs for Property and Casualty in her resident state (CO) and required non-resident states (TX, FL). 1 of 3 components verified.</div>
+                  </div>
+                  <button class="btn btn--primary btn--sm" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-2', this)">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">License Upload</a></td>
+              <td><a style="color:var(--color-primary-600);">Marcus Webb</a></td>
+              <td>20938471</td>
+              <td><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);">Needs License</span></td>
+              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">In Progress</span></td>
+              <td>Document</td>
+              <td>Producer</td>
+            </tr>
+            <tr id="drawer-2" class="task-drawer-row">
+              <td colspan="7">
+                <div class="task-drawer-inner">
+                  <div class="task-drawer-meta">
+                    <div class="task-drawer-title">License Upload</div>
+                    <div class="task-drawer-desc">Marcus Webb needs to upload a copy of his resident state license. Currently in progress — awaiting document submission.</div>
+                  </div>
+                  <button class="btn btn--primary btn--sm" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 3 -->
+            <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-3', this)">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">E&amp;O Insurance Upload</a></td>
+              <td><a onclick="event.stopPropagation();go('screen-om-producer-record')" style="color:var(--color-primary-600);">Claire Sutton</a></td>
+              <td>18472910</td>
+              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></td>
+              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Complete</span></td>
+              <td>Document</td>
+              <td>Producer</td>
+            </tr>
+            <tr id="drawer-3" class="task-drawer-row">
+              <td colspan="7">
+                <div class="task-drawer-inner">
+                  <div class="task-drawer-meta">
+                    <div class="task-drawer-title">E&amp;O Insurance Upload</div>
+                    <div class="task-drawer-desc">Claire Sutton has completed this task. E&O certificate uploaded and verified on Mar 8, 2026. Policy expiration: Apr 1, 2027.</div>
+                  </div>
+                  <button class="btn btn--secondary btn--sm" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-4', this)">
+              <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">Background Check Consent</a></td>
+              <td><a style="color:var(--color-primary-600);">Diego Flores</a></td>
+              <td>19472837</td>
+              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs Org Requirements</span></td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);">Not Started</span></td>
+              <td>Agreement</td>
+              <td>Producer</td>
+            </tr>
+            <tr id="drawer-4" class="task-drawer-row">
+              <td colspan="7">
+                <div class="task-drawer-inner">
+                  <div class="task-drawer-meta">
+                    <div class="task-drawer-title">Background Check Consent</div>
+                    <div class="task-drawer-desc">Diego Flores has not yet started the background check consent form. This is an optional task but is required by Globe Life's internal policy for all California-licensed producers.</div>
+                  </div>
+                  <button class="btn btn--primary btn--sm" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

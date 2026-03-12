@@ -1,0 +1,100 @@
+<!-- m-invite.html — Invite Onboarding Partner (Manage / SLDS theme) -->
+<style>
+  .m-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .m-topnav { position: sticky; top: 44px; z-index: 200; }
+  .invite-page-body { flex: 1; background: var(--color-bg-page); display: flex; align-items: flex-start; justify-content: center; padding: var(--space-x-large) var(--space-large); }
+  .invite-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; max-width: 560px; overflow: hidden; }
+  .invite-card__header { padding: var(--space-medium) var(--space-large); border-bottom: 1px solid var(--color-border-default); background: var(--color-bg-subtle); }
+  .invite-card__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .invite-card__subtitle { font-size: var(--font-size-base); color: var(--color-text-secondary); margin-top: 2px; }
+  .invite-card__body { padding: var(--space-large); }
+  .invite-card__footer { padding: var(--space-medium) var(--space-large); border-top: 1px solid var(--color-border-default); background: var(--color-bg-subtle); display: flex; justify-content: flex-end; gap: var(--space-x-small); }
+  .or-divider { display: flex; align-items: center; gap: var(--space-medium); margin: var(--space-medium) 0; font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-caps); }
+  .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--color-border-default); }
+</style>
+
+<div class="m-shell">
+  <div class="m-topnav">
+    <div class="topnav">
+      <div class="topnav__utility">
+        <span class="topnav__app-name">AgentSync Manage</span>
+        <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
+        <div class="topnav__icons">
+          <button class="topnav__icon-btn">⌂</button>
+          <button class="topnav__icon-btn">⚙</button>
+          <div class="topnav__avatar">JD</div>
+        </div>
+      </div>
+      <div class="topnav__app">
+        <div class="appnav-item active" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="invite-page-body">
+    <div class="invite-card">
+      <div class="invite-card__header">
+        <div class="invite-card__title">Invite Onboarding Partner</div>
+        <div class="invite-card__subtitle">Globe Life Insurance</div>
+      </div>
+      <div class="invite-card__body">
+        <!-- Existing contact -->
+        <div class="form-group">
+          <label class="form-label">Select Existing Contact</label>
+          <select class="form-select">
+            <option value="">-- Search contacts --</option>
+            <option>Sarah Chen — sarah.chen@globelife.com</option>
+            <option>Marcus Rivera — m.rivera@globelife.com</option>
+            <option>Dana Park — dpark@globelife.com</option>
+          </select>
+        </div>
+
+        <div class="or-divider">or invite a new contact</div>
+
+        <!-- New contact fields -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-medium);">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" placeholder="First name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" placeholder="Last name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email <span class="required">*</span></label>
+          <input type="email" class="form-input" placeholder="partner@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <select class="form-select">
+            <option value="">-- Select role --</option>
+            <option>Onboarding Manager</option>
+            <option>Compliance Officer</option>
+            <option>HR Administrator</option>
+            <option>Agency Principal</option>
+          </select>
+          <span class="form-hint">Determines what this person can see and do in Onboarding.</span>
+        </div>
+
+        <div style="margin-top:var(--space-medium);padding-top:var(--space-medium);border-top:1px solid var(--color-border-default);">
+          <label class="form-checkbox">
+            <input type="checkbox">
+            <span>This person is also functioning as a producer</span>
+          </label>
+          <div class="form-hint" style="margin-top:4px;padding-left:24px;">
+            They will receive both an Onboarding Partner invite and a Producer task checklist.
+          </div>
+        </div>
+      </div>
+      <div class="invite-card__footer">
+        <button class="btn btn--neutral" onclick="go('screen-m-account-record')">Cancel</button>
+        <button class="btn btn--brand" onclick="go('screen-m-account-record');showToast('Invite sent to onboarding partner')">Send Invite</button>
+      </div>
+    </div>
+  </div>
+</div>
