@@ -1,34 +1,45 @@
 <!-- om-tasks.html — Task Table with inline drawer (Onboarding theme) -->
 <style>
-  .om-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
-  .om-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
-  .om-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
-  .om-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
-  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
-  .om-layout { display: flex; flex: 1; }
-  .om-sidebar { width: var(--sidebar-width); flex-shrink: 0; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; }
-  .om-main { flex: 1; background: var(--color-bg-page); padding: var(--space-8); overflow-y: auto; }
-  .page-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-6); }
-  .filter-row { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); flex-wrap: wrap; }
-  /* Inline drawer row */
-  .task-drawer-row { display: none; background: var(--color-primary-50); border-bottom: 2px solid var(--color-primary-200); }
-  .task-drawer-row.open { display: table-row; }
-  .task-drawer-inner { padding: var(--space-5) var(--space-6); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
-  .task-drawer-meta { flex: 1; }
-  .task-drawer-title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-2); }
-  .task-drawer-desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); }
-  .task-row-clickable { cursor: pointer; }
-  .task-row-clickable:hover { background: var(--color-gray-50); }
-  .task-row-clickable.selected { background: var(--color-primary-50); }
+  #screen-om-tasks .om-shell { height: calc(100vh - 44px); display: flex; flex-direction: column; }
+  #screen-om-tasks .om-topnav { height: 56px; flex-shrink: 0; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); z-index: 200; }
+  #screen-om-tasks .om-topnav__brand { display: flex; align-items: center; gap: var(--space-2); font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  #screen-om-tasks .om-topnav__brand-icon { width: 28px; height: 28px; border-radius: var(--radius-md); background: var(--color-primary-600); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+  #screen-om-tasks .om-topnav__right { display: flex; align-items: center; gap: var(--space-3); }
+  #screen-om-tasks .om-topnav__org { display: flex; align-items: center; gap: var(--space-1); font-size: var(--font-size-sm); color: var(--color-text-secondary); padding: 4px 10px; border: 1px solid var(--color-border-default); border-radius: var(--radius-md); cursor: pointer; background: var(--color-bg-input); }
+  #screen-om-tasks .om-icon-btn { width: 34px; height: 34px; border-radius: var(--radius-full); border: 1px solid var(--color-border-default); background: var(--color-bg-input); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--color-text-secondary); }
+  #screen-om-tasks .om-topnav__avatar { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  #screen-om-tasks .om-layout { position: relative; flex: 1; overflow: hidden; }
+  #screen-om-tasks .om-sidebar { position: absolute; top: 0; left: 0; bottom: 0; width: 220px; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; overflow-y: auto; }
+  #screen-om-tasks .om-main { position: absolute; top: 0; left: 220px; right: 0; bottom: 0; overflow-y: auto; background: var(--color-bg-page); padding: var(--space-8); }
+  #screen-om-tasks .page-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-6); }
+  #screen-om-tasks .filter-row { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); flex-wrap: wrap; }
+  /* Inline drawer */
+  #screen-om-tasks .task-drawer-row { display: none; background: var(--color-primary-50); border-bottom: 2px solid var(--color-primary-200); }
+  #screen-om-tasks .task-drawer-row.open { display: table-row; }
+  #screen-om-tasks .task-drawer-inner { padding: var(--space-5) var(--space-6); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
+  #screen-om-tasks .task-drawer-meta { flex: 1; }
+  #screen-om-tasks .task-drawer-title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-2); }
+  #screen-om-tasks .task-drawer-desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); }
+  #screen-om-tasks .task-row-clickable { cursor: pointer; }
+  #screen-om-tasks .task-row-clickable:hover { background: var(--color-gray-50); }
+  #screen-om-tasks .task-row-clickable.selected { background: var(--color-primary-50); }
 </style>
 
 <div class="om-shell">
   <div class="om-topnav">
-    <div class="om-topnav__logo">AgentSync Onboarding</div>
+    <div class="om-topnav__brand">
+      <div class="om-topnav__brand-icon">A</div>
+      AgentSync Onboarding
+    </div>
     <div class="om-topnav__right">
-      <span>Globe Life Insurance</span>
-      <div class="avatar-sm">JT</div>
-      <span>Jamie Torres</span>
+      <div class="om-topnav__org">
+        Globe Life Insurance
+        <svg viewBox="0 0 12 12" width="10" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+      </div>
+      <div class="om-icon-btn">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 016 6c0 3.5 1 5 1.5 6H2.5C3 13 4 11.5 4 8a6 6 0 016-6zm0 16a2 2 0 002-2H8a2 2 0 002 2z"/></svg>
+      </div>
+      <div class="om-topnav__avatar">JT</div>
     </div>
   </div>
 
@@ -48,13 +59,11 @@
     <div class="om-main">
       <h1 class="page-title">Tasks</h1>
 
-      <!-- Full-width search -->
       <div class="search-input" style="width:100%;margin-bottom:var(--space-4);">
         <svg class="search-input__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10 10l3 3"/></svg>
         <input type="text" placeholder="Search tasks by name or producer..." style="width:100%;">
       </div>
 
-      <!-- Filter row -->
       <div class="filter-row">
         <select class="form-select" style="width:140px;">
           <option>All Statuses</option>
@@ -94,8 +103,7 @@
               <th>Owner</th>
             </tr>
           </thead>
-          <tbody id="tasks-tbody">
-            <!-- Row 1 -->
+          <tbody>
             <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-1', this)">
               <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">LOA Confirmation — P&amp;C</a></td>
               <td><a onclick="event.stopPropagation();go('screen-om-producer-record')" style="color:var(--color-primary-600);">Claire Sutton</a></td>
@@ -117,7 +125,6 @@
               </td>
             </tr>
 
-            <!-- Row 2 -->
             <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-2', this)">
               <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">License Upload</a></td>
               <td><a style="color:var(--color-primary-600);">Marcus Webb</a></td>
@@ -139,7 +146,6 @@
               </td>
             </tr>
 
-            <!-- Row 3 -->
             <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-3', this)">
               <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">E&amp;O Insurance Upload</a></td>
               <td><a onclick="event.stopPropagation();go('screen-om-producer-record')" style="color:var(--color-primary-600);">Claire Sutton</a></td>
@@ -161,7 +167,6 @@
               </td>
             </tr>
 
-            <!-- Row 4 -->
             <tr class="task-row-clickable" onclick="toggleTaskDrawer('drawer-4', this)">
               <td><a style="color:var(--color-primary-600);font-weight:var(--font-weight-medium);">Background Check Consent</a></td>
               <td><a style="color:var(--color-primary-600);">Diego Flores</a></td>
@@ -188,4 +193,3 @@
     </div>
   </div>
 </div>
-

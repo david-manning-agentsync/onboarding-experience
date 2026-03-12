@@ -1,19 +1,19 @@
 <!-- p-email.html — Producer email (Onboarding theme) -->
 <style>
-  .email-outer { min-height: calc(100vh - 44px); background: var(--color-gray-100); display: flex; align-items: flex-start; justify-content: center; padding: var(--space-8); }
-  .email-client { width: 100%; max-width: 680px; }
-  .email-client__chrome { background: var(--color-bg-surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; border: 1px solid var(--color-border-default); border-bottom: none; padding: var(--space-3) var(--space-5); display: flex; align-items: center; gap: var(--space-3); }
-  .email-chrome-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .email-subject-bar { background: var(--color-bg-subtle); border: 1px solid var(--color-border-default); border-bottom: none; padding: var(--space-2) var(--space-5); font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-semibold); }
-  .email-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
-  .email-meta { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-default); }
-  .email-meta-row { display: flex; gap: var(--space-3); margin-bottom: var(--space-1); font-size: var(--font-size-sm); }
-  .email-meta-label { color: var(--color-text-muted); width: 52px; flex-shrink: 0; }
-  .email-body { padding: var(--space-8) var(--space-10); }
-  .email-logo { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-primary-600); margin-bottom: var(--space-6); }
-  .email-body p { font-size: var(--font-size-sm); color: var(--color-text-primary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-4); }
-  .email-cta { text-align: center; margin: var(--space-8) 0; }
-  .email-footer { padding: var(--space-6) var(--space-10); border-top: 1px solid var(--color-border-default); text-align: center; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+  #screen-p-email .email-outer { min-height: calc(100vh - 44px); background: var(--color-gray-100); display: flex; align-items: flex-start; justify-content: center; padding: var(--space-8); }
+  #screen-p-email .email-client { width: 100%; max-width: 680px; }
+  #screen-p-email .email-client__chrome { background: var(--color-bg-surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; border: 1px solid var(--color-border-default); border-bottom: none; padding: var(--space-3) var(--space-5); display: flex; align-items: center; gap: var(--space-3); }
+  #screen-p-email .email-chrome-dot { width: 10px; height: 10px; border-radius: 50%; }
+  #screen-p-email .email-subject-bar { background: var(--color-bg-subtle); border: 1px solid var(--color-border-default); border-bottom: none; padding: var(--space-2) var(--space-5); font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-semibold); }
+  #screen-p-email .email-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
+  #screen-p-email .email-meta { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-default); }
+  #screen-p-email .email-meta-row { display: flex; gap: var(--space-3); margin-bottom: var(--space-1); font-size: var(--font-size-sm); }
+  #screen-p-email .email-meta-label { color: var(--color-text-muted); width: 52px; flex-shrink: 0; }
+  #screen-p-email .email-body { padding: var(--space-8) var(--space-10); }
+  #screen-p-email .email-logo { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-primary-600); margin-bottom: var(--space-6); }
+  #screen-p-email .email-body p { font-size: var(--font-size-sm); color: var(--color-text-primary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-4); }
+  #screen-p-email .email-cta { text-align: center; margin: var(--space-8) 0; }
+  #screen-p-email .email-footer { padding: var(--space-6) var(--space-10); border-top: 1px solid var(--color-border-default); text-align: center; font-size: var(--font-size-xs); color: var(--color-text-muted); }
 </style>
 
 <div class="email-outer">
@@ -30,15 +30,15 @@
       <div class="email-meta">
         <div class="email-meta-row">
           <span class="email-meta-label">From:</span>
-          <span class="email-meta-value">AgentSync Onboarding &lt;noreply@agentsync.io&gt;</span>
+          <span>AgentSync Onboarding &lt;noreply@agentsync.io&gt;</span>
         </div>
         <div class="email-meta-row">
           <span class="email-meta-label">To:</span>
-          <span class="email-meta-value">Claire Sutton &lt;c.sutton@email.com&gt;</span>
+          <span>Claire Sutton &lt;c.sutton@email.com&gt;</span>
         </div>
         <div class="email-meta-row">
           <span class="email-meta-label">Date:</span>
-          <span class="email-meta-value">March 3, 2026, 10:12 AM</span>
+          <span>March 3, 2026, 10:12 AM</span>
         </div>
       </div>
 

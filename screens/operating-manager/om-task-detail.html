@@ -1,31 +1,41 @@
-<!-- om-task-detail.html — Task Detail (Operating Manager view, Onboarding theme) -->
+<!-- om-task-detail.html — Task Detail (Operating Manager, Onboarding theme) -->
 <style>
-  .om-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
-  .om-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
-  .om-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
-  .om-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
-  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
-  .om-layout { display: flex; flex: 1; }
-  .om-sidebar { width: var(--sidebar-width); flex-shrink: 0; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; }
-  .om-main { flex: 1; background: var(--color-bg-page); padding: var(--space-8); overflow-y: auto; max-width: 800px; }
-  .task-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-8); margin-bottom: var(--space-2); }
-  .info-field__label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: var(--tracking-wide); font-weight: var(--font-weight-semibold); }
-  .info-field__value { font-size: var(--font-size-sm); color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
-  .component-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border-default); }
-  .component-row:last-child { border-bottom: none; }
-  .component-row__icon { font-size: 16px; flex-shrink: 0; }
-  .component-row__name { flex: 1; font-size: var(--font-size-sm); color: var(--color-text-primary); }
-  .component-row__status { font-size: var(--font-size-xs); }
-  .action-row { display: flex; gap: var(--space-3); margin-top: var(--space-6); }
+  #screen-om-task-detail .om-shell { height: calc(100vh - 44px); display: flex; flex-direction: column; }
+  #screen-om-task-detail .om-topnav { height: 56px; flex-shrink: 0; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); z-index: 200; }
+  #screen-om-task-detail .om-topnav__brand { display: flex; align-items: center; gap: var(--space-2); font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  #screen-om-task-detail .om-topnav__brand-icon { width: 28px; height: 28px; border-radius: var(--radius-md); background: var(--color-primary-600); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+  #screen-om-task-detail .om-topnav__right { display: flex; align-items: center; gap: var(--space-3); }
+  #screen-om-task-detail .om-topnav__org { display: flex; align-items: center; gap: var(--space-1); font-size: var(--font-size-sm); color: var(--color-text-secondary); padding: 4px 10px; border: 1px solid var(--color-border-default); border-radius: var(--radius-md); cursor: pointer; background: var(--color-bg-input); }
+  #screen-om-task-detail .om-icon-btn { width: 34px; height: 34px; border-radius: var(--radius-full); border: 1px solid var(--color-border-default); background: var(--color-bg-input); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--color-text-secondary); }
+  #screen-om-task-detail .om-topnav__avatar { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  #screen-om-task-detail .om-layout { position: relative; flex: 1; overflow: hidden; }
+  #screen-om-task-detail .om-sidebar { position: absolute; top: 0; left: 0; bottom: 0; width: 220px; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; overflow-y: auto; }
+  #screen-om-task-detail .om-main { position: absolute; top: 0; left: 220px; right: 0; bottom: 0; overflow-y: auto; background: var(--color-bg-page); padding: var(--space-8); }
+  #screen-om-task-detail .om-main-inner { max-width: 800px; }
+  #screen-om-task-detail .task-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-8); margin-bottom: var(--space-2); }
+  #screen-om-task-detail .info-field__label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: var(--tracking-wide); font-weight: var(--font-weight-semibold); }
+  #screen-om-task-detail .info-field__value { font-size: var(--font-size-sm); color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
+  #screen-om-task-detail .component-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border-default); }
+  #screen-om-task-detail .component-row:last-child { border-bottom: none; }
+  #screen-om-task-detail .component-row__name { flex: 1; font-size: var(--font-size-sm); color: var(--color-text-primary); }
+  #screen-om-task-detail .action-row { display: flex; gap: var(--space-3); margin-top: var(--space-6); }
 </style>
 
 <div class="om-shell">
   <div class="om-topnav">
-    <div class="om-topnav__logo">AgentSync Onboarding</div>
+    <div class="om-topnav__brand">
+      <div class="om-topnav__brand-icon">A</div>
+      AgentSync Onboarding
+    </div>
     <div class="om-topnav__right">
-      <span>Globe Life Insurance</span>
-      <div class="avatar-sm">JT</div>
-      <span>Jamie Torres</span>
+      <div class="om-topnav__org">
+        Globe Life Insurance
+        <svg viewBox="0 0 12 12" width="10" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+      </div>
+      <div class="om-icon-btn">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 016 6c0 3.5 1 5 1.5 6H2.5C3 13 4 11.5 4 8a6 6 0 016-6zm0 16a2 2 0 002-2H8a2 2 0 002 2z"/></svg>
+      </div>
+      <div class="om-topnav__avatar">JT</div>
     </div>
   </div>
 
@@ -43,76 +53,74 @@
     </div>
 
     <div class="om-main">
-      <!-- Breadcrumb -->
-      <div class="breadcrumb">
-        <a onclick="go('screen-om-producers')" style="cursor:pointer;color:var(--color-primary-600);">Producers</a>
-        <span class="breadcrumb__separator">/</span>
-        <a onclick="go('screen-om-producer-record')" style="cursor:pointer;color:var(--color-primary-600);">Claire Sutton</a>
-        <span class="breadcrumb__separator">/</span>
-        <span class="breadcrumb__current">LOA Confirmation</span>
-      </div>
+      <div class="om-main-inner">
+        <div class="breadcrumb">
+          <a onclick="go('screen-om-producers')" style="cursor:pointer;color:var(--color-primary-600);">Producers</a>
+          <span class="breadcrumb__separator">/</span>
+          <a onclick="go('screen-om-producer-record')" style="cursor:pointer;color:var(--color-primary-600);">Claire Sutton</a>
+          <span class="breadcrumb__separator">/</span>
+          <span class="breadcrumb__current">LOA Confirmation</span>
+        </div>
 
-      <!-- Task Header -->
-      <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6);">
-        <h1 style="font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-text-primary);">LOA Confirmation — Property &amp; Casualty</h1>
-        <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">In Progress</span>
-      </div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6);">
+          <h1 style="font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-text-primary);">LOA Confirmation — Property &amp; Casualty</h1>
+          <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">In Progress</span>
+        </div>
 
-      <!-- Task Info Card -->
-      <div class="card" style="margin-bottom:var(--space-6);">
-        <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);margin-bottom:var(--space-4);">Task Information</div>
-        <div class="task-info-grid">
-          <div class="info-field">
-            <div class="info-field__label">Type</div>
-            <div class="info-field__value">Compliance Verification</div>
+        <div class="card" style="margin-bottom:var(--space-6);">
+          <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);margin-bottom:var(--space-4);">Task Information</div>
+          <div class="task-info-grid">
+            <div>
+              <div class="info-field__label">Type</div>
+              <div class="info-field__value">Compliance Verification</div>
+            </div>
+            <div>
+              <div class="info-field__label">Owner</div>
+              <div class="info-field__value">Claire Sutton (Producer)</div>
+            </div>
+            <div>
+              <div class="info-field__label">Policy Set</div>
+              <div class="info-field__value">Standard Agent Onboarding</div>
+            </div>
+            <div>
+              <div class="info-field__label">Required</div>
+              <div class="info-field__value">Yes</div>
+            </div>
           </div>
-          <div class="info-field">
-            <div class="info-field__label">Owner</div>
-            <div class="info-field__value">Claire Sutton (Producer)</div>
-          </div>
-          <div class="info-field">
-            <div class="info-field__label">Policy Set</div>
-            <div class="info-field__value">Standard Agent Onboarding</div>
-          </div>
-          <div class="info-field">
-            <div class="info-field__label">Required</div>
-            <div class="info-field__value">Yes</div>
+          <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--color-border-default);">
+            <div class="info-field__label" style="margin-bottom:var(--space-2);">Description</div>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">
+              Confirm that Claire holds active Lines of Authority for Property and Casualty in her resident state (Colorado) and any non-resident states where Globe Life Insurance requires coverage.
+            </p>
           </div>
         </div>
-        <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--color-border-default);">
-          <div class="info-field__label" style="margin-bottom:var(--space-2);">Description</div>
-          <p style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">
-            Confirm that Claire holds active Lines of Authority for Property and Casualty in her resident state (Colorado) and any non-resident states where Globe Life Insurance requires coverage.
-          </p>
-        </div>
-      </div>
 
-      <!-- Components Card -->
-      <div class="card" style="margin-bottom:var(--space-6);">
-        <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);margin-bottom:var(--space-4);">Components (3)</div>
-        <div class="component-row">
-          <span class="component-row__icon">✅</span>
-          <span class="component-row__name">Resident State LOA — Colorado</span>
-          <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
-          <span class="badge component-row__status" style="background:var(--color-success-100);color:var(--color-success-600);">Verified</span>
+        <div class="card" style="margin-bottom:var(--space-6);">
+          <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);margin-bottom:var(--space-4);">Components (3)</div>
+          <div class="component-row">
+            <span style="font-size:16px;">✅</span>
+            <span class="component-row__name">Resident State LOA — Colorado</span>
+            <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+            <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Verified</span>
+          </div>
+          <div class="component-row">
+            <span style="font-size:16px;">⏳</span>
+            <span class="component-row__name">Non-Resident LOA — Texas</span>
+            <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+            <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Pending</span>
+          </div>
+          <div class="component-row">
+            <span style="font-size:16px;">⏳</span>
+            <span class="component-row__name">Non-Resident LOA — Florida</span>
+            <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
+            <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Pending</span>
+          </div>
         </div>
-        <div class="component-row">
-          <span class="component-row__icon">⏳</span>
-          <span class="component-row__name">Non-Resident LOA — Texas</span>
-          <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
-          <span class="badge component-row__status" style="background:var(--color-warning-100);color:var(--color-warning-600);">Pending</span>
-        </div>
-        <div class="component-row">
-          <span class="component-row__icon">⏳</span>
-          <span class="component-row__name">Non-Resident LOA — Florida</span>
-          <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;">Required</span>
-          <span class="badge component-row__status" style="background:var(--color-warning-100);color:var(--color-warning-600);">Pending</span>
-        </div>
-      </div>
 
-      <div class="action-row">
-        <button class="btn btn--secondary" onclick="go('screen-om-producer-record')">← Back to Producer</button>
-        <button class="btn btn--primary" style="background:var(--color-success-600);border-color:var(--color-success-600);" onclick="go('screen-om-producer-record');showToast('Task marked as done')">Mark as Done ✓</button>
+        <div class="action-row">
+          <button class="btn btn--secondary" onclick="go('screen-om-producer-record')">← Back to Producer</button>
+          <button class="btn btn--primary" style="background:var(--color-success-600);border-color:var(--color-success-600);" onclick="go('screen-om-producer-record');showToast('Task marked as done')">Mark as Done ✓</button>
+        </div>
       </div>
     </div>
   </div>
