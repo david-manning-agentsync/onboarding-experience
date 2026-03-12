@@ -1,0 +1,730 @@
+/* ─── proto.css ───────────────────────────────────────────────────────────────
+   Prototype-specific styles: ProtoPanel, LaunchPage, EpicCard, EpicDetailPanel,
+   PlaceholderView. All values use CSS custom properties from the token files.
+   Never hardcode colors, spacing, or type scales here.
+──────────────────────────────────────────────────────────────────────────── */
+
+/* ─── App shell ───────────────────────────────────────────────────────────── */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg-page);
+}
+
+.app__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── ProtoPanel ──────────────────────────────────────────────────────────── */
+
+.proto-panel {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0 var(--space-6);
+  height: 48px;
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-default);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Wordmark */
+.proto-panel__wordmark {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  font-family: var(--font-family-base);
+}
+
+.proto-panel__wordmark-as {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.proto-panel__wordmark-divider {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.proto-panel__wordmark-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+/* Controls row */
+.proto-panel__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.proto-panel__control-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.proto-panel__control-label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.proto-panel__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border-default);
+}
+
+/* Version tabs */
+.proto-panel__version-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 2px;
+}
+
+.proto-panel__version-tab {
+  padding: 2px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  font-family: var(--font-family-base);
+  border: none;
+  border-radius: calc(var(--radius-md) - 2px);
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+
+.proto-panel__version-tab:hover {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+}
+
+.proto-panel__version-tab--active {
+  font-weight: 600;
+}
+
+.proto-panel__version-badge--green {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.proto-panel__version-badge--indigo {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.proto-panel__version-badge--purple {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+
+
+/* ─── ProtoPanel persona ──────────────────────────────────────────────────── */
+
+.proto-panel__persona {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.proto-panel__persona-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.proto-panel__persona-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.proto-panel__persona-name {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.proto-panel__persona-role {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  line-height: 1;
+}
+
+/* ─── LaunchPage ──────────────────────────────────────────────────────────── */
+
+.launch-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero */
+.launch-hero {
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-default);
+  padding: var(--space-10) var(--space-8) var(--space-8);
+}
+
+.launch-hero__inner {
+  max-width: 640px;
+}
+
+.launch-hero__eyebrow {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary-600);
+  margin-bottom: var(--space-3);
+}
+
+.launch-hero__title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0 0 var(--space-3);
+}
+
+.launch-hero__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ─── Swimlanes ───────────────────────────────────────────────────────────── */
+
+.launch-swimlanes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.swimlane {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--color-border-default);
+  min-height: 180px;
+}
+
+.swimlane--manage {
+  background: #fdf2f2;
+}
+
+.swimlane--onboarding {
+  background: #f0f7ff;
+}
+
+.swimlane__label {
+  width: 120px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  border-right: 1px solid var(--color-border-default);
+}
+
+.swimlane__label span {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.swimlane__track {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--space-6);
+  overflow-x: auto;
+  gap: 0;
+}
+
+.swimlane__step {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.swimlane__arrow {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-2);
+  color: var(--color-gray-400);
+  flex-shrink: 0;
+}
+
+/* Scrollbar styling */
+.swimlane__track::-webkit-scrollbar { height: 4px; }
+.swimlane__track::-webkit-scrollbar-track { background: transparent; }
+.swimlane__track::-webkit-scrollbar-thumb {
+  background: var(--color-border-default);
+  border-radius: 2px;
+}
+
+/* ─── Epic card ───────────────────────────────────────────────────────────── */
+
+.epic-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-family-base);
+  transition: box-shadow 150ms, border-color 150ms, transform 100ms;
+  min-width: 240px;
+  max-width: 280px;
+  flex-shrink: 0;
+}
+
+.epic-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-default);
+  transform: translateY(-1px);
+}
+
+.epic-card:active {
+  transform: translateY(0);
+}
+
+.epic-card--placeholder {
+  opacity: 0.8;
+}
+
+.epic-card__coming-soon {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding: 2px 6px;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-full);
+}
+
+/* Surface badge */
+.epic-card__surface-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  width: fit-content;
+}
+
+.epic-card--onboarding .epic-card__surface-badge,
+.epic-panel--onboarding .epic-card__surface-badge {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.epic-card--manage .epic-card__surface-badge,
+.epic-panel--manage .epic-card__surface-badge {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+/* Card body */
+.epic-card__body {
+  flex: 1;
+}
+
+.epic-card__title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-1);
+  line-height: 1.3;
+}
+
+.epic-card__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Card footer */
+.epic-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-default);
+}
+
+.epic-card__persona {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.epic-card__persona-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary-400);
+  flex-shrink: 0;
+}
+
+.epic-card__release {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+}
+
+.epic-card__release--spring {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.epic-card__release--fall {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+/* ─── Epic detail panel ───────────────────────────────────────────────────── */
+
+.epic-panel__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 300;
+  animation: fade-in 150ms ease;
+}
+
+.epic-panel {
+  position: fixed;
+  top: 48px; /* below ProtoPanel */
+  right: 0;
+  bottom: 0;
+  width: 480px;
+  max-width: 100vw;
+  z-index: 301;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-xl);
+  animation: slide-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fade-in {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+
+@keyframes slide-in {
+  from { transform: translateX(40px); opacity: 0 }
+  to   { transform: translateX(0);    opacity: 1 }
+}
+
+/* Panel header */
+.epic-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6) var(--space-4);
+  border-bottom: 1px solid var(--color-border-default);
+  flex-shrink: 0;
+}
+
+.epic-panel__header-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.epic-panel__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background 150ms, color 150ms;
+}
+
+.epic-panel__close:hover {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+/* Panel body — scrollable */
+.epic-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.epic-panel__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.epic-panel__description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Sections */
+.epic-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.epic-panel__section-title {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Persona card */
+.epic-panel__persona-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+}
+
+.epic-panel__persona-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.epic-panel__persona-name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.epic-panel__persona-role {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: 1px;
+}
+
+.epic-panel__persona-note {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+  line-height: 1.5;
+}
+
+/* What's built list */
+.epic-panel__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.epic-panel__list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.epic-panel__list-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary-400);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+/* Acceptance criteria list */
+.epic-panel__ac-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.epic-panel__ac-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.epic-panel__ac-num {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-default);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+/* Panel footer */
+.epic-panel__footer {
+  flex-shrink: 0;
+  padding: var(--space-5) var(--space-6);
+  border-top: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+}
+
+.epic-panel__enter-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.epic-panel__placeholder-notice {
+  display: flex;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ─── Placeholder view ────────────────────────────────────────────────────── */
+
+.placeholder-view {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+}
+
+.placeholder-view__inner {
+  text-align: center;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.placeholder-view__badge {
+  display: inline-flex;
+  padding: 3px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-muted);
+}
+
+.placeholder-view__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.placeholder-view__body {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
