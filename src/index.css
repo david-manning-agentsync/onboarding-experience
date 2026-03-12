@@ -1,68 +1,87 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+/* Base resets — theme token files load before this in main.tsx */
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* ---------------------------------------------------------------------------
+   PLACEHOLDER STYLES
+   Visible scaffold for placeholder components and views during build-out.
+   These classes communicate structure without implementing full designs.
+--------------------------------------------------------------------------- */
+
+.placeholder-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+  padding: var(--space-8, 32px);
+  max-width: 640px;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.placeholder-view__badge {
+  display: inline-block;
+  padding: 2px var(--space-2, 8px);
+  background-color: var(--color-gray-100, #f3f4f6);
+  border-radius: var(--radius-full, 9999px);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: fit-content;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.placeholder-view--manage .placeholder-view__badge {
+  background-color: var(--slds-color-brand-50, #eef4ff);
+  color: var(--slds-color-brand-600, #1b5297);
+}
+
+.placeholder-view__title {
+  color: var(--color-text-primary, #111827);
+  margin: 0;
+}
+
+.placeholder-view__desc {
+  color: var(--color-text-secondary, #6b7280);
+  line-height: 1.6;
+  margin: 0;
+  border-left: 3px solid var(--color-gray-200, #e5e7eb);
+  padding-left: var(--space-3, 12px);
+}
+
+.placeholder-component {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+  padding: var(--space-3, 12px);
+  border: 1px dashed var(--color-gray-300, #d1d5db);
+  border-radius: var(--radius-md, 6px);
+  background-color: var(--color-gray-50, #f9fafb);
+}
+
+.placeholder-component--manage {
+  border-color: var(--slds-color-brand-200, #aac9f7);
+  background-color: var(--slds-color-brand-50, #eef4ff);
+}
+
+.placeholder-component__footer {
+  margin-top: var(--space-2, 8px);
+  padding-top: var(--space-2, 8px);
+  border-top: 1px solid var(--color-gray-200, #e5e7eb);
+}
+
+/* App shell layout */
+.app-shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6, 24px);
+  background-color: var(--color-bg-page, #f9fafb);
 }
