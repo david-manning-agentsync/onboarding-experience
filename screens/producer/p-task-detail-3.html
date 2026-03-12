@@ -1,0 +1,111 @@
+<!-- p-task-detail-3.html — Open Task: LOA Confirmation (interactive, Onboarding theme, no sidebar) -->
+<style>
+  .p-shell { min-height: calc(100vh - 44px); background: var(--color-bg-page); }
+  .p-topnav { position: sticky; top: 44px; z-index: 200; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); height: var(--topnav-height); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
+  .p-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-extrabold); color: var(--color-primary-600); }
+  .p-topnav__right { display: flex; align-items: center; gap: var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+  .avatar-sm { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
+  .p-body { max-width: 720px; margin: 0 auto; padding: var(--space-8); }
+  .component-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border-default); }
+  .component-row:last-child { border-bottom: none; }
+  .attestation-box { background: var(--color-bg-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-6); }
+  .btn--success { background: var(--color-success-600); color: #fff; border-color: var(--color-success-600); }
+  .btn--success:hover { background: var(--color-success-700); border-color: var(--color-success-700); }
+</style>
+
+<div class="p-shell">
+  <div class="p-topnav">
+    <div class="p-topnav__logo">AgentSync</div>
+    <div class="p-topnav__right">
+      <div class="avatar-sm">CS</div>
+      <span>Claire Sutton</span>
+    </div>
+  </div>
+
+  <div class="p-body">
+    <div class="breadcrumb">
+      <a onclick="go('screen-p-tasks')" style="cursor:pointer;color:var(--color-primary-600);">My Tasks</a>
+      <span class="breadcrumb__separator">/</span>
+      <span class="breadcrumb__current">LOA Confirmation</span>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6);">
+      <h1 style="font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-text-primary);">LOA Confirmation — Property &amp; Casualty</h1>
+      <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">In Progress</span>
+    </div>
+
+    <div class="card" style="margin-bottom:var(--space-6);">
+      <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">Task Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+        <div>
+          <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:var(--tracking-wide);font-weight:var(--font-weight-semibold);">Type</div>
+          <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Compliance Verification</div>
+        </div>
+        <div>
+          <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:var(--tracking-wide);font-weight:var(--font-weight-semibold);">Required</div>
+          <div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Yes</div>
+        </div>
+      </div>
+      <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--color-border-default);">
+        <p style="font-size:var(--font-size-sm);line-height:var(--line-height-relaxed);">Confirm your Lines of Authority for Property &amp; Casualty in Colorado (resident) and any required non-resident states. We've pre-filled what we found in NIPR — please verify the remaining items below.</p>
+      </div>
+    </div>
+
+    <!-- Components with form fields -->
+    <div class="card" style="margin-bottom:var(--space-6);">
+      <div style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">Components</div>
+      <div class="component-row">
+        <span style="font-size:18px;">✅</span>
+        <span style="flex:1;font-size:var(--font-size-sm);">Resident State LOA — Colorado <span style="color:var(--color-text-muted)">(verified via NIPR)</span></span>
+        <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Verified</span>
+      </div>
+      <div class="component-row" style="flex-direction:column;align-items:stretch;">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <span style="font-size:18px;">⏳</span>
+          <span style="flex:1;font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Non-Resident LOA — Texas</span>
+          <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Pending Confirmation</span>
+        </div>
+        <div class="form-group" style="padding-left:34px;">
+          <label class="form-label">Texas LOA Type <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">-- Select LOA type --</option>
+            <option>Property</option>
+            <option>Casualty</option>
+            <option>Property &amp; Casualty</option>
+          </select>
+        </div>
+      </div>
+      <div class="component-row" style="flex-direction:column;align-items:stretch;">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <span style="font-size:18px;">⏳</span>
+          <span style="flex:1;font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);">Non-Resident LOA — Florida</span>
+          <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Pending Confirmation</span>
+        </div>
+        <div class="form-group" style="padding-left:34px;">
+          <label class="form-label">Florida LOA Type <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">-- Select LOA type --</option>
+            <option>Property</option>
+            <option>Casualty</option>
+            <option>Property &amp; Casualty</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attestation -->
+    <div class="attestation-box">
+      <label class="form-checkbox" style="align-items:flex-start;gap:var(--space-3);">
+        <input type="checkbox" id="attest-checkbox" style="margin-top:2px;flex-shrink:0;">
+        <span style="font-size:var(--font-size-sm);line-height:var(--line-height-relaxed);color:var(--color-text-primary);">
+          I confirm that all information provided above is accurate and that I hold the Lines of Authority listed. I understand that providing false information may result in removal from the Globe Life platform.
+        </span>
+      </label>
+    </div>
+
+    <div style="display:flex;gap:var(--space-3);">
+      <button class="btn btn--secondary" onclick="go('screen-p-tasks')">← Back to Tasks</button>
+      <button class="btn btn--lg btn--success" onclick="go('screen-p-done');showToast('Task completed — onboarding done!')">Mark as Done ✓</button>
+    </div>
+  </div>
+</div>

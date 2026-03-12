@@ -1,0 +1,52 @@
+<!-- p-welcome.html — Producer welcome screen (Onboarding theme, no sidebar) -->
+<style>
+  .welcome-outer { min-height: calc(100vh - 44px); background: var(--color-bg-page); display: flex; align-items: center; justify-content: center; padding: var(--space-8); }
+  .welcome-inner { max-width: 520px; text-align: center; }
+  .welcome-logo { font-size: var(--font-size-base); font-weight: var(--font-weight-extrabold); color: var(--color-primary-600); margin-bottom: var(--space-8); letter-spacing: var(--tracking-tight); }
+  .welcome-icon { font-size: 56px; margin-bottom: var(--space-6); }
+  .welcome-title { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); line-height: var(--line-height-tight); margin-bottom: var(--space-4); }
+  .welcome-sub { font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-8); }
+  .welcome-checklist { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-8); text-align: left; box-shadow: var(--shadow-xs); }
+  .checklist-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) 0; font-size: var(--font-size-sm); color: var(--color-text-primary); }
+  .checklist-item + .checklist-item { border-top: 1px solid var(--color-border-default); }
+  .checklist-item__num { width: 24px; height: 24px; border-radius: var(--radius-full); background: var(--color-primary-100); color: var(--color-primary-600); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+</style>
+
+<div class="welcome-outer">
+  <div class="welcome-inner">
+    <div class="welcome-logo">AgentSync</div>
+    <div class="welcome-icon">👋</div>
+    <h1 class="welcome-title">Welcome, Claire!</h1>
+    <p class="welcome-sub">You've been invited to complete onboarding for <strong>Globe Life Insurance</strong>. You have 5 tasks to complete. Most producers finish in under 30 minutes.</p>
+
+    <div class="welcome-checklist">
+      <div class="checklist-item">
+        <span class="checklist-item__num">1</span>
+        <span>License Verification</span>
+        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
+      </div>
+      <div class="checklist-item">
+        <span class="checklist-item__num">2</span>
+        <span>LOA Confirmation — Property &amp; Casualty</span>
+        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
+      </div>
+      <div class="checklist-item">
+        <span class="checklist-item__num">3</span>
+        <span>E&amp;O Insurance Upload</span>
+        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
+      </div>
+      <div class="checklist-item">
+        <span class="checklist-item__num">4</span>
+        <span>Producer Agreement Signature</span>
+        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
+      </div>
+      <div class="checklist-item">
+        <span class="checklist-item__num">5</span>
+        <span>Background Check Consent</span>
+        <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:10px;margin-left:auto;">Optional</span>
+      </div>
+    </div>
+
+    <button class="btn btn--primary btn--lg" onclick="go('screen-p-tasks')">View My Tasks →</button>
+  </div>
+</div>

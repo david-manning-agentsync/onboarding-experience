@@ -1,0 +1,128 @@
+<!-- m-policysets-new.html — New Policy Set Confirmation (Manage / SLDS theme) -->
+<style>
+  .m-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .m-topnav { position: sticky; top: 44px; z-index: 200; }
+  .m-body { display: flex; flex: 1; }
+  .m-content { flex: 1; padding: var(--space-medium) var(--space-large); background: var(--color-bg-page); }
+  .breadcrumb-manage { display:flex;align-items:center;gap:6px;font-size:var(--font-size-xs);color:var(--color-text-secondary);margin-bottom:var(--space-medium); }
+  .breadcrumb-manage a { color:var(--color-text-link);cursor:pointer; }
+  .breadcrumb-manage a:hover { text-decoration:underline; }
+  .page-title { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-large); }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-medium); margin-bottom: var(--space-large); }
+  .task-row { display: flex; align-items: center; gap: var(--space-x-small); padding: var(--space-x-small) 0; border-bottom: 1px solid var(--color-border-default); font-size: var(--font-size-base); }
+  .task-row:last-child { border-bottom: none; }
+  .form-actions { display: flex; gap: var(--space-x-small); justify-content: flex-end; margin-top: var(--space-large); }
+</style>
+
+<div class="m-shell">
+  <div class="m-topnav">
+    <div class="topnav">
+      <div class="topnav__utility">
+        <span class="topnav__app-name">AgentSync Manage</span>
+        <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
+        <div class="topnav__icons">
+          <button class="topnav__icon-btn">⌂</button>
+          <button class="topnav__icon-btn">⚙</button>
+          <div class="topnav__avatar">JD</div>
+        </div>
+      </div>
+      <div class="topnav__app">
+        <div class="appnav-item" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item active" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-body">
+    <div class="options-panel">
+      <div class="options-panel__title">Options</div>
+      <a class="options-item active">All Policy Sets</a>
+      <a class="options-item">Active</a>
+      <a class="options-item">Draft</a>
+      <a class="options-item">Archived</a>
+    </div>
+
+    <div class="m-content">
+      <div class="breadcrumb-manage">
+        <a onclick="go('screen-m-policysets')">Policy Sets</a>
+        <span style="color:var(--color-text-muted)">/</span>
+        <span>New Policy Set</span>
+      </div>
+      <h1 class="page-title">Review & Create Policy Set</h1>
+
+      <div class="inline-alert inline-alert--success" style="margin-bottom:var(--space-large);">
+        <div class="inline-alert__title">Import successful</div>
+        Your CSV files were processed. Review the policy set below before saving.
+      </div>
+
+      <div class="summary-grid">
+        <!-- Policy Set Details -->
+        <div class="collapsible-section">
+          <div class="collapsible-section__header"><span>▼</span> Policy Set Details</div>
+          <div class="collapsible-section__body">
+            <div class="form-group">
+              <label class="form-label">Policy Set Name <span class="required">*</span></label>
+              <input type="text" class="form-input" value="Globe Life — Custom LOA Requirements">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <select class="form-select">
+                <option>Draft</option>
+                <option>Active</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <textarea class="form-textarea" rows="3">Custom LOA requirements for Globe Life producers in all 50 states.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Import Summary -->
+        <div class="collapsible-section">
+          <div class="collapsible-section__header"><span>▼</span> Import Summary</div>
+          <div class="collapsible-section__body">
+            <div class="field-grid">
+              <div class="field-item">
+                <div class="field-item__label">GWBR Rules Imported</div>
+                <div class="field-item__value">12</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">Tasks Created</div>
+                <div class="field-item__value">5</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">States Covered</div>
+                <div class="field-item__value">50</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">LOA Types</div>
+                <div class="field-item__value">Property, Casualty, Life</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task list preview -->
+      <div class="collapsible-section">
+        <div class="collapsible-section__header"><span>▼</span> Tasks Included (5)</div>
+        <div class="collapsible-section__body">
+          <div class="task-row"><span class="badge badge--error">Required</span> License Verification — All States</div>
+          <div class="task-row"><span class="badge badge--error">Required</span> LOA Confirmation — Property &amp; Casualty</div>
+          <div class="task-row"><span class="badge badge--error">Required</span> E&amp;O Insurance Upload</div>
+          <div class="task-row"><span class="badge badge--default">Optional</span> Background Check Consent</div>
+          <div class="task-row"><span class="badge badge--default">Optional</span> FINRA Registration (if applicable)</div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn--neutral" onclick="go('screen-m-policysets')">Cancel</button>
+        <button class="btn btn--neutral" onclick="go('screen-m-policysets')">Save as Draft</button>
+        <button class="btn btn--brand" onclick="go('screen-m-policysets');showToast('Policy set created successfully')">Create Policy Set</button>
+      </div>
+    </div>
+  </div>
+</div>

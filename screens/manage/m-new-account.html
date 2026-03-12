@@ -1,0 +1,147 @@
+<!-- m-new-account.html — Create Account Form (Manage / SLDS theme) -->
+<style>
+  .m-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .m-topnav { position: sticky; top: 44px; z-index: 200; }
+  .m-body { display: flex; flex: 1; }
+  .m-content { flex: 1; padding: var(--space-medium) var(--space-large); background: var(--color-bg-page); }
+  .breadcrumb-manage {
+    display: flex; align-items: center; gap: 6px;
+    font-size: var(--font-size-xs); color: var(--color-text-secondary);
+    margin-bottom: var(--space-medium);
+  }
+  .breadcrumb-manage a { color: var(--color-text-link); cursor: pointer; }
+  .breadcrumb-manage a:hover { text-decoration: underline; }
+  .breadcrumb-sep { color: var(--color-text-muted); }
+  .page-title { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-large); }
+  .two-col-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-large); align-items: start; }
+  .form-row-two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-medium); }
+  .form-actions { display: flex; gap: var(--space-x-small); justify-content: flex-end; margin-top: var(--space-large); }
+  .ps-inline-row { display: grid; grid-template-columns: 1fr 140px; align-items: center; gap: var(--space-x-small); padding: var(--space-x-small) 0; border-bottom: 1px solid var(--color-border-default); font-size: var(--font-size-base); }
+  .ps-inline-row:last-child { border-bottom: none; }
+</style>
+
+<div class="m-shell">
+  <div class="m-topnav">
+    <div class="topnav">
+      <div class="topnav__utility">
+        <span class="topnav__app-name">AgentSync Manage</span>
+        <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
+        <div class="topnav__icons">
+          <button class="topnav__icon-btn">⌂</button>
+          <button class="topnav__icon-btn">⚙</button>
+          <div class="topnav__avatar">JD</div>
+        </div>
+      </div>
+      <div class="topnav__app">
+        <div class="appnav-item active" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-body">
+    <div class="options-panel">
+      <div class="options-panel__title">Options</div>
+      <a class="options-item active">Recently Viewed</a>
+      <a class="options-item">All Accounts</a>
+      <a class="options-item">My Accounts</a>
+      <a class="options-item">New This Week</a>
+    </div>
+
+    <div class="m-content">
+      <div class="breadcrumb-manage">
+        <a onclick="go('screen-m-accounts')">Accounts</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>New Account</span>
+      </div>
+      <h1 class="page-title">New Account</h1>
+
+      <div class="two-col-cards">
+        <!-- Account Details Card -->
+        <div class="card">
+          <div class="card__header">Account Details</div>
+          <div class="card__body">
+            <div class="form-row-two">
+              <div class="form-group">
+                <label class="form-label">Account Name <span class="required">*</span></label>
+                <input type="text" class="form-input" placeholder="e.g. Globe Life Insurance">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Account Type <span class="required">*</span></label>
+                <select class="form-select">
+                  <option value="">-- Select --</option>
+                  <option>Carrier</option>
+                  <option>Agency</option>
+                  <option>MGA</option>
+                  <option>Distributor</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row-two">
+              <div class="form-group">
+                <label class="form-label">Primary Contact Email</label>
+                <input type="email" class="form-input" placeholder="contact@example.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-input" placeholder="(555) 000-0000">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Website</label>
+              <input type="url" class="form-input" placeholder="https://...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notes</label>
+              <textarea class="form-textarea" rows="3" placeholder="Optional notes about this account..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Policy Set Association Card -->
+        <div class="card">
+          <div class="card__header">Policy Set Associations</div>
+          <div class="card__body">
+            <p style="font-size:var(--font-size-base);color:var(--color-text-secondary);margin-bottom:var(--space-medium);">
+              Assign policy sets to this account. Required sets are automatically applied to all producers.
+            </p>
+            <div class="ps-inline-row" style="font-weight:var(--font-weight-bold);color:var(--color-text-label);font-size:var(--font-size-xs);text-transform:uppercase;letter-spacing:var(--tracking-caps);">
+              <span>Policy Set</span><span>Requirement</span>
+            </div>
+            <div class="ps-inline-row">
+              <span>Standard Agent Onboarding</span>
+              <select class="form-select" style="height:28px;font-size:var(--font-size-xs);">
+                <option>Required</option>
+                <option>Optional</option>
+              </select>
+            </div>
+            <div class="ps-inline-row">
+              <span>E&O Insurance Verification</span>
+              <select class="form-select" style="height:28px;font-size:var(--font-size-xs);">
+                <option>Required</option>
+                <option>Optional</option>
+              </select>
+            </div>
+            <div class="ps-inline-row">
+              <span>Background Check — Tier 1</span>
+              <select class="form-select" style="height:28px;font-size:var(--font-size-xs);">
+                <option>Optional</option>
+                <option>Required</option>
+              </select>
+            </div>
+            <div style="margin-top:var(--space-medium);">
+              <button class="btn btn--neutral" style="width:100%;">+ Add Policy Set</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn--neutral" onclick="go('screen-m-accounts')">Cancel</button>
+        <button class="btn btn--brand" onclick="go('screen-m-account-record');showToast('Account saved successfully')">Save Account</button>
+      </div>
+    </div>
+  </div>
+</div>

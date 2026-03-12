@@ -1,0 +1,166 @@
+<!-- m-account-record.html — Account Record Page (Manage / SLDS theme) -->
+<style>
+  .m-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .m-topnav { position: sticky; top: 44px; z-index: 200; }
+  .m-body { display: flex; flex: 1; }
+  .m-content { flex: 1; background: var(--color-bg-page); overflow-y: auto; }
+  .breadcrumb-manage {
+    display: flex; align-items: center; gap: 6px;
+    font-size: var(--font-size-xs); color: var(--color-text-secondary);
+    padding: var(--space-x-small) var(--space-large);
+    background: var(--color-bg-header);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .breadcrumb-manage a { color: var(--color-text-link); cursor: pointer; }
+  .breadcrumb-manage a:hover { text-decoration: underline; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-medium); padding: var(--space-medium) var(--space-large); }
+  .ps-row { display: grid; grid-template-columns: 1fr 100px 100px; align-items: center; gap: var(--space-x-small); padding: var(--space-x-small) 0; border-bottom: 1px solid var(--color-border-default); font-size: var(--font-size-base); }
+  .ps-row:last-child { border-bottom: none; }
+</style>
+
+<div class="m-shell">
+  <div class="m-topnav">
+    <div class="topnav">
+      <div class="topnav__utility">
+        <span class="topnav__app-name">AgentSync Manage</span>
+        <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
+        <div class="topnav__icons">
+          <button class="topnav__icon-btn">⌂</button>
+          <button class="topnav__icon-btn">⚙</button>
+          <div class="topnav__avatar">JD</div>
+        </div>
+      </div>
+      <div class="topnav__app">
+        <div class="appnav-item active" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-body">
+    <div class="options-panel">
+      <div class="options-panel__title">Options</div>
+      <a class="options-item active">Account Detail</a>
+      <a class="options-item">Producers</a>
+      <a class="options-item">Tasks</a>
+      <a class="options-item">Activity</a>
+      <a class="options-item">Files</a>
+    </div>
+
+    <div class="m-content">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb-manage">
+        <a onclick="go('screen-m-accounts')">Accounts</a>
+        <span style="color:var(--color-text-muted)">/</span>
+        <span>Globe Life Insurance</span>
+      </div>
+
+      <!-- Record Header -->
+      <div class="record-header">
+        <div class="record-header__eyebrow">Account</div>
+        <div class="record-header__title-row">
+          <div style="display:flex;align-items:center;gap:var(--space-x-small);">
+            <div class="record-header__icon" style="background:var(--color-brand-500);">
+              <span style="color:#fff;font-size:16px;">🏢</span>
+            </div>
+            <span class="record-header__name">Globe Life Insurance</span>
+            <span class="badge badge--success">Active</span>
+          </div>
+          <div class="record-header__actions">
+            <button class="btn btn--brand" onclick="go('screen-m-invite')">Invite Onboarding Partner</button>
+            <button class="btn btn--neutral">Edit</button>
+            <button class="btn btn--neutral">&#8942;</button>
+          </div>
+        </div>
+        <div class="record-header__meta">
+          <div class="record-meta-item">
+            <div class="record-meta-item__label">Account Type</div>
+            <div class="record-meta-item__value">Carrier</div>
+          </div>
+          <div class="record-meta-item">
+            <div class="record-meta-item__label">Total Producers</div>
+            <div class="record-meta-item__value">142</div>
+          </div>
+          <div class="record-meta-item">
+            <div class="record-meta-item__label">Policy Sets</div>
+            <div class="record-meta-item__value">3</div>
+          </div>
+          <div class="record-meta-item">
+            <div class="record-meta-item__label">Last Modified</div>
+            <div class="record-meta-item__value">Mar 10, 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Cards -->
+      <div class="detail-grid">
+        <!-- Account Info -->
+        <div class="collapsible-section">
+          <div class="collapsible-section__header">
+            <span>▼</span> Account Information
+          </div>
+          <div class="collapsible-section__body">
+            <div class="field-grid">
+              <div class="field-item">
+                <div class="field-item__label">Account Name</div>
+                <div class="field-item__value">Globe Life Insurance</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">Account Type</div>
+                <div class="field-item__value">Carrier</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">Primary Contact</div>
+                <div class="field-item__value" style="color:var(--color-text-link)">jsmith@globelife.com</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">Phone</div>
+                <div class="field-item__value">(800) 555-1234</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">Website</div>
+                <div class="field-item__value" style="color:var(--color-text-link)">globelife.com</div>
+              </div>
+              <div class="field-item">
+                <div class="field-item__label">Created</div>
+                <div class="field-item__value">Jan 5, 2025</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Policy Set Associations -->
+        <div class="collapsible-section">
+          <div class="collapsible-section__header">
+            <span>▼</span> Policy Set Associations
+          </div>
+          <div class="collapsible-section__body">
+            <div class="ps-row" style="font-weight:var(--font-weight-bold);font-size:var(--font-size-xs);text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--color-text-label);">
+              <span>Policy Set</span><span>Requirement</span><span>Status</span>
+            </div>
+            <div class="ps-row">
+              <span style="color:var(--color-text-link);">Standard Agent Onboarding</span>
+              <span><span class="badge badge--error">Required</span></span>
+              <span><span class="badge badge--success">Active</span></span>
+            </div>
+            <div class="ps-row">
+              <span style="color:var(--color-text-link);">E&O Insurance Verification</span>
+              <span><span class="badge badge--error">Required</span></span>
+              <span><span class="badge badge--success">Active</span></span>
+            </div>
+            <div class="ps-row">
+              <span style="color:var(--color-text-link);">Background Check — Tier 1</span>
+              <span><span class="badge badge--default">Optional</span></span>
+              <span><span class="badge badge--success">Active</span></span>
+            </div>
+            <div style="margin-top:var(--space-medium);">
+              <button class="btn btn--neutral" onclick="go('screen-m-policysets')">Manage Policy Sets</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<!-- p-done.html — Onboarding Complete (Onboarding theme, no sidebar) -->
+<style>
+  .done-outer { min-height: calc(100vh - 44px); background: var(--color-bg-page); display: flex; align-items: center; justify-content: center; padding: var(--space-8); }
+  .done-inner { max-width: 520px; text-align: center; }
+  .done-confetti { font-size: 72px; margin-bottom: var(--space-6); display: block; }
+  .done-title { font-size: var(--font-size-3xl); font-weight: var(--font-weight-extrabold); color: var(--color-text-primary); line-height: var(--line-height-tight); margin-bottom: var(--space-4); letter-spacing: var(--tracking-tight); }
+  .done-sub { font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-8); }
+  .done-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-6); margin-bottom: var(--space-8); box-shadow: var(--shadow-xs); text-align: left; }
+  .done-card__title { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-4); }
+  .next-step { display: flex; align-items: flex-start; gap: var(--space-3); margin-bottom: var(--space-3); }
+  .next-step:last-child { margin-bottom: 0; }
+  .next-step__icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .next-step__text { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); }
+  .next-step__text strong { color: var(--color-text-primary); }
+</style>
+
+<div class="done-outer">
+  <div class="done-inner">
+    <span class="done-confetti">🎉</span>
+    <h1 class="done-title">Onboarding Complete!</h1>
+    <p class="done-sub">You've submitted all required tasks. Globe Life Insurance will review your submission and you'll receive a confirmation once you're cleared to start selling.</p>
+
+    <div class="done-card">
+      <div class="done-card__title">What happens next</div>
+      <div class="next-step">
+        <span class="next-step__icon">📋</span>
+        <div class="next-step__text"><strong>Review period:</strong> Globe Life's compliance team will verify your submission, typically within 1–2 business days.</div>
+      </div>
+      <div class="next-step">
+        <span class="next-step__icon">📧</span>
+        <div class="next-step__text"><strong>Confirmation email:</strong> You'll receive an email when you're approved and cleared to sell.</div>
+      </div>
+      <div class="next-step">
+        <span class="next-step__icon">✅</span>
+        <div class="next-step__text"><strong>Sell-Ready status:</strong> Once approved, your status will update to Sell-Ready in the AgentSync platform.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:var(--space-3);justify-content:center;">
+      <button class="btn btn--secondary btn--lg" onclick="go('screen-p-tasks')">View Completed Tasks</button>
+    </div>
+  </div>
+</div>

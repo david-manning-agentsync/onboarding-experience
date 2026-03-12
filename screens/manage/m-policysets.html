@@ -1,0 +1,108 @@
+<!-- m-policysets.html — Policy Sets Tab (Manage / SLDS theme) -->
+<style>
+  .m-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .m-topnav { position: sticky; top: 44px; z-index: 200; }
+  .m-body { display: flex; flex: 1; }
+  .m-content { flex: 1; padding: var(--space-medium) var(--space-large); background: var(--color-bg-page); }
+  .page-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-medium); }
+  .page-title { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .ps-name-link { color: var(--color-text-link); cursor: pointer; }
+  .ps-name-link:hover { text-decoration: underline; }
+</style>
+
+<div class="m-shell">
+  <div class="m-topnav">
+    <div class="topnav">
+      <div class="topnav__utility">
+        <span class="topnav__app-name">AgentSync Manage</span>
+        <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
+        <div class="topnav__icons">
+          <button class="topnav__icon-btn">⌂</button>
+          <button class="topnav__icon-btn">⚙</button>
+          <div class="topnav__avatar">JD</div>
+        </div>
+      </div>
+      <div class="topnav__app">
+        <div class="appnav-item" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item active" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
+        <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-body">
+    <div class="options-panel">
+      <div class="options-panel__title">Options</div>
+      <a class="options-item active">All Policy Sets</a>
+      <a class="options-item">Active</a>
+      <a class="options-item">Draft</a>
+      <a class="options-item">Archived</a>
+    </div>
+
+    <div class="m-content">
+      <div class="page-header-row">
+        <h1 class="page-title">Policy Sets</h1>
+        <button class="btn btn--brand" onclick="go('screen-ob-csv-import')">+ Create via Onboarding Import</button>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-toolbar">
+          <div class="table-toolbar__left">
+            <span style="font-size:var(--font-size-base);font-weight:var(--font-weight-bold);color:var(--color-text-primary);">All Policy Sets</span>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-secondary);">4 items</span>
+          </div>
+          <div class="table-toolbar__right">
+            <input type="text" class="form-input" style="width:200px;" placeholder="Search policy sets...">
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th class="table-checkbox-col"><input type="checkbox"></th>
+              <th class="sorted">Policy Set Name <span class="sort-caret">▲</span></th>
+              <th>Status</th>
+              <th>Associated Accounts</th>
+              <th>Tasks</th>
+              <th>Last Modified</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="ps-name-link">Standard Agent Onboarding</a></td>
+              <td><span class="badge badge--success">Active</span></td>
+              <td>3</td>
+              <td>7</td>
+              <td>Mar 8, 2026</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="ps-name-link">E&O Insurance Verification</a></td>
+              <td><span class="badge badge--success">Active</span></td>
+              <td>2</td>
+              <td>3</td>
+              <td>Feb 14, 2026</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="ps-name-link">Background Check — Tier 1</a></td>
+              <td><span class="badge badge--success">Active</span></td>
+              <td>1</td>
+              <td>2</td>
+              <td>Jan 20, 2026</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="ps-name-link">Globe Life — Custom LOA Requirements</a></td>
+              <td><span class="badge badge--warning">Draft</span></td>
+              <td>0</td>
+              <td>5</td>
+              <td>Mar 11, 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<!-- m-accounts.html — Account List View (Manage / SLDS theme) -->
+<style>
+  .m-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
+  .m-topnav { position: sticky; top: 44px; z-index: 200; }
+  .m-body { display: flex; flex: 1; }
+  .m-content { flex: 1; padding: var(--space-medium) var(--space-large); background: var(--color-bg-page); }
+  .page-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-medium); }
+  .page-title { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .account-name-link { color: var(--color-text-link); cursor: pointer; font-weight: var(--font-weight-regular); }
+  .account-name-link:hover { text-decoration: underline; }
+</style>
+
+<div class="m-shell">
+  <!-- Top Nav -->
+  <div class="m-topnav">
+    <div class="topnav">
+      <div class="topnav__utility">
+        <span class="topnav__app-name">AgentSync Manage</span>
+        <div class="topnav__search">
+          <input type="text" placeholder="Search Manage...">
+        </div>
+        <div class="topnav__icons">
+          <button class="topnav__icon-btn" title="Home">⌂</button>
+          <button class="topnav__icon-btn" title="Setup">⚙</button>
+          <div class="topnav__avatar">JD</div>
+        </div>
+      </div>
+      <div class="topnav__app">
+        <div class="appnav-item active" onclick="go('screen-m-accounts')">
+          Accounts <span class="appnav-item__caret">▾</span>
+        </div>
+        <div class="appnav-item" onclick="go('screen-m-policysets')">
+          Policy Sets <span class="appnav-item__caret">▾</span>
+        </div>
+        <div class="appnav-item">
+          Producers <span class="appnav-item__caret">▾</span>
+        </div>
+        <div class="appnav-item">
+          Reports <span class="appnav-item__caret">▾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-body">
+    <!-- Options Panel -->
+    <div class="options-panel">
+      <div class="options-panel__title">Options</div>
+      <a class="options-item active">Recently Viewed</a>
+      <a class="options-item">All Accounts</a>
+      <a class="options-item">My Accounts</a>
+      <a class="options-item">New This Week</a>
+      <div style="padding: var(--space-medium) var(--space-medium) var(--space-xx-small); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: var(--tracking-caps);">Configuration</div>
+      <a class="options-item" onclick="go('screen-m-policysets')" style="cursor:pointer;">Policy Sets</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="m-content">
+      <div class="page-header-row">
+        <h1 class="page-title">Accounts</h1>
+        <button class="btn btn--brand" onclick="go('screen-m-new-account')">+ New Account</button>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-toolbar">
+          <div class="table-toolbar__left">
+            <span style="font-size:var(--font-size-base);font-weight:var(--font-weight-bold);color:var(--color-text-primary);">All Accounts</span>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-secondary);">4 items • sorted by Account Name</span>
+          </div>
+          <div class="table-toolbar__right">
+            <input type="text" class="form-input" style="width:200px;" placeholder="Search this list...">
+            <button class="btn btn--neutral">&#9778; List Filters</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th class="table-checkbox-col"><input type="checkbox"></th>
+              <th class="sorted">Account Name <span class="sort-caret">▲</span></th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Policy Sets</th>
+              <th>Producers</th>
+              <th>Last Modified</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr onclick="go('screen-m-account-record')" style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="account-name-link" onclick="event.stopPropagation();go('screen-m-account-record')">Globe Life Insurance</a></td>
+              <td>Carrier</td>
+              <td><span class="badge badge--success">Active</span></td>
+              <td>3</td>
+              <td>142</td>
+              <td>Mar 10, 2026</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="account-name-link">Nationwide Brokers Group</a></td>
+              <td>Agency</td>
+              <td><span class="badge badge--success">Active</span></td>
+              <td>2</td>
+              <td>87</td>
+              <td>Mar 8, 2026</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="account-name-link">Summit Financial Partners</a></td>
+              <td>Agency</td>
+              <td><span class="badge badge--warning">Pending Setup</span></td>
+              <td>1</td>
+              <td>34</td>
+              <td>Mar 5, 2026</td>
+            </tr>
+            <tr style="cursor:pointer">
+              <td class="table-checkbox-col"><input type="checkbox" onclick="event.stopPropagation()"></td>
+              <td><a class="account-name-link">Pacific Coast Advisors</a></td>
+              <td>MGA</td>
+              <td><span class="badge badge--default">Inactive</span></td>
+              <td>0</td>
+              <td>0</td>
+              <td>Jan 12, 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
