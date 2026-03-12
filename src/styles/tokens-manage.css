@@ -1,0 +1,245 @@
+/* =============================================================
+   tokens-manage.css
+   Manage — Salesforce Lightning (SLDS-inspired) theme
+   Extracted from AgentSync/Manage UI screenshots + SLDS spec
+   Font: Salesforce Sans (licensed) → falls back to system sans
+   ============================================================= */
+
+/*
+  FONT NOTE:
+  "Salesforce Sans" is a licensed typeface. Options:
+  1. If your org has it licensed, host it and reference it here.
+  2. Use the free alternative: "Salesforce Sans" → closest open
+     alternative is "Noto Sans" or simply rely on the system stack.
+  3. For prototype fidelity, swap in "Arial" or your OS sans-serif.
+*/
+
+:root {
+  /* -----------------------------------------------------------
+     BRAND / PRIMARY
+     Salesforce brand blue — used for links, active nav,
+     CTA buttons, focused inputs, path/stepper active
+  ----------------------------------------------------------- */
+  --color-brand-50:  #f0f7fe;
+  --color-brand-100: #d6eafc;
+  --color-brand-200: #aad3f9;
+  --color-brand-300: #6db8f5;
+  --color-brand-400: #2ea3f2;
+  --color-brand-500: #0176d3;   /* ← Salesforce canonical brand blue */
+  --color-brand-600: #0a5f9e;
+  --color-brand-700: #084a7b;
+  --color-brand-800: #063659;
+  --color-brand-900: #032438;
+
+  /* -----------------------------------------------------------
+     NEUTRALS
+     SLDS grays — slightly warmer/more muted than Onboarding
+  ----------------------------------------------------------- */
+  --color-gray-50:  #fafafa;
+  --color-gray-100: #f3f3f3;   /* page background, nav bg, table header */
+  --color-gray-200: #e5e5e5;   /* borders, dividers */
+  --color-gray-300: #dddbda;   /* SLDS standard border color */
+  --color-gray-400: #b0adab;   /* muted/placeholder */
+  --color-gray-500: #706e6b;   /* secondary text */
+  --color-gray-600: #514f4d;
+  --color-gray-700: #3e3e3c;   /* body text */
+  --color-gray-800: #181818;   /* strong headings */
+  --color-gray-900: #080707;
+
+  /* -----------------------------------------------------------
+     SEMANTIC COLORS
+  ----------------------------------------------------------- */
+  /* Success */
+  --color-success-light: #cdefc4;
+  --color-success-base:  #2e844a;   /* SLDS green */
+  --color-success-dark:  #1a5435;
+  --color-success-text:  #ffffff;
+
+  /* Warning / Attention */
+  --color-warning-light: #fce5a2;
+  --color-warning-base:  #dd7a01;   /* SLDS orange — "Attention Needed" icon */
+  --color-warning-dark:  #a85700;
+
+  /* Danger / Destructive */
+  --color-danger-light:  #fce4e4;
+  --color-danger-base:   #ba0517;   /* SLDS red — danger modal header, errors */
+  --color-danger-dark:   #8e030f;
+  --color-danger-stripe: #c23934;   /* diagonal stripe pattern in danger modals */
+
+  /* Info */
+  --color-info-base:  var(--color-brand-500);
+
+  /* Path / Stepper colors (SLDS Path component) */
+  --color-path-complete:  #04844b;   /* teal-green completed steps */
+  --color-path-active:    #032d60;   /* dark navy active step */
+  --color-path-inactive:  #dddbda;   /* upcoming steps */
+  --color-path-text:      #ffffff;
+
+  /* -----------------------------------------------------------
+     SURFACE / BACKGROUND
+  ----------------------------------------------------------- */
+  --color-bg-page:          #f3f3f3;   /* overall page, content area bg */
+  --color-bg-surface:       #ffffff;   /* cards, panels, modals, table rows */
+  --color-bg-header:        #ffffff;   /* record page header strip */
+  --color-bg-nav-utility:   #ffffff;   /* top utility bar */
+  --color-bg-nav-app:       #f3f3f3;   /* app nav row background */
+  --color-bg-nav-active:    #ffffff;   /* active app nav tab (lifted) */
+  --color-bg-options-panel: #ffffff;   /* left Options sidebar */
+  --color-bg-subtle:        #f3f3f3;
+  --color-bg-overlay:       rgba(0, 0, 0, 0.50);  /* modal backdrop */
+
+  /* -----------------------------------------------------------
+     TEXT
+  ----------------------------------------------------------- */
+  --color-text-primary:    #181818;
+  --color-text-secondary:  #706e6b;
+  --color-text-muted:      #b0adab;
+  --color-text-link:       #0176d3;
+  --color-text-link-hover: #014486;
+  --color-text-on-brand:   #ffffff;
+  --color-text-label:      #3e3e3c;   /* form labels, section headers */
+
+  /* -----------------------------------------------------------
+     BORDERS
+  ----------------------------------------------------------- */
+  --color-border-default:   #dddbda;   /* SLDS standard */
+  --color-border-strong:    #b0adab;
+  --color-border-focus:     #0176d3;   /* blue ring on focused inputs */
+  --color-border-active-nav:#0176d3;   /* left border on active Options item */
+  --color-border-error:     #ba0517;
+
+  /* -----------------------------------------------------------
+     TYPOGRAPHY
+     Salesforce Sans is licensed; fall back to Arial / system.
+     For prototype use, this stack is visually close enough.
+  ----------------------------------------------------------- */
+  --font-family-base: 'Salesforce Sans', Arial, 'Helvetica Neue', sans-serif;
+  --font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  /* Size scale — SLDS uses a tighter scale than Onboarding */
+  --font-size-xs:   0.6875rem;  /* 11px — caps labels, utility text */
+  --font-size-sm:   0.75rem;    /* 12px — meta, timestamps */
+  --font-size-base: 0.8125rem;  /* 13px — SLDS default body */
+  --font-size-md:   0.875rem;   /* 14px — table cells, form inputs */
+  --font-size-lg:   1rem;       /* 16px — section titles */
+  --font-size-xl:   1.125rem;   /* 18px — record name */
+  --font-size-2xl:  1.25rem;    /* 20px — page/modal title */
+  --font-size-3xl:  1.5rem;     /* 24px */
+
+  /* Weight scale */
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;  /* SLDS uses this sparingly */
+  --font-weight-bold:     700;  /* primary emphasis — record names, Options header */
+
+  /* Line height */
+  --line-height-tight:  1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed:1.625;
+
+  /* Letter spacing */
+  --tracking-normal: 0em;
+  --tracking-caps:   0.0625em; /* SLDS uppercase column headers */
+
+  /* -----------------------------------------------------------
+     SPACING — SLDS scale (rem, based on 4px unit)
+  ----------------------------------------------------------- */
+  --space-none:       0;
+  --space-xxx-small:  0.125rem;  /* 2px */
+  --space-xx-small:   0.25rem;   /* 4px */
+  --space-x-small:    0.5rem;    /* 8px */
+  --space-small:      0.75rem;   /* 12px */
+  --space-medium:     1rem;      /* 16px */
+  --space-large:      1.5rem;    /* 24px */
+  --space-x-large:    2rem;      /* 32px */
+  --space-xx-large:   3rem;      /* 48px */
+  --space-xxx-large:  4rem;      /* 64px */
+
+  /* -----------------------------------------------------------
+     BORDER RADIUS
+     SLDS is more squared than Onboarding — very subtle rounding
+  ----------------------------------------------------------- */
+  --radius-none:  0;
+  --radius-sm:    0.125rem;  /* 2px — nearly square, inputs/buttons */
+  --radius-md:    0.25rem;   /* 4px — standard SLDS buttons, cards */
+  --radius-lg:    0.5rem;    /* 8px — modals */
+  --radius-full:  9999px;    /* pills, avatars, badge counts */
+
+  /* -----------------------------------------------------------
+     SHADOWS / ELEVATION
+     SLDS uses very subtle shadows — more border-reliant than shadow
+  ----------------------------------------------------------- */
+  --shadow-none:  none;
+  --shadow-xs:    0 2px 2px 0 rgba(0, 0, 0, 0.10);
+  --shadow-sm:    0 2px 3px 0 rgba(0, 0, 0, 0.16);
+  --shadow-md:    0 2px 6px 0 rgba(0, 0, 0, 0.16);   /* dropdowns */
+  --shadow-lg:    0 4px 12px 0 rgba(0, 0, 0, 0.20);  /* modals */
+
+  /* -----------------------------------------------------------
+     LAYOUT
+  ----------------------------------------------------------- */
+  --topnav-utility-height:   36px;   /* top utility bar (search, icons) */
+  --topnav-app-height:       44px;   /* app nav / tab bar */
+  --topnav-total-height:     80px;   /* combined */
+  --options-panel-width:     220px;  /* left options sidebar */
+  --content-max-width:       1280px;
+
+  /* -----------------------------------------------------------
+     TRANSITIONS
+  ----------------------------------------------------------- */
+  --transition-fast: 100ms ease;
+  --transition-base: 150ms ease;
+  --transition-slow: 250ms ease;
+
+  /* -----------------------------------------------------------
+     Z-INDEX SCALE
+  ----------------------------------------------------------- */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 1000;
+  --z-sticky:   1500;
+  --z-overlay:  7000;
+  --z-modal:    8000;
+  --z-toast:    9000;
+
+  /* -----------------------------------------------------------
+     COMPONENT-SPECIFIC TOKENS
+  ----------------------------------------------------------- */
+
+  /* Inline alert / attention block */
+  --alert-attention-bg:     #fff8ed;
+  --alert-attention-border: #dd7a01;
+  --alert-error-bg:         #fce4e4;
+  --alert-error-border:     #ba0517;
+  --alert-success-bg:       #cdefc4;
+  --alert-success-border:   #2e844a;
+
+  /* Suggested action panel (yellow card in screenshot 1) */
+  --suggested-action-bg:     #fef7e6;
+  --suggested-action-border: #e4c76b;
+
+  /* Badge / pill count (colored circles in modal overview) */
+  --badge-count-orange-bg:  #dd7a01;
+  --badge-count-green-bg:   #2e844a;
+  --badge-count-red-bg:     #ba0517;
+  --badge-count-gray-bg:    #706e6b;
+  --badge-count-text:       #ffffff;
+
+  /* Checkbox */
+  --checkbox-border:         #dddbda;
+  --checkbox-checked-bg:     #0176d3;
+  --checkbox-checked-border: #0176d3;
+
+  /* Input */
+  --input-bg:              #ffffff;
+  --input-border:          #dddbda;
+  --input-border-focus:    #0176d3;
+  --input-shadow-focus:    0 0 3px #0176d3;
+  --input-height:          32px;   /* SLDS inputs are compact */
+
+  /* Table */
+  --table-header-bg:       #fafafa;
+  --table-row-hover-bg:    #f3f3f3;
+  --table-border:          #dddbda;
+  --table-row-height:      36px;   /* SLDS tables are denser */
+  --table-selected-bg:     #d6eafc;
+}
