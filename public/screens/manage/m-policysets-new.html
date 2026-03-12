@@ -1,66 +1,184 @@
-<!-- m-policysets-new.html — New Policy Set Confirmation (Manage / SLDS theme) -->
+<!-- m-policysets-new.html — Review & Create Policy Set (Manage / SLDS theme) -->
 <style>
-  .m-shell { display: flex; flex-direction: column; min-height: calc(100vh - 44px); }
-  .m-topnav { position: sticky; top: 44px; z-index: 200; }
-  .m-body { display: flex; flex: 1; }
-  .m-content { flex: 1; padding: var(--space-medium) var(--space-large); background: var(--color-bg-page); }
-  .breadcrumb-manage { display:flex;align-items:center;gap:6px;font-size:var(--font-size-xs);color:var(--color-text-secondary);margin-bottom:var(--space-medium); }
-  .breadcrumb-manage a { color:var(--color-text-link);cursor:pointer; }
-  .breadcrumb-manage a:hover { text-decoration:underline; }
-  .page-title { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-large); }
-  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-medium); margin-bottom: var(--space-large); }
-  .task-row { display: flex; align-items: center; gap: var(--space-x-small); padding: var(--space-x-small) 0; border-bottom: 1px solid var(--color-border-default); font-size: var(--font-size-base); }
-  .task-row:last-child { border-bottom: none; }
-  .form-actions { display: flex; gap: var(--space-x-small); justify-content: flex-end; margin-top: var(--space-large); }
+  #screen-m-policysets-new .ms-shell {
+    position: relative;
+    height: calc(100vh - 44px);
+    background: var(--color-bg-page);
+    font-family: var(--font-family-base);
+  }
+  #screen-m-policysets-new .ms-nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 200;
+    height: 52px;
+    background: var(--color-bg-surface);
+    border-bottom: 1px solid var(--color-border-default);
+    display: flex; align-items: center;
+    padding: 0 var(--space-medium);
+    gap: var(--space-medium);
+  }
+  #screen-m-policysets-new .ms-nav__waffle {
+    color: var(--color-gray-500); flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center;
+  }
+  #screen-m-policysets-new .ms-nav__brand {
+    font-size: var(--font-size-lg); font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary); white-space: nowrap; flex-shrink: 0;
+  }
+  #screen-m-policysets-new .ms-nav__search {
+    flex: 1; max-width: 280px;
+    display: flex; align-items: center;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    height: 28px; padding: 0 var(--space-x-small);
+    background: var(--color-bg-surface);
+    gap: var(--space-xx-small);
+  }
+  #screen-m-policysets-new .ms-nav__search input {
+    border: none; outline: none; font-family: var(--font-family-base);
+    font-size: var(--font-size-base); color: var(--color-text-primary);
+    background: transparent; width: 100%;
+  }
+  #screen-m-policysets-new .ms-nav__search input::placeholder { color: var(--color-text-muted); }
+  #screen-m-policysets-new .ms-nav__icons {
+    display: flex; align-items: center; gap: var(--space-x-small);
+  }
+  #screen-m-policysets-new .ms-nav__icon {
+    width: 28px; height: 28px; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; border-radius: var(--radius-md);
+    color: var(--color-gray-500); transition: background var(--transition-fast);
+  }
+  #screen-m-policysets-new .ms-nav__icon:hover { background: var(--color-gray-100); }
+  #screen-m-policysets-new .ms-nav__avatar {
+    width: 28px; height: 28px; border-radius: var(--radius-full);
+    background: var(--color-brand-500); color: #fff;
+    font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  #screen-m-policysets-new .ms-nav__sep {
+    width: 1px; height: 24px; background: var(--color-border-default);
+    margin: 0 var(--space-x-small); flex-shrink: 0;
+  }
+  #screen-m-policysets-new .ms-nav__tabs {
+    display: flex; align-items: stretch; height: 100%;
+  }
+  #screen-m-policysets-new .ms-nav__tab {
+    display: flex; align-items: center; gap: 4px;
+    padding: 0 var(--space-medium);
+    font-size: var(--font-size-base); color: var(--color-text-secondary);
+    cursor: pointer; white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: color var(--transition-fast);
+  }
+  #screen-m-policysets-new .ms-nav__tab:hover { color: var(--color-text-primary); }
+  #screen-m-policysets-new .ms-nav__tab.active {
+    color: var(--color-brand-500);
+    border-bottom-color: var(--color-brand-500);
+    font-weight: var(--font-weight-bold);
+  }
+  #screen-m-policysets-new .ms-nav__tab--disabled {
+    color: var(--color-text-muted); cursor: default; pointer-events: none;
+  }
+  #screen-m-policysets-new .ms-nav__caret { font-size: 10px; color: var(--color-gray-400); }
+
+  #screen-m-policysets-new .ms-body {
+    position: absolute; top: 52px; left: 0; right: 0; bottom: 0;
+    overflow-y: auto; background: var(--color-bg-page);
+  }
+  #screen-m-policysets-new .ms-content {
+    padding: var(--space-large) var(--space-x-large);
+  }
+  #screen-m-policysets-new .ms-breadcrumb {
+    font-size: var(--font-size-xs); color: var(--color-text-secondary);
+    margin-bottom: var(--space-medium);
+  }
+  #screen-m-policysets-new .ms-breadcrumb a {
+    color: var(--color-text-link); cursor: pointer;
+  }
+  #screen-m-policysets-new .ms-breadcrumb a:hover { text-decoration: underline; }
+  #screen-m-policysets-new .ms-page-title {
+    font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary); margin-bottom: var(--space-large);
+  }
+  #screen-m-policysets-new .ms-summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--space-medium); margin-bottom: var(--space-large);
+  }
+  #screen-m-policysets-new .ms-task-row {
+    display: flex; align-items: center; gap: var(--space-x-small);
+    padding: var(--space-x-small) 0;
+    border-bottom: 1px solid var(--color-border-default);
+    font-size: var(--font-size-base);
+  }
+  #screen-m-policysets-new .ms-task-row:last-child { border-bottom: none; }
+  #screen-m-policysets-new .ms-form-actions {
+    display: flex; gap: var(--space-x-small); justify-content: flex-end;
+    margin-top: var(--space-large);
+  }
 </style>
 
-<div class="m-shell">
-  <div class="m-topnav">
-    <div class="topnav">
-      <div class="topnav__utility">
-        <span class="topnav__app-name">AgentSync Manage</span>
-        <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
-        <div class="topnav__icons">
-          <button class="topnav__icon-btn">⌂</button>
-          <button class="topnav__icon-btn">⚙</button>
-          <div class="topnav__avatar">JD</div>
-        </div>
+<div class="ms-shell">
+
+  <!-- Single-row Nav -->
+  <div class="ms-nav">
+    <div class="ms-nav__waffle">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="15" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/><rect x="15" y="8" width="5" height="5" rx="1"/><rect x="1" y="15" width="5" height="5" rx="1"/><rect x="8" y="15" width="5" height="5" rx="1"/><rect x="15" y="15" width="5" height="5" rx="1"/></svg>
+    </div>
+    <div class="ms-nav__brand">AgentSync</div>
+    <div class="ms-nav__search">
+      <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-text-muted);flex-shrink:0"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+      <input type="text" placeholder="Search AgentSync...">
+    </div>
+    <div class="ms-nav__icons">
+      <div class="ms-nav__icon" title="Favorites">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.8l-4.9 2.4.9-5.5L2 7.8l5.6-.8z"/></svg>
       </div>
-      <div class="topnav__app">
-        <div class="appnav-item" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
-        <div class="appnav-item active" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
-        <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
-        <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
+      <div class="ms-nav__icon" title="Add">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4v12M4 10h12"/></svg>
+      </div>
+      <div class="ms-nav__icon" title="Help">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M8 8a2 2 0 114 0c0 1.5-2 2-2 3.5M10 15.5v.5"/></svg>
+      </div>
+      <div class="ms-nav__icon" title="Setup">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="2.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/></svg>
+      </div>
+      <div class="ms-nav__icon" title="Notifications">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 016 6c0 3.5 1 5 1.5 6H2.5C3 13 4 11.5 4 8a6 6 0 016-6zm0 16a2 2 0 002-2H8a2 2 0 002 2z"/></svg>
+      </div>
+      <div class="ms-nav__avatar">JD</div>
+    </div>
+    <div class="ms-nav__sep"></div>
+    <div class="ms-nav__tabs">
+      <div class="ms-nav__tab" onclick="go('screen-m-accounts')">
+        Accounts <span class="ms-nav__caret">▾</span>
+      </div>
+      <div class="ms-nav__tab ms-nav__tab--disabled">
+        Producer Detail <span class="ms-nav__caret">▾</span>
+      </div>
+      <div class="ms-nav__tab ms-nav__tab--disabled">
+        Contracts <span class="ms-nav__caret">▾</span>
+      </div>
+      <div class="ms-nav__tab active" onclick="go('screen-m-policysets')">
+        Policy Sets <span class="ms-nav__caret">▾</span>
       </div>
     </div>
   </div>
 
-  <div class="m-body">
-    <div class="options-panel">
-      <div class="options-panel__title">Options</div>
-      <a class="options-item active">All Policy Sets</a>
-      <a class="options-item">Active</a>
-      <a class="options-item">Draft</a>
-      <a class="options-item">Archived</a>
-    </div>
-
-    <div class="m-content">
-      <div class="breadcrumb-manage">
-        <a onclick="go('screen-m-policysets')">Policy Sets</a>
-        <span style="color:var(--color-text-muted)">/</span>
-        <span>New Policy Set</span>
+  <!-- Body -->
+  <div class="ms-body">
+    <div class="ms-content">
+      <div class="ms-breadcrumb">
+        <a onclick="go('screen-m-policysets')">Policy Sets</a> &rsaquo; New Policy Set
       </div>
-      <h1 class="page-title">Review & Create Policy Set</h1>
+      <h1 class="ms-page-title">Review &amp; Create Policy Set</h1>
 
       <div class="inline-alert inline-alert--success" style="margin-bottom:var(--space-large);">
         <div class="inline-alert__title">Import successful</div>
         Your CSV files were processed. Review the policy set below before saving.
       </div>
 
-      <div class="summary-grid">
+      <div class="ms-summary-grid">
         <!-- Policy Set Details -->
         <div class="collapsible-section">
-          <div class="collapsible-section__header"><span>▼</span> Policy Set Details</div>
+          <div class="collapsible-section__header">&#9660; Policy Set Details</div>
           <div class="collapsible-section__body">
             <div class="form-group">
               <label class="form-label">Policy Set Name <span class="required">*</span></label>
@@ -82,7 +200,7 @@
 
         <!-- Import Summary -->
         <div class="collapsible-section">
-          <div class="collapsible-section__header"><span>▼</span> Import Summary</div>
+          <div class="collapsible-section__header">&#9660; Import Summary</div>
           <div class="collapsible-section__body">
             <div class="field-grid">
               <div class="field-item">
@@ -108,17 +226,17 @@
 
       <!-- Task list preview -->
       <div class="collapsible-section">
-        <div class="collapsible-section__header"><span>▼</span> Tasks Included (5)</div>
+        <div class="collapsible-section__header">&#9660; Tasks Included (5)</div>
         <div class="collapsible-section__body">
-          <div class="task-row"><span class="badge badge--error">Required</span> License Verification — All States</div>
-          <div class="task-row"><span class="badge badge--error">Required</span> LOA Confirmation — Property &amp; Casualty</div>
-          <div class="task-row"><span class="badge badge--error">Required</span> E&amp;O Insurance Upload</div>
-          <div class="task-row"><span class="badge badge--default">Optional</span> Background Check Consent</div>
-          <div class="task-row"><span class="badge badge--default">Optional</span> FINRA Registration (if applicable)</div>
+          <div class="ms-task-row"><span class="badge badge--error">Required</span> License Verification — All States</div>
+          <div class="ms-task-row"><span class="badge badge--error">Required</span> LOA Confirmation — Property &amp; Casualty</div>
+          <div class="ms-task-row"><span class="badge badge--error">Required</span> E&amp;O Insurance Upload</div>
+          <div class="ms-task-row"><span class="badge badge--default">Optional</span> Background Check Consent</div>
+          <div class="ms-task-row"><span class="badge badge--default">Optional</span> FINRA Registration (if applicable)</div>
         </div>
       </div>
 
-      <div class="form-actions">
+      <div class="ms-form-actions">
         <button class="btn btn--neutral" onclick="go('screen-m-policysets')">Cancel</button>
         <button class="btn btn--neutral" onclick="go('screen-m-policysets')">Save as Draft</button>
         <button class="btn btn--brand" onclick="go('screen-m-policysets');showToast('Policy set created successfully')">Create Policy Set</button>
