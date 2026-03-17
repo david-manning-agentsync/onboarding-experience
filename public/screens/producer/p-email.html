@@ -1,62 +1,510 @@
-<!-- p-email.html — Producer email (Onboarding theme) -->
+<!-- p-email.html — Gmail-style producer invite email -->
 <style>
-  #screen-p-email .email-outer { min-height: calc(100vh - 44px); background: var(--color-gray-100); display: flex; align-items: flex-start; justify-content: center; padding: var(--space-8); }
-  #screen-p-email .email-client { width: 100%; max-width: 680px; }
-  #screen-p-email .email-client__chrome { background: var(--color-bg-surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0; border: 1px solid var(--color-border-default); border-bottom: none; padding: var(--space-3) var(--space-5); display: flex; align-items: center; gap: var(--space-3); }
-  #screen-p-email .email-chrome-dot { width: 10px; height: 10px; border-radius: 50%; }
-  #screen-p-email .email-subject-bar { background: var(--color-bg-subtle); border: 1px solid var(--color-border-default); border-bottom: none; padding: var(--space-2) var(--space-5); font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-semibold); }
-  #screen-p-email .email-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
-  #screen-p-email .email-meta { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-default); }
-  #screen-p-email .email-meta-row { display: flex; gap: var(--space-3); margin-bottom: var(--space-1); font-size: var(--font-size-sm); }
-  #screen-p-email .email-meta-label { color: var(--color-text-muted); width: 52px; flex-shrink: 0; }
-  #screen-p-email .email-body { padding: var(--space-8) var(--space-10); }
-  #screen-p-email .email-logo { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-primary-600); margin-bottom: var(--space-6); }
-  #screen-p-email .email-body p { font-size: var(--font-size-sm); color: var(--color-text-primary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-4); }
-  #screen-p-email .email-cta { text-align: center; margin: var(--space-8) 0; }
-  #screen-p-email .email-footer { padding: var(--space-6) var(--space-10); border-top: 1px solid var(--color-border-default); text-align: center; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+  #screen-p-email {
+    --gmail-bg: #f6f8fc;
+    --gmail-sidebar-w: 256px;
+    --gmail-active: #c2e7ff;
+    --gmail-text: #202124;
+    --gmail-sub: #444746;
+    --gmail-muted: #5f6368;
+    font-family: 'Google Sans', Roboto, system-ui, sans-serif;
+  }
+
+  #screen-p-email .gm-shell {
+    height: calc(100vh - 44px);
+    display: flex;
+    flex-direction: column;
+    background: var(--gmail-bg);
+    overflow: hidden;
+  }
+
+  /* ── Top bar ── */
+  #screen-p-email .gm-topbar {
+    height: 64px;
+    background: var(--gmail-bg);
+    display: flex;
+    align-items: center;
+    padding: 0 16px 0 16px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  #screen-p-email .gm-topbar__menu {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; cursor: pointer; color: var(--gmail-muted);
+  }
+  #screen-p-email .gm-topbar__menu:hover { background: rgba(0,0,0,0.06); }
+  #screen-p-email .gm-logo {
+    display: flex; align-items: center; gap: 4px;
+    margin-right: 16px; flex-shrink: 0; cursor: default;
+  }
+  #screen-p-email .gm-logo__m {
+    font-size: 22px; font-weight: 400; letter-spacing: -1px;
+    background: linear-gradient(to bottom, #4285f4 0%, #4285f4 50%, #4285f4 50%);
+  }
+  #screen-p-email .gm-logo__text {
+    font-size: 22px; font-weight: 400; color: #5f6368; letter-spacing: -0.5px;
+  }
+  #screen-p-email .gm-search {
+    flex: 1; max-width: 720px; height: 46px;
+    background: #eaf1fb;
+    border-radius: 24px;
+    display: flex; align-items: center;
+    padding: 0 16px; gap: 8px;
+    font-size: 16px; color: var(--gmail-muted);
+  }
+  #screen-p-email .gm-search input {
+    flex: 1; border: none; outline: none; background: transparent;
+    font-size: 16px; color: var(--gmail-text);
+  }
+  #screen-p-email .gm-search input::placeholder { color: var(--gmail-muted); }
+  #screen-p-email .gm-topbar__right {
+    margin-left: auto; display: flex; align-items: center; gap: 4px;
+  }
+  #screen-p-email .gm-icon-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--gmail-muted); flex-shrink: 0;
+  }
+  #screen-p-email .gm-icon-btn:hover { background: rgba(0,0,0,0.06); }
+  #screen-p-email .gm-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #4285f4; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+
+  /* ── Body row ── */
+  #screen-p-email .gm-body {
+    flex: 1; display: flex; overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  #screen-p-email .gm-sidebar {
+    width: var(--gmail-sidebar-w);
+    flex-shrink: 0;
+    padding: 8px 0;
+    overflow-y: auto;
+  }
+  #screen-p-email .gm-compose {
+    display: flex; align-items: center; gap: 12px;
+    margin: 4px 8px 16px 8px;
+    padding: 16px 24px 16px 16px;
+    background: #c2e7ff;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 14px; font-weight: 500; color: var(--gmail-text);
+    border: none; font-family: inherit;
+    transition: box-shadow 0.15s;
+  }
+  #screen-p-email .gm-compose:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  #screen-p-email .gm-nav-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 16px 0 24px;
+    height: 32px; border-radius: 0 16px 16px 0;
+    cursor: pointer; font-size: 14px; color: var(--gmail-text);
+    margin-right: 16px;
+    transition: background 0.1s;
+    position: relative;
+  }
+  #screen-p-email .gm-nav-item:hover { background: rgba(0,0,0,0.06); }
+  #screen-p-email .gm-nav-item.active {
+    background: var(--gmail-active);
+    font-weight: 700;
+  }
+  #screen-p-email .gm-nav-item__count {
+    margin-left: auto; font-size: 12px; font-weight: 700;
+  }
+  #screen-p-email .gm-nav-icon { width: 20px; flex-shrink: 0; color: var(--gmail-muted); }
+  #screen-p-email .gm-nav-item.active .gm-nav-icon { color: var(--gmail-text); }
+  #screen-p-email .gm-sidebar-section {
+    padding: 8px 0 4px 24px;
+    font-size: 11px; font-weight: 700; color: var(--gmail-muted);
+    letter-spacing: 0.05em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: space-between;
+    padding-right: 16px;
+  }
+
+  /* ── Main pane ── */
+  #screen-p-email .gm-main {
+    flex: 1; display: flex; flex-direction: column;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+  }
+
+  /* ── Email toolbar ── */
+  #screen-p-email .gm-email-toolbar {
+    height: 48px; flex-shrink: 0;
+    display: flex; align-items: center;
+    padding: 0 12px;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 4px;
+  }
+  #screen-p-email .gm-tb-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--gmail-muted);
+  }
+  #screen-p-email .gm-tb-btn:hover { background: rgba(0,0,0,0.06); }
+  #screen-p-email .gm-tb-count {
+    margin-left: auto; font-size: 13px; color: var(--gmail-muted);
+    display: flex; align-items: center; gap: 2px;
+  }
+
+  /* ── Email content ── */
+  #screen-p-email .gm-email-view {
+    flex: 1; overflow-y: auto; padding: 16px 32px 32px;
+    background: #fff;
+  }
+  #screen-p-email .gm-email-subject-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 20px;
+  }
+  #screen-p-email .gm-subject {
+    font-size: 22px; font-weight: 400; color: var(--gmail-text);
+  }
+  #screen-p-email .gm-tag {
+    display: inline-flex; align-items: center;
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 12px; font-weight: 500;
+  }
+  #screen-p-email .gm-tag--external { background: #fce8b2; color: #5a3700; }
+  #screen-p-email .gm-tag--inbox {
+    background: transparent; border: 1px solid #ccc;
+    color: var(--gmail-muted); cursor: pointer;
+  }
+  #screen-p-email .gm-sender-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 16px;
+  }
+  #screen-p-email .gm-sender-avatar {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: #db4437; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 500;
+  }
+  #screen-p-email .gm-sender-info { flex: 1; }
+  #screen-p-email .gm-sender-name {
+    font-size: 14px; font-weight: 500; color: var(--gmail-text);
+  }
+  #screen-p-email .gm-sender-name span { font-weight: 400; color: var(--gmail-muted); }
+  #screen-p-email .gm-sender-to {
+    font-size: 12px; color: var(--gmail-muted); display: flex; align-items: center; gap: 4px;
+    cursor: pointer;
+  }
+  #screen-p-email .gm-sender-meta {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--gmail-muted); flex-shrink: 0;
+  }
+  #screen-p-email .gm-sender-actions {
+    display: flex; align-items: center; gap: 2px; margin-left: 4px;
+  }
+
+  /* ── Email card (the actual email body rendered in gmail) ── */
+  #screen-p-email .gm-letter {
+    background: #f2f2f2;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 4px 0 20px;
+  }
+  #screen-p-email .gm-letter__header {
+    background: #f2f2f2;
+    padding: 28px 0 20px;
+    text-align: center;
+  }
+  #screen-p-email .gm-letter__logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 24px; font-weight: 700; color: #1a1a2e;
+  }
+  #screen-p-email .gm-letter__logo-icon {
+    width: 36px; height: 36px;
+  }
+  #screen-p-email .gm-letter__body {
+    background: #fff;
+    margin: 0 60px 0;
+    padding: 32px 40px 24px;
+    border-radius: 4px 4px 0 0;
+  }
+  #screen-p-email .gm-letter__body h2 {
+    font-size: 22px; font-weight: 400; color: var(--gmail-text);
+    margin: 0 0 20px;
+  }
+  #screen-p-email .gm-letter__body p {
+    font-size: 14px; color: var(--gmail-sub); line-height: 1.6; margin: 0 0 16px;
+  }
+  #screen-p-email .gm-letter__body a { color: #1a73e8; text-decoration: none; }
+  #screen-p-email .gm-letter__body a:hover { text-decoration: underline; }
+  #screen-p-email .gm-letter__cta-wrap {
+    background: #fff;
+    margin: 0 60px;
+    padding: 0 40px 8px;
+    text-align: center;
+  }
+  #screen-p-email .gm-letter__cta {
+    display: block; width: 100%;
+    background: #1a73e8; color: #fff;
+    border: none; border-radius: 4px;
+    padding: 14px 24px;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  #screen-p-email .gm-letter__cta:hover { background: #1765cc; box-shadow: 0 2px 8px rgba(26,115,232,0.4); }
+  #screen-p-email .gm-letter__expiry {
+    background: #fff;
+    margin: 0 60px;
+    padding: 12px 40px 28px;
+    font-size: 12px; color: var(--gmail-muted);
+    text-align: center; line-height: 1.5;
+    border-radius: 0 0 4px 4px;
+  }
+  #screen-p-email .gm-letter__expiry a { color: #1a73e8; }
+  #screen-p-email .gm-letter__footer {
+    background: #f2f2f2;
+    padding: 20px 100px 28px;
+    font-size: 12px; color: #999;
+    text-align: center; line-height: 1.6;
+  }
+
+  /* ── Reply bar ── */
+  #screen-p-email .gm-reply-bar {
+    flex-shrink: 0;
+    padding: 12px 32px;
+    display: flex; align-items: center; gap: 8px;
+    border-top: 1px solid #e0e0e0;
+  }
+  #screen-p-email .gm-reply-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #ccc; border-radius: 20px;
+    font-size: 14px; color: var(--gmail-text);
+    background: #fff; cursor: pointer; font-family: inherit;
+    transition: background 0.1s, box-shadow 0.1s;
+  }
+  #screen-p-email .gm-reply-btn:hover { background: #f6f8fc; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+  #screen-p-email .gm-reply-btn--new { position: relative; }
+  #screen-p-email .gm-new-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: #1a73e8; color: #fff;
+    font-size: 9px; font-weight: 700; padding: 1px 5px;
+    border-radius: 8px;
+  }
 </style>
 
-<div class="email-outer">
-  <div class="email-client">
-    <div class="email-client__chrome">
-      <div class="email-chrome-dot" style="background:#ff5f57"></div>
-      <div class="email-chrome-dot" style="background:#febc2e"></div>
-      <div class="email-chrome-dot" style="background:#28c840"></div>
-      <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-left:var(--space-2);">Inbox — Claire Sutton</span>
+<div class="gm-shell">
+
+  <!-- Top bar -->
+  <div class="gm-topbar">
+    <div class="gm-topbar__menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
     </div>
-    <div class="email-subject-bar">Subject: Complete your onboarding with Globe Life Insurance</div>
+    <!-- Gmail M logo -->
+    <div class="gm-logo">
+      <svg width="40" height="28" viewBox="0 0 40 28" fill="none">
+        <path d="M2 4l18 12L38 4v20H2V4z" fill="#fff" stroke="#ddd" stroke-width="0.5"/>
+        <path d="M2 4l18 12L38 4" stroke="#EA4335" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M2 4v20" stroke="#4285F4" stroke-width="3"/>
+        <path d="M38 4v20" stroke="#34A853" stroke-width="3"/>
+        <path d="M2 24h36" stroke="#FBBC04" stroke-width="0"/>
+      </svg>
+      <span class="gm-logo__text">Gmail</span>
+    </div>
 
-    <div class="email-card">
-      <div class="email-meta">
-        <div class="email-meta-row">
-          <span class="email-meta-label">From:</span>
-          <span>AgentSync Onboarding &lt;noreply@agentsync.io&gt;</span>
-        </div>
-        <div class="email-meta-row">
-          <span class="email-meta-label">To:</span>
-          <span>Claire Sutton &lt;c.sutton@email.com&gt;</span>
-        </div>
-        <div class="email-meta-row">
-          <span class="email-meta-label">Date:</span>
-          <span>March 3, 2026, 10:12 AM</span>
-        </div>
-      </div>
+    <div class="gm-search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368;flex-shrink:0"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" placeholder="Search mail" value="">
+    </div>
 
-      <div class="email-body">
-        <div class="email-logo">AgentSync</div>
-        <p>Hi Claire,</p>
-        <p><strong>Globe Life Insurance</strong> has invited you to complete your producer onboarding through AgentSync. You'll have a simple checklist of tasks to complete — most producers finish in under 30 minutes.</p>
-        <p>Once you're done, Globe Life's team will review your submission and you'll be cleared to start selling.</p>
-        <div class="email-cta">
-          <button class="btn btn--primary btn--lg" onclick="go('screen-p-login')">Start Onboarding →</button>
-        </div>
-        <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);">This invitation expires in 14 days. Questions? Reply to this email or contact onboarding@globelife.com.</p>
+    <div class="gm-topbar__right">
+      <div class="gm-icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
       </div>
-
-      <div class="email-footer">
-        AgentSync · 1801 California St, Denver, CO 80202<br>
-        <span style="color:var(--color-primary-600);cursor:pointer">Unsubscribe</span> · <span style="color:var(--color-primary-600);cursor:pointer">Privacy Policy</span>
+      <div class="gm-icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
       </div>
+      <div class="gm-avatar">C</div>
     </div>
   </div>
-</div>
+
+  <!-- Body row -->
+  <div class="gm-body">
+
+    <!-- Sidebar -->
+    <div class="gm-sidebar">
+      <button class="gm-compose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#444"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+        Compose
+      </button>
+
+      <div class="gm-nav-item active">
+        <svg class="gm-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Inbox
+        <span class="gm-nav-item__count">11</span>
+      </div>
+      <div class="gm-nav-item">
+        <svg class="gm-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24z"/></svg>
+        Starred
+      </div>
+      <div class="gm-nav-item">
+        <svg class="gm-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm-1.46-5.47L8.41 12.4l-1.06 1.06 3.18 3.18 6-6-1.06-1.06-4.93 4.95z"/></svg>
+        Snoozed
+      </div>
+      <div class="gm-nav-item">
+        <svg class="gm-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        Sent
+      </div>
+      <div class="gm-nav-item">
+        <svg class="gm-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H4.99c-1.1 0-1.98.9-1.98 2L3 19c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S14.93 13 13 13h-2v2H9v-2H8v-2h5c.83 0 1.5-.67 1.5-1.5S13.83 8 13 8h-2c-.55 0-1 .45-1 1v1H8V9c0-1.66 1.34-3 3-3h1zm-2 9h2v2h-2v-2z"/></svg>
+        Drafts
+        <span class="gm-nav-item__count">2</span>
+      </div>
+      <div class="gm-nav-item">
+        <svg class="gm-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+        Categories
+      </div>
+      <div class="gm-nav-item">
+        <svg class="gm-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/></svg>
+        More
+      </div>
+
+      <div class="gm-sidebar-section">
+        Labels
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368;cursor:pointer"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      </div>
+    </div>
+
+    <!-- Main email pane -->
+    <div class="gm-main">
+      <!-- Toolbar -->
+      <div class="gm-email-toolbar">
+        <div class="gm-tb-btn" title="Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </div>
+        <div class="gm-tb-btn" title="Archive">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5z"/></svg>
+        </div>
+        <div class="gm-tb-btn" title="Report spam">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        </div>
+        <div class="gm-tb-btn" title="Delete">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </div>
+        <div class="gm-tb-btn" title="Mark as unread">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
+        </div>
+        <div class="gm-tb-btn" title="Snooze">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+        </div>
+        <div class="gm-tb-btn" title="More">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        </div>
+        <div class="gm-tb-count">
+          1 of 10,657
+          <div class="gm-tb-btn" style="width:28px;height:28px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
+          </div>
+          <div class="gm-tb-btn" style="width:28px;height:28px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email view -->
+      <div class="gm-email-view">
+        <!-- Subject -->
+        <div class="gm-email-subject-row">
+          <span class="gm-subject">Welcome to AgentSync!</span>
+          <span class="gm-tag gm-tag--external">External</span>
+          <span class="gm-tag gm-tag--inbox">Inbox ×</span>
+        </div>
+
+        <!-- Sender row -->
+        <div class="gm-sender-row">
+          <div class="gm-sender-avatar">A</div>
+          <div class="gm-sender-info">
+            <div class="gm-sender-name">
+              AgentSync Onboarding <span>&lt;noreply@agentsync.io&gt;</span>
+            </div>
+            <div class="gm-sender-to">
+              to claire.sutton@gmail.com
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M7 10l5 5 5-5H7z"/></svg>
+            </div>
+          </div>
+          <div class="gm-sender-meta">
+            9:28 AM (1 minute ago)
+            <div class="gm-sender-actions">
+              <div class="gm-tb-btn" style="width:32px;height:32px" title="Star">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:#5f6368"><path d="M12 2l2.4 5 5.6.8-4 3.9.9 5.5L12 14.8l-4.9 2.4.9-5.5L4 7.8l5.6-.8z"/></svg>
+              </div>
+              <div class="gm-tb-btn" style="width:32px;height:32px" title="Reply">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+              </div>
+              <div class="gm-tb-btn" style="width:32px;height:32px" title="More">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- The rendered email letter -->
+        <div class="gm-letter">
+          <!-- AgentSync logo header -->
+          <div class="gm-letter__header">
+            <div class="gm-letter__logo">
+              <img src="assets/agentsync-logo.png" width="36" height="36" alt="AgentSync" style="display:block">
+              AgentSync
+            </div>
+          </div>
+
+          <!-- Body card -->
+          <div class="gm-letter__body">
+            <h2>Welcome to AgentSync!</h2>
+            <p>Hi Claire,</p>
+            <p>An organization you work with has invited you to join AgentSync to complete the onboarding, contracting, and compliance process. Click the button below to activate your account and accept the invitation — it only takes a minute!</p>
+            <p>Your username is <a href="#">claire.sutton@email.com</a></p>
+            <p><strong>Click the button below to activate your AgentSync account:</strong></p>
+          </div>
+
+          <div class="gm-letter__cta-wrap">
+            <button class="gm-letter__cta" onclick="go('screen-p-login')">ACTIVATE AGENTSYNC ACCOUNT</button>
+          </div>
+
+          <div class="gm-letter__expiry">
+            Please note, this activation link expires in 7 days. If you need to request a new<br>
+            activation email, please contact <a href="#">contractingsupport@agentsync.io</a>.
+          </div>
+
+          <div class="gm-letter__footer">
+            This is an automatically generated email. Please contact support if you need help from our team!
+          </div>
+        </div>
+
+        <!-- Reply bar -->
+        <div class="gm-reply-bar">
+          <button class="gm-reply-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+            Reply
+          </button>
+          <button class="gm-reply-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M7 8V5l-7 7 7 7v-3l-4-4 4-4zm6 1V5l7 7-7 7v-3.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z"/></svg>
+            Reply all
+          </button>
+          <button class="gm-reply-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><path d="M12 8V5l7 7-7 7v-3c-5 0-8.5 1.6-11 5.1C2 16 5 11 12 8z"/></svg>
+            Forward
+          </button>
+          <button class="gm-reply-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+          </button>
+          <button class="gm-reply-btn gm-reply-btn--new">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#5f6368"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10h8M8 14h5"/></svg>
+            Share in chat
+            <span class="gm-new-badge">New</span>
+          </button>
+        </div>
+
+      </div><!-- /gm-email-view -->
+    </div><!-- /gm-main -->
+  </div><!-- /gm-body -->
+</div><!-- /gm-shell -->

@@ -8,7 +8,9 @@
   <link rel="stylesheet" href="src/styles/tokens-manage.css">
   <link rel="stylesheet" href="src/styles/components-onboarding.css">
   <link rel="stylesheet" href="src/styles/components-manage.css">
+  <link rel="stylesheet" href="src/styles/manage-chrome.css">
   <link rel="stylesheet" href="src/styles/base.css">
+  <link rel="stylesheet" href="src/styles/screens.css">
   <style>
     /* Demo nav */
     #demo-nav {
@@ -24,6 +26,12 @@
       gap: 12px;
       font-family: system-ui, sans-serif;
     }
+    #demo-nav .demo-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
     #demo-nav .demo-wordmark {
       color: #fff;
       font-size: 13px;
@@ -31,7 +39,51 @@
       white-space: nowrap;
       letter-spacing: 0.02em;
     }
+    /* Context toggle (Agency / Carrier) */
+    .demo-context-toggle {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border-radius: 5px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .demo-context-btn {
+      padding: 3px 10px;
+      border-radius: 3px;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.45);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+      transition: all 120ms;
+      white-space: nowrap;
+    }
+    .demo-context-btn.active {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+    .demo-context-btn:hover:not(.active) {
+      color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.06);
+    }
+    /* Divider between context and flow buttons */
+    .demo-nav-divider {
+      width: 1px;
+      height: 18px;
+      background: rgba(255,255,255,0.15);
+      flex-shrink: 0;
+    }
     #demo-nav .demo-nav-center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .demo-flow-group {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -46,6 +98,7 @@
       cursor: pointer;
       transition: all 120ms;
       font-family: system-ui, sans-serif;
+      white-space: nowrap;
     }
     #demo-nav .demo-flow-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
     #demo-nav .demo-flow-btn.active { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.5); }
@@ -53,6 +106,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-shrink: 0;
     }
     #demo-nav .demo-persona-badge {
       padding: 3px 10px;
@@ -62,9 +116,16 @@
       font-family: system-ui, sans-serif;
       white-space: nowrap;
     }
-    .demo-persona-badge.persona-manage { background: #0176d3; color: #fff; }
-    .demo-persona-badge.persona-om     { background: #16a34a; color: #fff; }
-    .demo-persona-badge.persona-producer { background: #d97706; color: #fff; }
+    /* Carrier persona badges */
+    .demo-persona-badge.persona-carrier-sysadmin  { background: #374151; color: #fff; }
+    .demo-persona-badge.persona-carrier-firmmgmt  { background: #0176d3; color: #fff; }
+    .demo-persona-badge.persona-carrier-onboarding { background: #16a34a; color: #fff; }
+    .demo-persona-badge.persona-carrier-producer  { background: #d97706; color: #fff; }
+    /* Agency persona badges */
+    .demo-persona-badge.persona-agency-sysadmin { background: #7c3aed; color: #fff; }
+    .demo-persona-badge.persona-agency-ops      { background: #0891b2; color: #fff; }
+    .demo-persona-badge.persona-agency-producer { background: #d97706; color: #fff; }
+
     #demo-nav .demo-season-toggle {
       display: flex;
       align-items: center;
@@ -86,6 +147,193 @@
     /* Screen system */
     .screen { display: none; }
     .screen.active { display: block; }
+
+    /* ── Producer multi-select action bar ── */
+    .prod-action-bar {
+      display: none; align-items: center; gap: 16px;
+      padding: 8px 16px; background: #1a56db; color: #fff;
+      font-size: 13px; font-family: system-ui, sans-serif;
+      flex-shrink: 0; min-height: 44px;
+    }
+    .prod-action-count { font-weight: 600; }
+    .prod-action-btn {
+      padding: 5px 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.15); color: #fff; font-size: 13px;
+      font-weight: 600; cursor: pointer; font-family: system-ui, sans-serif;
+      transition: background 100ms;
+    }
+    .prod-action-btn:hover { background: rgba(255,255,255,0.28); }
+    .prod-action-clear {
+      margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.7);
+      cursor: pointer; font-size: 20px; line-height: 1; padding: 0 4px;
+      font-family: system-ui, sans-serif;
+    }
+    .prod-action-clear:hover { color: #fff; }
+    /* Show action bar, hide normal toolbar when selection active */
+    .table-wrapper.has-selection .table-toolbar { display: none; }
+    .table-wrapper.has-selection .prod-action-bar { display: flex; }
+    .ms-table-wrap.has-selection .ms-table-toolbar { display: none; }
+    .ms-table-wrap.has-selection .prod-action-bar { display: flex; }
+    /* Selected row highlight — Onboarding theme */
+    #screen-om-producers tbody tr.row-selected { background: var(--color-primary-50, #eff6ff); }
+    /* Selected row highlight — Manage/agency theme */
+    #screen-m-agency-om #ao-panel-producers tbody tr.row-selected { background: #eff6ff; }
+
+    /* ── Permission Sets modal ── */
+    #perm-set-modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 10000;
+      align-items: center; justify-content: center;
+      font-family: var(--font-family-base, system-ui, sans-serif);
+    }
+    #perm-set-modal.open { display: flex; }
+    .perm-set-modal__dialog {
+      background: var(--color-bg-surface, #fff);
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+      width: min(560px, 92vw);
+      max-height: 85vh;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .perm-set-modal__header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--color-brand-500, #0176d3);
+      flex-shrink: 0;
+    }
+    .perm-set-modal__title {
+      font-size: var(--font-size-base, 14px);
+      font-weight: var(--font-weight-bold, 700);
+      color: #fff;
+    }
+    .perm-set-modal__close {
+      width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border-radius: 3px; color: rgba(255,255,255,0.8);
+      background: none; border: none; transition: background 120ms;
+    }
+    .perm-set-modal__close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .perm-set-modal__body { overflow-y: auto; padding: 20px; flex: 1; }
+    .perm-set-modal__intro {
+      font-size: var(--font-size-sm, 13px);
+      color: var(--color-text-secondary, #444);
+      margin: 0 0 16px;
+      line-height: 1.5;
+    }
+    .perm-set-list { display: flex; flex-direction: column; gap: 2px; }
+    .perm-set-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 12px;
+      border: 1px solid var(--color-border-default, #e5e7eb);
+      border-radius: 3px;
+      background: var(--color-bg-surface, #fff);
+    }
+    .perm-set-row + .perm-set-row { margin-top: 6px; }
+    .perm-set-row__icon {
+      width: 34px; height: 34px; flex-shrink: 0;
+      background: var(--color-brand-50, #f0f7ff);
+      border: 1px solid var(--color-brand-200, #b3d4f5);
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-brand-500, #0176d3);
+    }
+    .perm-set-row__content { flex: 1; }
+    .perm-set-row__name {
+      display: flex; align-items: center; gap: 8px;
+      font-size: var(--font-size-sm, 13px);
+      font-weight: var(--font-weight-semibold, 600);
+      color: var(--color-text-primary, #111);
+      margin-bottom: 4px;
+    }
+    .perm-set-row__badge {
+      display: inline-flex; align-items: center;
+      padding: 1px 7px;
+      background: #fef3c7; border: 1px solid #f59e0b;
+      border-radius: 999px;
+      font-size: 10px; font-weight: 700;
+      color: #92400e; letter-spacing: 0.03em;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .perm-set-row__desc {
+      font-size: var(--font-size-xs, 12px);
+      color: var(--color-text-secondary, #555);
+      line-height: 1.5;
+    }
+    .perm-set-modal__footer {
+      display: flex; justify-content: flex-end;
+      padding: 12px 20px;
+      border-top: 1px solid var(--color-border-default, #e5e7eb);
+      flex-shrink: 0;
+    }
+    .slds-btn {
+      height: 32px; padding: 0 14px;
+      font-size: var(--font-size-sm, 13px);
+      font-weight: var(--font-weight-semibold, 600);
+      border-radius: 4px; cursor: pointer;
+      font-family: inherit; border: 1px solid;
+      transition: background 120ms, border-color 120ms;
+    }
+    .slds-btn--neutral {
+      background: #fff;
+      border-color: var(--color-border-default, #ddd);
+      color: var(--color-text-primary, #111);
+    }
+    .slds-btn--neutral:hover {
+      background: var(--color-gray-50, #f9fafb);
+      border-color: var(--color-gray-400, #9ca3af);
+    }
+
+    /* ── Add Policy Set modal ── */
+    #ps-add-modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 10000;
+      align-items: center; justify-content: center;
+      font-family: system-ui, sans-serif;
+    }
+    #ps-add-modal.open { display: flex; }
+    .ps-add-modal__dialog {
+      background: #fff; border-radius: 8px; width: 480px;
+      max-width: calc(100vw - 48px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25); overflow: hidden;
+    }
+    .ps-add-modal__header {
+      padding: 18px 20px 14px; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .ps-add-modal__title { font-size: 16px; font-weight: 700; color: #111827; }
+    .ps-add-modal__close {
+      background: none; border: none; cursor: pointer;
+      color: #6b7280; display: flex; align-items: center; padding: 2px;
+    }
+    .ps-add-modal__close:hover { color: #111827; }
+    .ps-add-modal__body { padding: 16px 20px; }
+    .ps-add-modal__sub { font-size: 13px; color: #6b7280; margin-bottom: 16px; line-height: 1.5; }
+    .ps-add-modal__list { display: flex; flex-direction: column; gap: 8px; }
+    .ps-add-modal__option {
+      display: flex; align-items: flex-start; gap: 12px; padding: 12px;
+      border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer;
+      transition: border-color 100ms, background 100ms;
+    }
+    .ps-add-modal__option:hover { border-color: #93c5fd; background: #f0f7ff; }
+    .ps-add-modal__option:has(input:checked) { border-color: #1a56db; background: #eff6ff; }
+    .ps-add-modal__option input[type="checkbox"] { margin-top: 2px; accent-color: #1a56db; flex-shrink: 0; width: 15px; height: 15px; }
+    .ps-add-modal__opt-name { font-size: 14px; font-weight: 600; color: #111827; }
+    .ps-add-modal__opt-desc { font-size: 12px; color: #6b7280; margin-top: 3px; line-height: 1.4; }
+    .ps-add-modal__footer {
+      padding: 12px 20px; border-top: 1px solid #e5e7eb;
+      display: flex; justify-content: flex-end; gap: 8px; background: #f9fafb;
+    }
+    .ps-add-modal__cancel {
+      padding: 7px 16px; border-radius: 4px; border: 1px solid #d1d5db;
+      background: #fff; color: #374151; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: system-ui, sans-serif;
+    }
+    .ps-add-modal__cancel:hover { background: #f3f4f6; }
+    .ps-add-modal__confirm {
+      padding: 7px 16px; border-radius: 4px; border: 1px solid #1a56db;
+      background: #1a56db; color: #fff; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: system-ui, sans-serif;
+    }
+    .ps-add-modal__confirm:hover { background: #1e40af; }
 
     /* Offset for demo nav */
     body { padding-top: 44px; }
@@ -115,39 +363,170 @@
       font-family: system-ui, sans-serif;
     }
     #toast.visible { opacity: 1; transform: translateY(0); }
+
   </style>
 </head>
-<body class="theme-onboarding">
+<body class="theme-manage">
 
 <!-- Demo Nav -->
 <nav id="demo-nav">
-  <span class="demo-wordmark">AgentSync Demo</span>
+  <div class="demo-nav-left">
+    <span class="demo-wordmark">AgentSync Demo</span>
+    <div class="demo-context-toggle">
+      <button class="demo-context-btn" id="btn-ctx-agency" onclick="setContext('agency')">Agency</button>
+      <button class="demo-context-btn active" id="btn-ctx-carrier" onclick="setContext('carrier')">Carrier</button>
+    </div>
+    <div class="demo-nav-divider"></div>
+  </div>
   <div class="demo-nav-center">
-    <button class="demo-flow-btn active" id="btn-flow-manage" onclick="goFlow('manage')">Manage Flow</button>
-    <button class="demo-flow-btn" id="btn-flow-om" onclick="goFlow('om')">Operating Manager Flow</button>
-    <button class="demo-flow-btn" id="btn-flow-producer" onclick="goFlow('producer')">Producer Flow</button>
+    <!-- Carrier flow buttons -->
+    <div id="carrier-flows" class="demo-flow-group">
+      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'sysadmin')">System Admin</button>
+      <button class="demo-flow-btn active" onclick="goCarrierFlow(this, 'firmmgmt')">Firm Mgmt</button>
+      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'onboarding')">Onboarding Operations</button>
+      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'producer')">Producer</button>
+    </div>
+    <!-- Agency flow buttons (placeholder) -->
+    <div id="agency-flows" class="demo-flow-group" style="display:none">
+      <button class="demo-flow-btn" onclick="goAgencyFlow(this, 'sysadmin')">System Admin</button>
+      <button class="demo-flow-btn" onclick="goAgencyFlow(this, 'ops')">Operations Team</button>
+      <button class="demo-flow-btn" onclick="goAgencyFlow(this, 'producer')">Producer</button>
+    </div>
   </div>
   <div class="demo-right">
     <div class="demo-season-toggle">
       <button class="season-btn active">Spring</button>
       <button class="season-btn disabled">Fall</button>
     </div>
-    <span id="persona-badge" class="demo-persona-badge persona-manage">Manage User</span>
+    <span id="persona-badge" class="demo-persona-badge persona-carrier-firmmgmt">Firm Mgmt</span>
   </div>
 </nav>
 
 <!-- Toast -->
 <div id="toast"></div>
 
+<!-- Permission Sets modal (Settings > Manage Users) -->
+<div id="perm-set-modal" onclick="if(event.target===this)hidePermSetModal()">
+  <div class="perm-set-modal__dialog">
+    <div class="perm-set-modal__header">
+      <span class="perm-set-modal__title">Onboarding Permission Sets</span>
+      <button class="perm-set-modal__close" onclick="hidePermSetModal()">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
+      </button>
+    </div>
+    <div class="perm-set-modal__body">
+      <p class="perm-set-modal__intro">Assign one or more of the following Salesforce Permission Sets to grant users access to AgentSync Onboarding functionality.</p>
+      <div class="perm-set-list">
+
+        <div class="perm-set-row">
+          <div class="perm-set-row__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="perm-set-row__content">
+            <div class="perm-set-row__name">Policy Admin</div>
+            <div class="perm-set-row__desc">Create, edit, and delete Policy Sets. Configure GWBR rules, requirement groups, and compliance settings for your organization.</div>
+          </div>
+        </div>
+
+        <div class="perm-set-row">
+          <div class="perm-set-row__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="perm-set-row__content">
+            <div class="perm-set-row__name">Firm Management</div>
+            <div class="perm-set-row__desc">Manage carrier and agency account records. Oversee firm onboarding workflows, account status, and associated policy set assignments.</div>
+          </div>
+        </div>
+
+        <div class="perm-set-row">
+          <div class="perm-set-row__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-1.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M14.05 2a9 9 0 0 1 8 7.94M14.05 6A5 5 0 0 1 18 10"/></svg>
+          </div>
+          <div class="perm-set-row__content">
+            <div class="perm-set-row__name">Invite Firms</div>
+            <div class="perm-set-row__desc">Send onboarding invitations to agency and carrier partner firms. Initiate and track firm-level onboarding workflows from within Salesforce.</div>
+          </div>
+        </div>
+
+        <div class="perm-set-row">
+          <div class="perm-set-row__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          </div>
+          <div class="perm-set-row__content">
+            <div class="perm-set-row__name">
+              Invite Producers
+              <span class="perm-set-row__badge">Agency only</span>
+            </div>
+            <div class="perm-set-row__desc">Send onboarding invitations directly to individual producers. Available exclusively in the Agency context — carrier producer invitations are managed through Operating Manager flows.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="perm-set-modal__footer">
+      <button class="slds-btn slds-btn--neutral" onclick="hidePermSetModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Producer: Add Policy Set modal -->
+<div id="ps-add-modal" onclick="if(event.target===this)prodHidePSModal()">
+  <div class="ps-add-modal__dialog">
+    <div class="ps-add-modal__header">
+      <span class="ps-add-modal__title" id="ps-add-modal-title">Add Policy Set</span>
+      <button class="ps-add-modal__close" onclick="prodHidePSModal()">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
+      </button>
+    </div>
+    <div class="ps-add-modal__body">
+      <p class="ps-add-modal__sub">Select one or more optional policy sets to apply. Only policy sets marked Optional on this account are available here.</p>
+      <div class="ps-add-modal__list" id="ps-add-modal-list">
+        <label class="ps-add-modal__option">
+          <input type="checkbox" value="background-check">
+          <div>
+            <div class="ps-add-modal__opt-name">Background Check — Tier 1</div>
+            <div class="ps-add-modal__opt-desc">Criminal background screening through our compliance partner. Results returned within 3–5 business days.</div>
+          </div>
+        </label>
+        <label class="ps-add-modal__option">
+          <input type="checkbox" value="eo-annual">
+          <div>
+            <div class="ps-add-modal__opt-name">E&amp;O Verification — Annual Renewal</div>
+            <div class="ps-add-modal__opt-desc">Verify current E&amp;O coverage and collect updated certificate on the producer's renewal schedule.</div>
+          </div>
+        </label>
+        <label class="ps-add-modal__option">
+          <input type="checkbox" value="state-compliance">
+          <div>
+            <div class="ps-add-modal__opt-name">State Compliance Attestation</div>
+            <div class="ps-add-modal__opt-desc">Producer self-attests to compliance with applicable state regulations and continuing education requirements.</div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="ps-add-modal__footer">
+      <button class="ps-add-modal__cancel" onclick="prodHidePSModal()">Cancel</button>
+      <button class="ps-add-modal__confirm" onclick="prodConfirmPS()">Apply Policy Sets</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============================================================
      MANAGE SCREENS
      ============================================================ -->
 <div id="screen-m-accounts"   class="screen active"></div>
+<div id="screen-m-record-type-select" class="screen"></div>
 <div id="screen-m-new-account" class="screen"></div>
 <div id="screen-m-account-record" class="screen"></div>
 <div id="screen-m-invite"     class="screen"></div>
 <div id="screen-m-policysets" class="screen"></div>
 <div id="screen-m-policysets-new" class="screen"></div>
+<div id="screen-m-ps-choice"  class="screen"></div>
+<div id="screen-m-ps-create"  class="screen"></div>
+<div id="screen-m-ps-gwbr"    class="screen"></div>
+<div id="screen-m-ps-tasks"   class="screen"></div>
+<div id="screen-m-ps-confirm" class="screen"></div>
+<div id="screen-m-ps-done"    class="screen"></div>
 
 <!-- ============================================================
      ONBOARDING CSV IMPORT
@@ -181,11 +560,414 @@
 <div id="screen-p-task-detail-3" class="screen"></div>
 <div id="screen-p-done"         class="screen"></div>
 
+<!-- ============================================================
+     SYSTEM ADMIN SCREENS (shared by Carrier + Agency)
+     ============================================================ -->
+<div id="screen-m-agency-om"      class="screen"></div>
+<div id="screen-m-sysadmin"       class="screen"></div>
+<div id="screen-m-settings"       class="screen"></div>
+<div id="screen-m-role-mappings"  class="screen"></div>
+
+
 <script src="js/router.js"></script>
 <script src="js/demo-nav.js"></script>
 <script>
-  // Load all screen HTML files
+  // ── Carrier flow handler ──────────────────────────────────────
+
+  const _carrierPersonas = {
+    sysadmin:   { label: 'System Admin',           badgeCls: 'persona-carrier-sysadmin',   theme: 'theme-manage',      screen: 'screen-m-policysets' },
+    firmmgmt:   { label: 'Firm Mgmt',              badgeCls: 'persona-carrier-firmmgmt',   theme: 'theme-manage',      screen: 'screen-m-accounts' },
+    onboarding: { label: 'Onboarding Operations',  badgeCls: 'persona-carrier-onboarding', theme: 'theme-onboarding',  screen: 'screen-om-email' },
+    producer:   { label: 'Producer',               badgeCls: 'persona-carrier-producer',   theme: 'theme-onboarding',  screen: 'screen-p-email' },
+  };
+
+  function goCarrierFlow(btnEl, persona) {
+    document.querySelectorAll('#carrier-flows .demo-flow-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+    const p = _carrierPersonas[persona];
+    if (!p) return;
+    document.body.classList.remove('theme-manage', 'theme-onboarding');
+    document.body.classList.add(p.theme);
+    const badge = document.getElementById('persona-badge');
+    badge.textContent = p.label;
+    badge.className = 'demo-persona-badge ' + p.badgeCls;
+    go(p.screen);
+  }
+
+  // ── Agency / Carrier context toggle ──────────────────────────
+
+  const _agencyPersonas = {
+    sysadmin: { label: 'System Admin',    badgeCls: 'persona-agency-sysadmin', screen: 'screen-m-policysets',  theme: 'theme-manage' },
+    ops:      { label: 'Operations Team', badgeCls: 'persona-agency-ops',      screen: 'screen-m-agency-om',   theme: 'theme-manage' },
+    producer: { label: 'Producer',        badgeCls: 'persona-agency-producer', screen: 'screen-p-email',       theme: 'theme-onboarding' },
+  };
+
+  function setContext(ctx) {
+    document.getElementById('btn-ctx-carrier').classList.toggle('active', ctx === 'carrier');
+    document.getElementById('btn-ctx-agency').classList.toggle('active', ctx === 'agency');
+    document.getElementById('carrier-flows').style.display = ctx === 'carrier' ? '' : 'none';
+    document.getElementById('agency-flows').style.display  = ctx === 'agency'  ? '' : 'none';
+
+    if (ctx === 'carrier') {
+      const firmmgmtBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(2)');
+      goCarrierFlow(firmmgmtBtn, 'firmmgmt');
+    } else {
+      // Land on Operations Team by default
+      const opsBtn = document.querySelector('#agency-flows .demo-flow-btn:nth-child(2)');
+      goAgencyFlow(opsBtn, 'ops');
+    }
+  }
+
+  function goAgencyFlow(btnEl, persona) {
+    document.querySelectorAll('#agency-flows .demo-flow-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+    const p = _agencyPersonas[persona];
+    if (!p) return;
+    const badge = document.getElementById('persona-badge');
+    badge.textContent = p.label;
+    badge.className = 'demo-persona-badge ' + p.badgeCls;
+    document.body.classList.remove('theme-manage', 'theme-onboarding');
+    document.body.classList.add(p.theme || 'theme-onboarding');
+    go(p.screen);
+  }
+
+  // ── Policy Set Wizard helpers ─────────────────────────────────
+
+  function wzAddFile(screenId) {
+    const empty  = document.getElementById(screenId + '-drop-empty');
+    const filled = document.getElementById(screenId + '-drop-filled');
+    if (empty)  empty.style.display  = 'none';
+    if (filled) filled.style.display = '';
+  }
+
+  function wzModal(screenId, open) {
+    const m = document.getElementById(screenId + '-modal');
+    if (m) m.classList.toggle('open', open);
+  }
+
+  function wzPanel(screenId, panel) {
+    ['upload', 'processing', 'results'].forEach(p => {
+      const el = document.getElementById(screenId + '-panel-' + p);
+      if (el) el.style.display = p === panel ? '' : 'none';
+    });
+    if (panel === 'processing') {
+      setTimeout(() => wzPanel(screenId, 'results'), 1500);
+    }
+  }
+
+  // ── Producer multi-select + Add Policy Set modal ─────────────
+
+  function prodToggleRow(cb) {
+    cb.closest('tr').classList.toggle('row-selected', cb.checked);
+    prodSyncActionBar(cb.closest('.table-wrapper, .ms-table-wrap'));
+  }
+
+  function prodToggleAll(masterCb) {
+    const wrap = masterCb.closest('.table-wrapper, .ms-table-wrap');
+    if (!wrap) return;
+    wrap.querySelectorAll('.prod-row-cb').forEach(cb => {
+      cb.checked = masterCb.checked;
+      cb.closest('tr').classList.toggle('row-selected', masterCb.checked);
+    });
+    prodSyncActionBar(wrap);
+  }
+
+  function prodSyncActionBar(wrap) {
+    if (!wrap) return;
+    const count = wrap.querySelectorAll('.prod-row-cb:checked').length;
+    wrap.classList.toggle('has-selection', count > 0);
+    const countEl = wrap.querySelector('.prod-action-count');
+    if (countEl) countEl.textContent = count + (count === 1 ? ' producer' : ' producers') + ' selected';
+    // Keep master checkbox in sync
+    const all = wrap.querySelectorAll('.prod-row-cb');
+    const masterCb = wrap.querySelector('.prod-all-cb');
+    if (masterCb) masterCb.checked = count > 0 && count === all.length;
+  }
+
+  function prodClearSelection(barEl) {
+    const wrap = barEl.closest('.table-wrapper, .ms-table-wrap');
+    if (!wrap) return;
+    wrap.querySelectorAll('.prod-row-cb').forEach(cb => {
+      cb.checked = false;
+      cb.closest('tr').classList.remove('row-selected');
+    });
+    const masterCb = wrap.querySelector('.prod-all-cb');
+    if (masterCb) masterCb.checked = false;
+    wrap.classList.remove('has-selection');
+  }
+
+  function prodShowPSModal(barEl) {
+    window._prodActionBar = barEl;
+    const wrap = barEl.closest('.table-wrapper, .ms-table-wrap');
+    const count = wrap ? wrap.querySelectorAll('.prod-row-cb:checked').length : 0;
+    document.getElementById('ps-add-modal-title').textContent =
+      'Add Policy Set to ' + count + (count === 1 ? ' Producer' : ' Producers');
+    document.querySelectorAll('#ps-add-modal-list input').forEach(cb => cb.checked = false);
+    document.getElementById('ps-add-modal').classList.add('open');
+  }
+
+  function showPermSetModal() {
+    document.getElementById('perm-set-modal').classList.add('open');
+  }
+  function hidePermSetModal() {
+    document.getElementById('perm-set-modal').classList.remove('open');
+  }
+
+  function settingsShowPanel(panel) {
+    ['users', 'metadata'].forEach(id => {
+      const p = document.getElementById('settings-panel-' + id);
+      const n = document.getElementById('settings-nav-' + id);
+      if (p) p.classList.toggle('active', id === panel);
+      if (n) n.classList.toggle('active', id === panel);
+    });
+    if (panel === 'metadata') rmRender();
+  }
+
+  function loginShowStep(prefix, step) {
+    ['email', 'password', 'loading'].forEach(s => {
+      const el = document.getElementById(prefix + '-login-step-' + s);
+      if (el) el.style.display = s === step ? '' : 'none';
+    });
+    if (step === 'loading') {
+      const dest = prefix === 'om' ? 'screen-om-welcome' : 'screen-p-intake';
+      setTimeout(() => go(dest), 2200);
+    }
+  }
+  function loginSetupPassword(prefix) {
+    const area = document.getElementById(prefix + '-pw-input-area');
+    if (area) area.classList.add('visible');
+    const input = document.getElementById(prefix + '-pw-input');
+    if (input && !input.value) {
+      const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%';
+      let pw = '';
+      for (let i = 0; i < 14; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+      input.value = pw;
+    }
+    const btn = document.getElementById(prefix + '-set-pw-btn');
+    if (btn) btn.classList.add('active');
+  }
+
+  function prodHidePSModal() {
+    document.getElementById('ps-add-modal').classList.remove('open');
+  }
+
+  function prodConfirmPS() {
+    const checked = document.querySelectorAll('#ps-add-modal-list input:checked');
+    if (checked.length === 0) return;
+    prodHidePSModal();
+    if (window._prodActionBar) {
+      prodClearSelection(window._prodActionBar);
+      window._prodActionBar = null;
+    }
+    showToast('Policy sets applied — producers notified');
+  }
+
+  // ── Agency OM tab switching + task drawer ─────────────────────
+
+  function agencyOmTab(tab) {
+    ['accounts', 'producers', 'tasks'].forEach(t => {
+      const panel = document.getElementById('ao-panel-' + t);
+      const navTab = document.getElementById('ao-tab-' + t);
+      if (panel) panel.classList.toggle('active', t === tab);
+      if (navTab) navTab.classList.toggle('active', t === tab);
+    });
+  }
+
+  function aoToggleDrawer(drawerId, rowEl) {
+    const drawer = document.getElementById(drawerId);
+    if (!drawer) return;
+    const isOpen = drawer.classList.contains('open');
+    // Close all drawers and deselect all rows
+    document.querySelectorAll('#screen-m-agency-om .task-drawer-row').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('#screen-m-agency-om .task-row').forEach(r => r.classList.remove('selected'));
+    if (!isOpen) {
+      drawer.classList.add('open');
+      if (rowEl) rowEl.classList.add('selected');
+    }
+  }
+
+  // ── New Account helpers ────────────────────────────────────────
+
+  function rtSelect(labelEl) {
+    document.querySelectorAll('#screen-m-record-type-select .rt-option').forEach(el => el.classList.remove('selected'));
+    labelEl.classList.add('selected');
+  }
+
+  function naIsCarrier() {
+    return document.getElementById('btn-ctx-carrier').classList.contains('active');
+  }
+
+  function naInit() {
+    const firmSection = document.getElementById('na-firm-section');
+    if (firmSection) firmSection.style.display = naIsCarrier() ? '' : 'none';
+    const typeSelect = document.getElementById('na-account-type');
+    if (typeSelect) typeSelect.value = '';
+  }
+
+  function naOnTypeChange(val) {
+    const firmSection = document.getElementById('na-firm-section');
+    if (!firmSection) return;
+    if (!naIsCarrier()) return; // agency context: never show
+    firmSection.style.display = val === 'Carrier' ? '' : 'none';
+  }
+
+  const _naPolicySets = [
+    'Standard Agent Onboarding',
+    'E&O Insurance Verification',
+    'Background Check — Tier 1',
+    'Globe Life — Custom LOA Requirements',
+  ];
+
+  function _naPSOptions(selected) {
+    return _naPolicySets.map(ps =>
+      `<option${ps === selected ? ' selected' : ''}>${ps}</option>`
+    ).join('');
+  }
+
+  function naAddProducerPS() {
+    const tbody = document.getElementById('na-producer-ps-tbody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><select class="ps-lookup">${_naPSOptions('')}</select></td>
+      <td><select><option>Required</option><option>Optional</option></select></td>
+      <td><span style="font-size:var(--font-size-xs);color:var(--color-success-base);font-weight:var(--font-weight-bold);">Active</span></td>
+      <td class="td-remove" onclick="naRemoveRow(this)">×</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function naAddFirmPS() {
+    const tbody = document.getElementById('na-firm-ps-tbody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><select class="ps-lookup">${_naPSOptions('')}</select></td>
+      <td><span style="font-size:var(--font-size-xs);color:var(--color-success-base);font-weight:var(--font-weight-bold);">Active</span></td>
+      <td class="td-remove" onclick="naRemoveRow(this)">×</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function naRemoveRow(btn) {
+    const tr = btn.closest('tr');
+    if (tr) tr.remove();
+  }
+
+  // ── Role Mappings data + helpers ─────────────────────────────
+
+  const RM_ACCESS_MODELS = [
+    'Operations Manager',
+    'Operations Manager with Producer Invite',
+    'Producer Only',
+  ];
+
+  window.roleMappings = [
+    { id: 'rm-001', label: 'Field Representative',    accessModel: 'Operations Manager',                        created: 'Jan 10, 2026' },
+    { id: 'rm-002', label: 'Agency Principal',         accessModel: 'Operations Manager with Producer Invite',   created: 'Jan 10, 2026' },
+    { id: 'rm-003', label: 'Agency Administrator',     accessModel: 'Operations Manager',                        created: 'Jan 12, 2026' },
+    { id: 'rm-004', label: 'Independent Agent',        accessModel: 'Operations Manager with Producer Invite',   created: 'Jan 15, 2026' },
+  ];
+
+  let _rmEditingId = null;
+
+  function rmBadgeClass(model) {
+    if (model === 'Operations Manager with Producer Invite') return 'badge badge--success';
+    if (model === 'Producer Only') return 'badge badge--default';
+    return 'badge badge--warning';
+  }
+
+  function rmRender() {
+    const tbody = document.getElementById('rm-tbody');
+    if (!tbody) return;
+    if (window.roleMappings.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:32px 16px;color:var(--color-text-muted);">No role mappings configured. Click "+ New Mapping" to add one.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = window.roleMappings.map(rm => `
+      <tr>
+        <td>${rm.label}</td>
+        <td><span class="${rmBadgeClass(rm.accessModel)}">${rm.accessModel}</span></td>
+        <td>${rm.created}</td>
+        <td>
+          <a class="td-action" onclick="rmShowForm('${rm.id}')">Edit</a>
+          <span style="color:var(--color-border-default);margin:0 4px">|</span>
+          <a class="td-action td-action--danger" onclick="rmDelete('${rm.id}')">Delete</a>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function rmShowForm(id) {
+    _rmEditingId = id || null;
+    const titleEl  = document.getElementById('rm-form-title');
+    const labelEl  = document.getElementById('rm-input-label');
+    const modelEl  = document.getElementById('rm-input-model');
+    const saveBtn  = document.getElementById('rm-save-btn');
+    if (!titleEl) return;
+
+    // Populate model select options
+    modelEl.innerHTML = RM_ACCESS_MODELS.map(m =>
+      `<option value="${m}">${m}</option>`
+    ).join('');
+
+    if (id) {
+      const rm = window.roleMappings.find(r => r.id === id);
+      if (!rm) return;
+      titleEl.textContent  = 'Edit Role Mapping';
+      labelEl.value        = rm.label;
+      modelEl.value        = rm.accessModel;
+      saveBtn.textContent  = 'Save Changes';
+    } else {
+      titleEl.textContent  = 'New Role Mapping';
+      labelEl.value        = '';
+      modelEl.value        = RM_ACCESS_MODELS[0];
+      saveBtn.textContent  = 'Add Mapping';
+    }
+
+    document.getElementById('rm-form').style.display = '';
+    labelEl.focus();
+  }
+
+  function rmHideForm() {
+    const form = document.getElementById('rm-form');
+    if (form) form.style.display = 'none';
+    _rmEditingId = null;
+  }
+
+  function rmSave() {
+    const labelEl = document.getElementById('rm-input-label');
+    const modelEl = document.getElementById('rm-input-model');
+    const label   = labelEl ? labelEl.value.trim() : '';
+    const model   = modelEl ? modelEl.value : '';
+    if (!label) { if (labelEl) labelEl.focus(); return; }
+
+    if (_rmEditingId) {
+      const rm = window.roleMappings.find(r => r.id === _rmEditingId);
+      if (rm) { rm.label = label; rm.accessModel = model; }
+    } else {
+      const newId = 'rm-' + String(Date.now()).slice(-6);
+      const today = new Date();
+      const created = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      window.roleMappings.push({ id: newId, label, accessModel: model, created });
+    }
+
+    rmHideForm();
+    rmRender();
+  }
+
+  function rmDelete(id) {
+    window.roleMappings = window.roleMappings.filter(r => r.id !== id);
+    rmRender();
+  }
+
+  // ── Load all screen HTML files ────────────────────────────────
+
   const screens = [
+    { id: 'screen-m-agency-om',        src: 'screens/manage/m-agency-om.html' },
+    { id: 'screen-m-sysadmin',         src: 'screens/manage/m-sysadmin.html' },
+    { id: 'screen-m-settings',         src: 'screens/manage/m-settings.html' },
+    { id: 'screen-m-record-type-select', src: 'screens/manage/m-record-type-select.html' },
     { id: 'screen-m-accounts',        src: 'screens/manage/m-accounts.html' },
     { id: 'screen-m-new-account',     src: 'screens/manage/m-new-account.html' },
     { id: 'screen-m-account-record',  src: 'screens/manage/m-account-record.html' },
@@ -193,6 +975,13 @@
     { id: 'screen-m-policysets',      src: 'screens/manage/m-policysets.html' },
     { id: 'screen-m-policysets-new',  src: 'screens/manage/m-policysets-new.html' },
     { id: 'screen-ob-csv-import',     src: 'screens/onboarding/ob-csv-import.html' },
+    { id: 'screen-m-ps-choice',       src: 'screens/manage/m-ps-choice.html' },
+    { id: 'screen-m-ps-create',       src: 'screens/manage/m-ps-create.html' },
+    { id: 'screen-m-ps-gwbr',         src: 'screens/manage/m-ps-gwbr.html' },
+    { id: 'screen-m-ps-tasks',        src: 'screens/manage/m-ps-tasks.html' },
+    { id: 'screen-m-ps-confirm',      src: 'screens/manage/m-ps-confirm.html' },
+    { id: 'screen-m-ps-done',         src: 'screens/manage/m-ps-done.html' },
+    { id: 'screen-m-role-mappings',   src: 'screens/manage/m-role-mappings.html' },
     { id: 'screen-om-email',          src: 'screens/operating-manager/om-email.html' },
     { id: 'screen-om-login',          src: 'screens/operating-manager/om-login.html' },
     { id: 'screen-om-transition',     src: 'screens/operating-manager/om-transition.html' },
@@ -223,7 +1012,10 @@
   )).then(() => {
     // Init nav after all screens loaded
     if (typeof initDemoNav === 'function') initDemoNav();
-    go('screen-m-accounts');
+    const firmmgmtBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(2)');
+    goCarrierFlow(firmmgmtBtn, 'firmmgmt');
+    // Init role mappings table
+    rmRender();
   });
 </script>
 </body>
