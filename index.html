@@ -518,6 +518,7 @@
 <div id="screen-m-record-type-select" class="screen"></div>
 <div id="screen-m-new-account" class="screen"></div>
 <div id="screen-m-account-record" class="screen"></div>
+<div id="screen-m-new-policy-set" class="screen"></div>
 <div id="screen-m-invite"     class="screen"></div>
 <div id="screen-m-policysets" class="screen"></div>
 <div id="screen-m-policysets-new" class="screen"></div>
@@ -866,6 +867,33 @@
     if (tr) tr.remove();
   }
 
+  // ── New Policy Set screen helpers ─────────────────────────────
+
+  function npsAddRow() {
+    const tbody = document.getElementById('nps-producer-ps-tbody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><select class="ps-lookup">${_naPSOptions('')}</select></td>
+      <td><select><option>Required</option><option>Optional</option></select></td>
+      <td><span style="font-size:var(--font-size-xs);color:var(--color-success-base);font-weight:var(--font-weight-bold);">Active</span></td>
+      <td class="td-remove" onclick="this.closest('tr').remove()">×</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function npsFirmAddRow() {
+    const tbody = document.getElementById('nps-firm-ps-tbody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><select class="ps-lookup">${_naPSOptions('')}</select></td>
+      <td><span style="font-size:var(--font-size-xs);color:var(--color-success-base);font-weight:var(--font-weight-bold);">Active</span></td>
+      <td class="td-remove" onclick="this.closest('tr').remove()">×</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
   // ── Role Mappings data + helpers ─────────────────────────────
 
   const RM_ACCESS_MODELS = [
@@ -1002,6 +1030,7 @@
     { id: 'screen-om-producer-record',src: 'screens/operating-manager/om-producer-record.html' },
     { id: 'screen-om-task-detail',    src: 'screens/operating-manager/om-task-detail.html' },
     { id: 'screen-om-invite-producer',src: 'screens/operating-manager/om-invite-producer.html' },
+    { id: 'screen-m-new-policy-set',  src: 'screens/manage/m-new-policy-set.html' },
     { id: 'screen-om-tasks',          src: 'screens/operating-manager/om-tasks.html' },
     { id: 'screen-om-aot-producers',  src: 'screens/operating-manager/om-aot-producers.html' },
     { id: 'screen-om-aot-tasks',      src: 'screens/operating-manager/om-aot-tasks.html' },
