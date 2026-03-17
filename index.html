@@ -357,6 +357,69 @@
     }
     #toast.visible { opacity: 1; transform: translateY(0); }
 
+    /* ── Invite Producer drawer ── */
+    #invite-drawer-overlay {
+      position: fixed; top: 44px; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 8000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    #invite-drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+    #invite-drawer-panel {
+      position: fixed; top: 44px; right: 0; bottom: 0; width: 480px;
+      background: #fff;
+      box-shadow: -6px 0 32px rgba(0,0,0,0.14);
+      z-index: 8001;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+      font-family: var(--font-family-base);
+    }
+    #invite-drawer-panel.open { transform: translateX(0); }
+
+    #invite-drawer-panel .id-header {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--color-border-default);
+    }
+    #invite-drawer-panel .id-title {
+      font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary);
+    }
+    #invite-drawer-panel .id-close {
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-md); color: var(--color-gray-500); cursor: pointer; flex-shrink: 0;
+    }
+    #invite-drawer-panel .id-close:hover { background: var(--color-gray-100); }
+
+    #invite-drawer-panel .id-body { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+
+    #invite-drawer-panel .id-section-title {
+      font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
+      color: var(--color-text-secondary); text-transform: uppercase;
+      letter-spacing: var(--tracking-wide); margin-bottom: 14px;
+    }
+    #invite-drawer-panel .id-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    #invite-drawer-panel .id-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; background: var(--color-primary-100); color: var(--color-primary-600);
+      border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold);
+    }
+    #invite-drawer-panel .id-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+    #invite-drawer-panel .id-opt-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 0; border-bottom: 1px solid var(--color-border-default);
+      font-size: var(--font-size-sm); color: var(--color-text-primary); cursor: pointer;
+    }
+    #invite-drawer-panel .id-opt-row:last-child { border-bottom: none; }
+
+    #invite-drawer-panel .id-footer {
+      flex-shrink: 0; display: flex; gap: 12px; justify-content: flex-end;
+      padding: 16px 24px; border-top: 1px solid var(--color-border-default);
+    }
+
   </style>
   <link rel="stylesheet" crossorigin href="/onboarding-experience/assets/index-WsvbkD3d.css">
 </head>
@@ -398,6 +461,87 @@
 
 <!-- Toast -->
 <div id="toast"></div>
+
+<!-- Invite Producer drawer -->
+<div id="invite-drawer-overlay" onclick="closeInviteDrawer()"></div>
+<div id="invite-drawer-panel">
+  <div class="id-header">
+    <span class="id-title">Invite a Producer</span>
+    <div class="id-close" onclick="closeInviteDrawer()">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
+    </div>
+  </div>
+  <div class="id-body">
+
+    <!-- Producer Details -->
+    <div>
+      <div class="id-section-title">Producer Details</div>
+      <div class="id-row-2" style="margin-bottom:12px;">
+        <div class="form-group">
+          <label class="form-label">First Name <span class="required">*</span></label>
+          <input type="text" class="form-input" placeholder="First">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name <span class="required">*</span></label>
+          <input type="text" class="form-input" placeholder="Last">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">Email <span class="required">*</span></label>
+        <input type="email" class="form-input" placeholder="producer@email.com">
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">NPN (National Producer Number)</label>
+        <input type="text" class="form-input" placeholder="Leave blank to look up by name">
+        <span class="form-hint">If provided, we'll pre-fill licensing data from NIPR automatically.</span>
+      </div>
+      <div class="id-row-2">
+        <div class="form-group">
+          <label class="form-label">Resident State <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">— Select —</option>
+            <option>Colorado</option>
+            <option>Texas</option>
+            <option>Florida</option>
+            <option>California</option>
+            <option>New York</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">License Type <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">— Select —</option>
+            <option>Property &amp; Casualty</option>
+            <option>Life &amp; Health</option>
+            <option>Both</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Policy Set Assignment -->
+    <div>
+      <div class="id-section-title">Policy Set Assignment</div>
+      <p style="font-size:var(--font-size-xs);color:var(--color-text-secondary);margin-bottom:12px;">Required policy sets are applied automatically. Add optional sets as needed.</p>
+      <div style="font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:var(--tracking-wide);margin-bottom:8px;">Auto Applied</div>
+      <div class="id-chips">
+        <span class="id-chip">Standard Agent Onboarding</span>
+        <span class="id-chip">E&amp;O Insurance Verification</span>
+      </div>
+      <div style="font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:var(--tracking-wide);margin-bottom:4px;">Optional</div>
+      <div>
+        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> Background Check — Tier 1</label>
+        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> FINRA Registration</label>
+        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> Globe Life — Custom LOA Requirements</label>
+      </div>
+    </div>
+
+  </div>
+  <div class="id-footer">
+    <button class="btn btn--secondary" onclick="closeInviteDrawer()">Cancel</button>
+    <button class="btn btn--primary" onclick="closeInviteDrawer();showToast('Invite sent to producer')">Send Invite</button>
+  </div>
+</div>
 
 <!-- Permission Sets modal (Settings > Manage Users) -->
 <div id="perm-set-modal" onclick="if(event.target===this)hidePermSetModal()">
@@ -859,6 +1003,16 @@
   function naRemoveRow(btn) {
     const tr = btn.closest('tr');
     if (tr) tr.remove();
+  }
+
+  // ── Invite Producer drawer ────────────────────────────────────
+  function openInviteDrawer() {
+    document.getElementById('invite-drawer-overlay').classList.add('open');
+    document.getElementById('invite-drawer-panel').classList.add('open');
+  }
+  function closeInviteDrawer() {
+    document.getElementById('invite-drawer-overlay').classList.remove('open');
+    document.getElementById('invite-drawer-panel').classList.remove('open');
   }
 
   // ── Navigate to producer record with specific task open ────────
