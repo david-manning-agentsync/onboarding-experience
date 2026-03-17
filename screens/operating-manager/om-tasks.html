@@ -83,7 +83,7 @@
   /* ── Body ── */
   #screen-om-tasks .ms-body {
     flex: 1; overflow-y: auto; padding: var(--space-medium);
-    background: linear-gradient(160deg, #4673A5 0%, #B7C7DF 100%);
+    background: var(--color-gray-100);
   }
 
   /* ── List View Card ── */
@@ -182,7 +182,6 @@
       </div>
       <span class="ms-nav__appname">Onboarding</span>
       <div class="ms-nav__tabs">
-        <div class="ms-nav__tab" onclick="go('screen-om-welcome')">Accounts <span class="ms-nav__caret">▾</span></div>
         <div class="ms-nav__tab" onclick="go('screen-om-producers')">Producers <span class="ms-nav__caret">▾</span></div>
         <div class="ms-nav__tab active" onclick="go('screen-om-tasks')">Tasks <span class="ms-nav__caret">▾</span></div>
       </div>
