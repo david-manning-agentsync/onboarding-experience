@@ -861,6 +861,26 @@
     if (tr) tr.remove();
   }
 
+  // ── Navigate to producer record with specific task open ────────
+  function goToProducerTask(taskPanelId) {
+    go('screen-om-producer-record');
+    // Activate Tasks tab, deactivate Details tab
+    document.querySelectorAll('#screen-om-producer-record .tab').forEach(t => {
+      t.classList.toggle('active', t.getAttribute('onclick') && t.getAttribute('onclick').includes('tab-pr-tasks'));
+    });
+    const tasksPanel  = document.getElementById('tab-pr-tasks');
+    const detailPanel = document.getElementById('tab-pr-details');
+    if (tasksPanel)  tasksPanel.classList.add('active');
+    if (detailPanel) detailPanel.classList.remove('active');
+    // Select the specific task item and its detail panel
+    document.querySelectorAll('#screen-om-producer-record .pr-task-item').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('onclick') && el.getAttribute('onclick').includes(taskPanelId));
+    });
+    document.querySelectorAll('#screen-om-producer-record .pr-task-detail-panel').forEach(p => {
+      p.classList.toggle('active', p.id === taskPanelId);
+    });
+  }
+
   // ── New Policy Set screen helpers ─────────────────────────────
 
   function npsAddRow() {
