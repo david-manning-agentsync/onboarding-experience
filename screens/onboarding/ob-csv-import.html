@@ -1,9 +1,117 @@
 <!-- ob-csv-import.html — CSV Import (Onboarding theme inside Manage shell) -->
 <style>
+  /* ── Shell ── */
+  #screen-ob-csv-import .ms-shell {
+    height: calc(100vh - 44px);
+    background: var(--color-gray-100);
+    font-family: var(--font-family-base);
+    display: flex;
+    flex-direction: column;
+  }
+  /* ── Nav ── */
+  #screen-ob-csv-import .ms-nav {
+    flex-shrink: 0;
+    background: var(--color-bg-surface);
+    border-bottom: 1px solid var(--color-gray-300);
+    display: flex; flex-direction: column; z-index: 200;
+  }
+  #screen-ob-csv-import .ms-nav__utility {
+    display: flex; align-items: center;
+    height: 50px; padding: 0 var(--space-medium); gap: var(--space-small);
+    border-bottom: 1px solid var(--color-gray-300);
+  }
+  #screen-ob-csv-import .ms-logo {
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0; text-decoration: none; margin-right: 4px;
+  }
+  #screen-ob-csv-import .ms-nav__search {
+    flex: 1; max-width: 480px; margin: 0 auto; height: 32px;
+    display: flex; align-items: center;
+    border: 1px solid var(--color-gray-300); border-radius: 4px;
+    padding: 0 10px; gap: 6px; background: var(--color-bg-surface);
+  }
+  #screen-ob-csv-import .ms-nav__search input {
+    flex: 1; border: none; outline: none;
+    font-family: var(--font-family-base); font-size: var(--font-size-sm);
+    color: var(--color-text-primary); background: transparent;
+  }
+  #screen-ob-csv-import .ms-nav__search input::placeholder { color: var(--color-text-muted); }
+  #screen-ob-csv-import .ms-nav__icons {
+    display: flex; align-items: center; gap: 2px; margin-left: auto; flex-shrink: 0;
+  }
+  #screen-ob-csv-import .ms-nav__icon {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; cursor: pointer; color: var(--color-gray-600);
+    transition: background var(--transition-fast); position: relative;
+  }
+  #screen-ob-csv-import .ms-nav__icon:hover { background: var(--color-gray-100); }
+  #screen-ob-csv-import .ms-nav__icon--combo {
+    display: flex; align-items: center; gap: 2px;
+    padding: 0 4px; border-radius: 4px; cursor: pointer; color: var(--color-gray-600);
+  }
+  #screen-ob-csv-import .ms-nav__icon--combo:hover { background: var(--color-gray-100); }
+  #screen-ob-csv-import .ms-nav__badge {
+    position: absolute; top: 4px; right: 4px;
+    width: 14px; height: 14px;
+    background: var(--color-danger-base); color: #fff;
+    font-size: 9px; font-weight: var(--font-weight-bold);
+    border-radius: var(--radius-full);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #screen-ob-csv-import .ms-nav__avatar {
+    width: 32px; height: 32px; border-radius: var(--radius-full);
+    background: var(--color-brand-500); color: #fff;
+    font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; margin-left: 4px;
+  }
+  #screen-ob-csv-import .ms-nav__app {
+    display: flex; align-items: stretch; height: 44px; padding-left: 0;
+  }
+  #screen-ob-csv-import .ms-nav__waffle {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; flex-shrink: 0; color: var(--color-gray-600);
+    cursor: pointer; border-right: 1px solid var(--color-gray-300);
+  }
+  #screen-ob-csv-import .ms-nav__appname {
+    display: flex; align-items: center;
+    font-size: var(--font-size-base); font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary); white-space: nowrap;
+    padding: 0 var(--space-medium);
+    border-right: 1px solid var(--color-gray-300); flex-shrink: 0;
+  }
+  #screen-ob-csv-import .ms-nav__tabs {
+    display: flex; align-items: stretch; flex: 1; overflow: hidden;
+  }
+  #screen-ob-csv-import .ms-nav__tab {
+    display: flex; align-items: center; gap: 3px; padding: 0 14px;
+    font-size: var(--font-size-sm); color: var(--color-gray-600);
+    cursor: pointer; white-space: nowrap;
+    border-bottom: 3px solid transparent; transition: color var(--transition-fast); flex-shrink: 0;
+  }
+  #screen-ob-csv-import .ms-nav__tab:hover { color: var(--color-text-primary); }
+  #screen-ob-csv-import .ms-nav__tab.active {
+    color: var(--color-brand-500); border-bottom-color: var(--color-brand-500);
+    font-weight: var(--font-weight-semibold);
+  }
+  #screen-ob-csv-import .ms-nav__tab--dim { color: var(--color-text-muted); cursor: default; }
+  #screen-ob-csv-import .ms-nav__caret { font-size: 9px; color: var(--color-gray-400); }
+  #screen-ob-csv-import .ms-nav__tab.active .ms-nav__caret { color: var(--color-brand-300); }
+  #screen-ob-csv-import .ms-nav__edit {
+    margin-left: auto; display: flex; align-items: center; justify-content: center;
+    width: 44px; flex-shrink: 0; color: var(--color-gray-500);
+    cursor: pointer; border-left: 1px solid var(--color-gray-300);
+  }
+  #screen-ob-csv-import .ms-nav__edit:hover { color: var(--color-brand-500); }
+  /* ── Body ── */
+  #screen-ob-csv-import .ms-body {
+    flex: 1; overflow-y: auto; background: var(--color-bg-page);
+  }
+
   /* Switch to Onboarding font/feel inside this screen */
   #screen-ob-csv-import { font-family: 'Manrope Variable', 'Manrope', system-ui, sans-serif; }
-  .m-topnav-wrap { position: sticky; top: 44px; z-index: 200; }
-  .ob-import-body { padding: var(--space-8) var(--space-8); background: var(--color-bg-page); min-height: calc(100vh - 44px - 80px); }
+  .ob-import-body { padding: var(--space-8) var(--space-8); background: var(--color-bg-page); min-height: calc(100vh - 44px - 76px); }
   .ob-breadcrumb { display:flex;align-items:center;gap:6px;font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:var(--space-6); }
   .ob-breadcrumb a { color:var(--color-primary-600);cursor:pointer; }
   .ob-breadcrumb a:hover { text-decoration:underline; }
@@ -24,79 +132,117 @@
   .import-actions { display:flex;align-items:center;justify-content:flex-end;gap:var(--space-3); }
 </style>
 
-<!-- Manage chrome stays — Onboarding styling inside -->
-<div class="m-topnav-wrap">
-  <div class="topnav" style="font-family:'Salesforce Sans',Arial,sans-serif;">
-    <div class="topnav__utility">
-      <span class="topnav__app-name">AgentSync Manage</span>
-      <div class="topnav__search"><input type="text" placeholder="Search Manage..."></div>
-      <div class="topnav__icons">
-        <button class="topnav__icon-btn">⌂</button>
-        <button class="topnav__icon-btn">⚙</button>
-        <div class="topnav__avatar">JD</div>
+<div class="ms-shell">
+  <div class="ms-nav">
+    <!-- Row 1: Utility bar -->
+    <div class="ms-nav__utility">
+      <a class="ms-logo">
+        <img src="assets/agentsync-logo.png" width="32" height="32" alt="AgentSync" style="display:block">
+      </a>
+      <div class="ms-nav__search">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-text-muted);flex-shrink:0"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+        <input type="text" placeholder="Search...">
+      </div>
+      <div class="ms-nav__icons">
+        <div class="ms-nav__icon--combo" title="Favorites">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.8l-4.9 2.4.9-5.5L2 7.8l5.6-.8z"/></svg>
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><path d="M2 3l3 4 3-4H2z"/></svg>
+        </div>
+        <div class="ms-nav__icon" title="New">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4v12M4 10h12"/></svg>
+        </div>
+        <div class="ms-nav__icon" title="Notifications" style="position:relative">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 016 6c0 3.5 1 5 1.5 6H2.5C3 13 4 11.5 4 8a6 6 0 016-6zm0 16a2 2 0 002-2H8a2 2 0 002 2z"/></svg>
+          <span class="ms-nav__badge">1</span>
+        </div>
+        <div class="ms-nav__icon" title="Help">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M8 8a2 2 0 114 0c0 1.5-2 2-2 3.5M10 15.5v.5"/></svg>
+        </div>
+        <div class="ms-nav__icon" title="Setup" onclick="go('screen-m-settings')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="ms-nav__avatar">JD</div>
       </div>
     </div>
-    <div class="topnav__app">
-      <div class="appnav-item" onclick="go('screen-m-accounts')">Accounts <span class="appnav-item__caret">▾</span></div>
-      <div class="appnav-item active" onclick="go('screen-m-policysets')">Policy Sets <span class="appnav-item__caret">▾</span></div>
-      <div class="appnav-item">Producers <span class="appnav-item__caret">▾</span></div>
-      <div class="appnav-item">Reports <span class="appnav-item__caret">▾</span></div>
-    </div>
-  </div>
-</div>
-
-<div class="ob-import-body">
-  <div class="ob-breadcrumb">
-    <a onclick="go('screen-m-policysets')">Policy Sets</a>
-    <span style="color:var(--color-text-muted)">/</span>
-    <span>Create Policy Set</span>
-  </div>
-  <h1 class="ob-page-title">Import Policy Set Configuration</h1>
-  <p class="ob-page-subtitle">Upload your GWBR rules, task definitions, and policy set template to generate a new policy set automatically.</p>
-
-  <div class="import-steps">
-    <!-- Step 1: GWBR -->
-    <div class="step-card">
-      <div class="step-card__num">1</div>
-      <div class="step-card__title">GWBR Rules</div>
-      <div class="step-card__desc">Upload a CSV of Gateway Business Rules. These determine which regulatory requirements apply per state and LOA.</div>
-      <div class="drop-zone">
-        <div class="drop-zone__icon">📄</div>
-        <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
-        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+    <!-- Row 2: App nav -->
+    <div class="ms-nav__app">
+      <div class="ms-nav__waffle">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="15" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/><rect x="15" y="8" width="5" height="5" rx="1"/><rect x="1" y="15" width="5" height="5" rx="1"/><rect x="8" y="15" width="5" height="5" rx="1"/><rect x="15" y="15" width="5" height="5" rx="1"/></svg>
       </div>
-      <a class="template-link">⬇ Download GWBR template</a>
-    </div>
-
-    <!-- Step 2: Tasks -->
-    <div class="step-card">
-      <div class="step-card__num">2</div>
-      <div class="step-card__title">Task Definitions</div>
-      <div class="step-card__desc">Upload a CSV defining the tasks and components that producers must complete. Required and optional tasks are both supported.</div>
-      <div class="drop-zone">
-        <div class="drop-zone__icon">📋</div>
-        <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
-        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+      <span class="ms-nav__appname">AgentSync</span>
+      <div class="ms-nav__tabs">
+        <div class="ms-nav__tab ms-nav__tab--dim">Companies <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">Contacts <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab" onclick="go('screen-m-accounts')">Accounts <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">People <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">Producer Details <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">Producer Assignments <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">Producer Compliance... <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab active" onclick="go('screen-m-policysets')">Policy Sets <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">More <span class="ms-nav__caret">▾</span></div>
       </div>
-      <a class="template-link">⬇ Download Tasks template</a>
-    </div>
-
-    <!-- Step 3: Policy Set CSV -->
-    <div class="step-card">
-      <div class="step-card__num">3</div>
-      <div class="step-card__title">Policy Set CSV</div>
-      <div class="step-card__desc">Upload the policy set definition file that ties rules and tasks together into a named, versioned policy set.</div>
-      <div class="drop-zone">
-        <div class="drop-zone__icon">⚙️</div>
-        <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
-        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+      <div class="ms-nav__edit" title="Edit tabs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       </div>
-      <a class="template-link">⬇ Download Policy Set template</a>
     </div>
   </div>
 
-  <div class="import-actions">
-    <button class="btn btn--secondary" onclick="go('screen-m-policysets')" style="height:40px;border-radius:var(--radius-md);font-family:'Manrope Variable','Manrope',system-ui,sans-serif;">Cancel</button>
-    <button class="btn btn--primary" onclick="go('screen-m-policysets');showToast('Policy set created successfully')" style="height:40px;border-radius:var(--radius-md);font-family:'Manrope Variable','Manrope',system-ui,sans-serif;">Import &amp; Create Policy Set</button>
+  <div class="ms-body">
+    <!-- Onboarding-styled content inside Manage chrome -->
+    <div class="ob-import-body">
+      <div class="ob-breadcrumb">
+        <a onclick="go('screen-m-policysets')">Policy Sets</a>
+        <span style="color:var(--color-text-muted)">/</span>
+        <span>Create Policy Set</span>
+      </div>
+      <h1 class="ob-page-title">Import Policy Set Configuration</h1>
+      <p class="ob-page-subtitle">Upload your GWBR rules, task definitions, and policy set template to generate a new policy set automatically.</p>
+
+      <div class="import-steps">
+        <!-- Step 1: GWBR -->
+        <div class="step-card">
+          <div class="step-card__num">1</div>
+          <div class="step-card__title">GWBR Rules</div>
+          <div class="step-card__desc">Upload a CSV of Gateway Business Rules. These determine which regulatory requirements apply per state and LOA.</div>
+          <div class="drop-zone">
+            <div class="drop-zone__icon">📄</div>
+            <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+          </div>
+          <a class="template-link">⬇ Download GWBR template</a>
+        </div>
+
+        <!-- Step 2: Tasks -->
+        <div class="step-card">
+          <div class="step-card__num">2</div>
+          <div class="step-card__title">Task Definitions</div>
+          <div class="step-card__desc">Upload a CSV defining the tasks and components that producers must complete. Required and optional tasks are both supported.</div>
+          <div class="drop-zone">
+            <div class="drop-zone__icon">📋</div>
+            <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+          </div>
+          <a class="template-link">⬇ Download Tasks template</a>
+        </div>
+
+        <!-- Step 3: Policy Set CSV -->
+        <div class="step-card">
+          <div class="step-card__num">3</div>
+          <div class="step-card__title">Policy Set CSV</div>
+          <div class="step-card__desc">Upload the policy set definition file that ties rules and tasks together into a named, versioned policy set.</div>
+          <div class="drop-zone">
+            <div class="drop-zone__icon">⚙️</div>
+            <div class="drop-zone__text">Drop file here or <span class="drop-zone__link">browse</span></div>
+            <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">.csv up to 10MB</div>
+          </div>
+          <a class="template-link">⬇ Download Policy Set template</a>
+        </div>
+      </div>
+
+      <div class="import-actions">
+        <button class="btn btn--secondary" onclick="go('screen-m-policysets')" style="height:40px;border-radius:var(--radius-md);font-family:'Manrope Variable','Manrope',system-ui,sans-serif;">Cancel</button>
+        <button class="btn btn--primary" onclick="go('screen-m-policysets-new');showToast('Policy set created successfully')" style="height:40px;border-radius:var(--radius-md);font-family:'Manrope Variable','Manrope',system-ui,sans-serif;">Import &amp; Create Policy Set</button>
+      </div>
+    </div>
   </div>
 </div>
