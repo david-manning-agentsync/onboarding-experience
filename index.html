@@ -539,6 +539,8 @@
 <div id="screen-om-task-detail"     class="screen"></div>
 <div id="screen-om-invite-producer" class="screen"></div>
 <div id="screen-om-tasks"           class="screen"></div>
+<div id="screen-om-aot-producers"   class="screen"></div>
+<div id="screen-om-aot-tasks"       class="screen"></div>
 
 <!-- ============================================================
      PRODUCER SCREENS
@@ -566,6 +568,16 @@
 <script src="js/router.js"></script>
 <script src="js/demo-nav.js"></script>
 <script>
+  // ── Login reset: wrap go() so email screens always start fresh ─
+  (function() {
+    const _go = window.go;
+    window.go = function(id) {
+      _go(id);
+      if (id === 'screen-p-email' && typeof loginShowStep === 'function') loginShowStep('p', 'email');
+      if (id === 'screen-om-email' && typeof loginShowStep === 'function') loginShowStep('om', 'email');
+    };
+  })();
+
   // ── Carrier flow handler ──────────────────────────────────────
 
   const _carrierPersonas = {
@@ -592,7 +604,7 @@
 
   const _agencyPersonas = {
     sysadmin: { label: 'System Admin',    badgeCls: 'persona-agency-sysadmin', screen: 'screen-m-policysets',  theme: 'theme-manage' },
-    ops:      { label: 'Operations Team', badgeCls: 'persona-agency-ops',      screen: 'screen-om-producers',  theme: 'theme-onboarding' },
+    ops:      { label: 'Operations Team', badgeCls: 'persona-agency-ops',      screen: 'screen-om-aot-producers',  theme: 'theme-onboarding' },
     producer: { label: 'Producer',        badgeCls: 'persona-agency-producer', screen: 'screen-p-email',       theme: 'theme-onboarding' },
   };
 
@@ -985,6 +997,8 @@
     { id: 'screen-om-task-detail',    src: 'screens/operating-manager/om-task-detail.html' },
     { id: 'screen-om-invite-producer',src: 'screens/operating-manager/om-invite-producer.html' },
     { id: 'screen-om-tasks',          src: 'screens/operating-manager/om-tasks.html' },
+    { id: 'screen-om-aot-producers',  src: 'screens/operating-manager/om-aot-producers.html' },
+    { id: 'screen-om-aot-tasks',      src: 'screens/operating-manager/om-aot-tasks.html' },
     { id: 'screen-p-email',           src: 'screens/producer/p-email.html' },
     { id: 'screen-p-login',           src: 'screens/producer/p-login.html' },
     { id: 'screen-p-transition',      src: 'screens/producer/p-transition.html' },
