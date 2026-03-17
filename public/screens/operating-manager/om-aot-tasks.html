@@ -141,8 +141,8 @@
         </thead>
         <tbody>
           <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-1', this)">
-            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-loa')">LOA Confirmation — P&amp;C</a></td>
-            <td><a onclick="event.stopPropagation();go('screen-om-producer-record')" class="td-link">Claire Sutton</a></td>
+            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-loa','aot')">LOA Confirmation — P&amp;C</a></td>
+            <td><a onclick="event.stopPropagation();openProducerRecord('aot')" class="td-link">Claire Sutton</a></td>
             <td>18472910</td>
             <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></td>
             <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">In Progress</span></td>
@@ -162,7 +162,7 @@
           </tr>
 
           <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-2', this)">
-            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-license')">License Upload</a></td>
+            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-license','aot')">License Upload</a></td>
             <td><a class="td-link">Marcus Webb</a></td>
             <td>20938471</td>
             <td><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);">Needs License</span></td>
@@ -183,8 +183,8 @@
           </tr>
 
           <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-3', this)">
-            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-eo')">E&amp;O Insurance Upload</a></td>
-            <td><a onclick="event.stopPropagation();go('screen-om-producer-record')" class="td-link">Claire Sutton</a></td>
+            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-eo','aot')">E&amp;O Insurance Upload</a></td>
+            <td><a onclick="event.stopPropagation();openProducerRecord('aot')" class="td-link">Claire Sutton</a></td>
             <td>18472910</td>
             <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></td>
             <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Complete</span></td>
@@ -204,7 +204,7 @@
           </tr>
 
           <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-4', this)">
-            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-bgcheck')">Background Check Consent</a></td>
+            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-bgcheck','aot')">Background Check Consent</a></td>
             <td><a class="td-link">Diego Flores</a></td>
             <td>19472837</td>
             <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs Org Requirements</span></td>
@@ -225,7 +225,7 @@
           </tr>
 
           <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-5', this)">
-            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-license')">NPN Verification</a></td>
+            <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-license','aot')">NPN Verification</a></td>
             <td><a class="td-link">Lena Kim</a></td>
             <td>27384910</td>
             <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);">Invited</span></td>

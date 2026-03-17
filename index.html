@@ -1011,6 +1011,30 @@
     if (tr) tr.remove();
   }
 
+  // ── Producer record context (coo | aot) ─────────────────────
+  window._prContext = 'coo';
+
+  function openProducerRecord(context) {
+    window._prContext = context || window._prContext || 'coo';
+    go('screen-om-producer-record');
+    const rec = document.getElementById('screen-om-producer-record');
+    if (!rec) return;
+    const isAot = window._prContext === 'aot';
+    rec.querySelectorAll('.pr-nav-dashboard, .pr-nav-reports').forEach(el => {
+      el.style.display = isAot ? 'none' : '';
+    });
+  }
+
+  function prNavProducers() {
+    if (window._prContext === 'aot') go('screen-om-aot-producers');
+    else go('screen-om-producers');
+  }
+
+  function prNavTasks() {
+    if (window._prContext === 'aot') go('screen-om-aot-tasks');
+    else go('screen-om-tasks');
+  }
+
   // ── Invite Producer drawer ────────────────────────────────────
   function openInviteDrawer() {
     document.getElementById('invite-drawer-overlay').classList.add('open');
@@ -1022,8 +1046,8 @@
   }
 
   // ── Navigate to producer record with specific task open ────────
-  function goToProducerTask(taskPanelId) {
-    go('screen-om-producer-record');
+  function goToProducerTask(taskPanelId, context) {
+    openProducerRecord(context);
     // Activate Tasks tab, deactivate Details tab
     document.querySelectorAll('#screen-om-producer-record .tab').forEach(t => {
       t.classList.toggle('active', t.getAttribute('onclick') && t.getAttribute('onclick').includes('tab-pr-tasks'));
