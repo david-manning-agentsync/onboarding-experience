@@ -32,36 +32,41 @@
   #screen-p-tasks .p-body {
     position: absolute; top: 56px; left: 0; right: 0; bottom: 0;
     overflow-y: auto;
-    background: var(--color-bg-surface) !important;
-    max-width: none !important;
+    background: var(--color-bg-page);
     padding: var(--space-6) var(--space-8);
   }
-
-  /* Header card */
-  #screen-p-tasks .pr-header {
-    position: relative;
+  #screen-p-tasks .p-body__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-8);
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-xl);
-    padding: var(--space-6) var(--space-7);
-    margin-bottom: var(--space-6);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    overflow: hidden;
+  }
+
+  /* Header section — flat, inside outer white card */
+  #screen-p-tasks .pr-header {
+    position: relative;
+    padding: var(--space-6) 0;
+    margin-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border-default);
+    overflow: visible;
   }
   #screen-p-tasks .pr-header::before {
     content: '';
     position: absolute; top: -60px; right: -60px;
     width: 220px; height: 220px; border-radius: var(--radius-full);
-    border: 40px solid var(--color-primary-50); pointer-events: none;
+    border: 40px solid var(--color-primary-50); pointer-events: none; z-index: 0;
   }
   #screen-p-tasks .pr-header::after {
     content: '';
     position: absolute; top: 20px; right: 40px;
     width: 120px; height: 120px; border-radius: var(--radius-full);
-    border: 28px solid var(--color-primary-100); pointer-events: none;
+    border: 28px solid var(--color-primary-100); pointer-events: none; z-index: 0;
   }
   #screen-p-tasks .pr-header__row {
-    display: flex; align-items: flex-start; gap: var(--space-5);
+    display: flex; align-items: center; gap: var(--space-5);
     position: relative; z-index: 1;
   }
   #screen-p-tasks .pr-header__avatar {
@@ -281,8 +286,9 @@
 
   <!-- Body -->
   <div class="p-body">
+    <div class="p-body__inner">
 
-    <!-- Header Card -->
+    <!-- Header -->
     <div class="pr-header">
       <div class="pr-header__row">
         <div class="pr-header__avatar">CS</div>
@@ -581,5 +587,6 @@
       </div>
     </div><!-- end #p-tab-details -->
 
+    </div><!-- end .p-body__inner -->
   </div><!-- end .p-body -->
 </div><!-- end .p-shell -->

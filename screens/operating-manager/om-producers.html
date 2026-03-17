@@ -76,57 +76,89 @@
   }
 
   /* ── Page header ── */
-  #screen-om-producers .page-header-row {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: var(--space-6);
+  #screen-om-producers .pt-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: var(--space-5);
   }
-  #screen-om-producers .page-title {
+  #screen-om-producers .pt-header__title {
     font-size: var(--font-size-xl); font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
+    color: var(--color-text-primary); margin: 0 0 var(--space-1);
+  }
+  #screen-om-producers .pt-header__subtitle {
+    font-size: var(--font-size-sm); color: var(--color-text-muted); margin: 0;
   }
 
-  /* ── Filter row ── */
-  #screen-om-producers .filter-row {
-    display: flex; align-items: center; gap: var(--space-3);
-    margin-bottom: var(--space-5); flex-wrap: wrap;
+  /* ── Tabs ── */
+  #screen-om-producers .pt-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-4);
   }
-  #screen-om-producers .filter-row .search-input input { width: 280px; }
+  #screen-om-producers .pt-tab {
+    height: 36px; padding: 0 var(--space-4); background: none; border: none;
+    border-bottom: 2px solid transparent; font-family: var(--font-family-base);
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary); cursor: pointer; margin-bottom: -1px;
+    transition: color var(--transition-fast);
+  }
+  #screen-om-producers .pt-tab.active {
+    color: var(--color-primary-600); border-bottom-color: var(--color-primary-600);
+  }
+  #screen-om-producers .pt-tab:hover:not(.active) { color: var(--color-text-primary); }
+
+  /* ── Toolbar ── */
+  #screen-om-producers .pt-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+  #screen-om-producers .pt-count { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+  #screen-om-producers .pt-toolbar__right { display: flex; align-items: center; gap: var(--space-2); }
+  #screen-om-producers .pt-icon-btn {
+    height: 34px; padding: 0 var(--space-3); display: flex; align-items: center;
+    gap: var(--space-1); border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md); background: var(--color-bg-surface);
+    font-family: var(--font-family-base); font-size: var(--font-size-sm);
+    color: var(--color-text-secondary); cursor: pointer;
+  }
+  #screen-om-producers .pt-icon-btn:hover { background: var(--color-gray-50); }
 
   /* ── Table ── */
-  #screen-om-producers .table-wrapper { border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; }
-  #screen-om-producers .table-toolbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: var(--space-3) var(--space-4);
-    border-bottom: 1px solid var(--color-border-default);
-    background: var(--color-bg-surface);
+  #screen-om-producers .table-wrapper {
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden;
   }
-  #screen-om-producers .table-row-count { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
   #screen-om-producers table { width: 100%; border-collapse: collapse; background: var(--color-bg-surface); }
-  #screen-om-producers thead tr { border-bottom: 1px solid var(--color-border-default); }
-  #screen-om-producers th {
+  #screen-om-producers thead th {
+    background: var(--color-gray-50);
     padding: var(--space-3) var(--space-4); text-align: left;
-    font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
     color: var(--color-text-secondary); white-space: nowrap;
-    text-transform: uppercase; letter-spacing: var(--tracking-wide); user-select: none;
+    border-bottom: 1px solid var(--color-border-default); user-select: none;
   }
-  #screen-om-producers tbody tr { border-bottom: 1px solid var(--color-border-default); transition: background var(--transition-fast); cursor: pointer; }
+  #screen-om-producers tbody tr {
+    border-bottom: 1px solid var(--color-border-default);
+    transition: background var(--transition-fast); cursor: pointer;
+  }
   #screen-om-producers tbody tr:last-child { border-bottom: none; }
   #screen-om-producers tbody tr:hover { background: var(--color-gray-50); }
-  #screen-om-producers td { padding: var(--space-3) var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-primary); vertical-align: middle; }
+  #screen-om-producers td {
+    padding: var(--space-3) var(--space-4); font-size: var(--font-size-sm);
+    color: var(--color-text-primary); vertical-align: middle;
+  }
   #screen-om-producers .td-cb { width: 36px; text-align: center; padding: 0 var(--space-2); }
-  #screen-om-producers .td-link { color: var(--color-primary-600); font-weight: var(--font-weight-medium); cursor: pointer; }
+  #screen-om-producers .td-link {
+    color: var(--color-primary-600); font-weight: var(--font-weight-medium); cursor: pointer;
+  }
   #screen-om-producers .td-link:hover { text-decoration: underline; }
 
-  /* Selection action bar */
-  #screen-om-producers .prod-action-bar {
-    display: none; align-items: center; gap: var(--space-3);
-    padding: var(--space-2) var(--space-4);
-    background: var(--color-primary-50); border-bottom: 1px solid var(--color-primary-200);
+  /* ── Onboarding progress ── */
+  #screen-om-producers .ob-cell { display: flex; align-items: center; gap: var(--space-2); }
+  #screen-om-producers .ob-dot {
+    width: 8px; height: 8px; border-radius: var(--radius-full); flex-shrink: 0;
   }
-  #screen-om-producers .prod-action-bar.visible { display: flex; }
-  #screen-om-producers .prod-action-count { font-size: var(--font-size-sm); color: var(--color-text-secondary); flex: 1; }
-  #screen-om-producers .prod-action-btn { height: 28px; padding: 0 var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--color-border-strong); background: var(--color-bg-surface); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); font-family: var(--font-family-base); cursor: pointer; color: var(--color-primary-600); }
-  #screen-om-producers .prod-action-clear { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; font-size: 18px; color: var(--color-text-muted); cursor: pointer; }
+  #screen-om-producers .ob-dot--progress { background: var(--color-primary-600); }
+  #screen-om-producers .ob-dot--complete { background: var(--color-success-600); }
+
+  /* action bar — styled globally in index.html */
 </style>
 
 <div class="coo-shell">
@@ -171,29 +203,31 @@
 
     <!-- Main -->
     <div class="coo-main">
-      <div class="page-header-row">
-        <h1 class="page-title">Producers</h1>
+
+      <div class="pt-header">
+        <div class="pt-header__titles">
+          <h1 class="pt-header__title">Producers</h1>
+          <p class="pt-header__subtitle">Summit Agency Group · Spring 2026 Onboarding</p>
+        </div>
         <button class="btn btn--primary" onclick="openInviteDrawer()">+ Invite Producer</button>
       </div>
 
-      <div class="filter-row">
-        <div class="search-input">
-          <svg class="search-input__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10 10l3 3"/></svg>
-          <input type="text" placeholder="Search producers...">
+      <div class="pt-toolbar">
+        <span class="pt-count">12 producers</span>
+        <div class="pt-toolbar__right">
+          <div class="search-input" style="width:240px">
+            <svg class="search-input__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10 10l3 3"/></svg>
+            <input type="text" placeholder="Search producers...">
+          </div>
+          <button class="pt-icon-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filter
+          </button>
+          <button class="pt-icon-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+            Columns
+          </button>
         </div>
-        <select class="form-select" style="width:160px">
-          <option>All Readiness</option>
-          <option>Needs License</option>
-          <option>Needs LOAs</option>
-          <option>Needs Org Req.</option>
-          <option>Ready</option>
-        </select>
-        <select class="form-select" style="width:160px">
-          <option>All Statuses</option>
-          <option>Invited</option>
-          <option>In Progress</option>
-          <option>Completed</option>
-        </select>
       </div>
 
       <div class="table-wrapper">
@@ -202,79 +236,77 @@
           <button class="prod-action-btn" onclick="prodShowPSModal(document.getElementById('coo-prod-action-bar'))">+ Add Policy Set</button>
           <button class="prod-action-clear" onclick="prodClearSelection(document.getElementById('coo-prod-action-bar'))" title="Clear">×</button>
         </div>
-        <div class="table-toolbar">
-          <span class="table-row-count">12 producers</span>
-        </div>
         <table>
           <thead>
             <tr>
-              <th class="td-cb"><input type="checkbox" onclick="prodToggleAll(this)"></th>
-              <th>Name</th>
+              <th class="td-cb"><input type="checkbox" class="prod-all-cb" onclick="prodToggleAll(this)"></th>
+              <th>Producer</th>
               <th>NPN</th>
-              <th>Readiness</th>
-              <th>Process Status</th>
-              <th>Invited</th>
-              <th>Last Task</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Onboarding</th>
+              <th>Residence</th>
             </tr>
           </thead>
           <tbody>
             <tr onclick="openProducerRecord('coo')">
-              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" onclick="prodToggleRow(this)"></td>
+              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" class="prod-row-cb" onclick="prodToggleRow(this)"></td>
               <td><a class="td-link" onclick="event.stopPropagation();openProducerRecord('coo')">Claire Sutton</a></td>
               <td>18472910</td>
-              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs LOAs</span></td>
-              <td><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></td>
-              <td>Mar 3, 2026</td>
-              <td>LOA Confirmation</td>
+              <td>Agent</td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">In Progress</span></td>
+              <td><div class="ob-cell"><span class="ob-dot ob-dot--progress"></span>In progress (67%)</div></td>
+              <td>CO</td>
             </tr>
             <tr>
-              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" onclick="prodToggleRow(this)"></td>
+              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" class="prod-row-cb" onclick="prodToggleRow(this)"></td>
               <td><a class="td-link">Marcus Webb</a></td>
               <td>20938471</td>
-              <td><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);">Needs License</span></td>
-              <td><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></td>
-              <td>Mar 5, 2026</td>
-              <td>License Upload</td>
+              <td>Agent</td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">In Progress</span></td>
+              <td><div class="ob-cell"><span class="ob-dot ob-dot--progress"></span>In progress (33%)</div></td>
+              <td>TX</td>
             </tr>
             <tr>
-              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" onclick="prodToggleRow(this)"></td>
+              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" class="prod-row-cb" onclick="prodToggleRow(this)"></td>
               <td><a class="td-link">Priya Nair</a></td>
               <td>33019847</td>
-              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Ready</span></td>
-              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Completed</span></td>
-              <td>Feb 14, 2026</td>
-              <td>E&amp;O Upload</td>
+              <td>Agent</td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Complete</span></td>
+              <td><div class="ob-cell"><span class="ob-dot ob-dot--complete"></span>Complete</div></td>
+              <td>FL</td>
             </tr>
             <tr>
-              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" onclick="prodToggleRow(this)"></td>
+              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" class="prod-row-cb" onclick="prodToggleRow(this)"></td>
               <td><a class="td-link">Diego Flores</a></td>
               <td>19472837</td>
-              <td><span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Needs Org Requirements</span></td>
-              <td><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">In Progress</span></td>
-              <td>Mar 1, 2026</td>
-              <td>Background Check</td>
+              <td>Agent</td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">In Progress</span></td>
+              <td><div class="ob-cell"><span class="ob-dot ob-dot--progress"></span>In progress (50%)</div></td>
+              <td>CA</td>
             </tr>
             <tr>
-              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" onclick="prodToggleRow(this)"></td>
+              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" class="prod-row-cb" onclick="prodToggleRow(this)"></td>
               <td><a class="td-link">Lena Kim</a></td>
               <td>27384910</td>
-              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);">Invited</span></td>
-              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);">Invited</span></td>
-              <td>Mar 10, 2026</td>
-              <td>—</td>
+              <td>Agent</td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Invited</span></td>
+              <td><div class="ob-cell"><span class="ob-dot ob-dot--progress"></span>In progress (10%)</div></td>
+              <td>NY</td>
             </tr>
             <tr>
-              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" onclick="prodToggleRow(this)"></td>
+              <td class="td-cb" onclick="event.stopPropagation()"><input type="checkbox" class="prod-row-cb" onclick="prodToggleRow(this)"></td>
               <td><a class="td-link">James O'Brien</a></td>
               <td>38472019</td>
-              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Ready</span></td>
-              <td><span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);">Completed</span></td>
-              <td>Feb 22, 2026</td>
-              <td>All Tasks</td>
+              <td>Firm</td>
+              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Complete</span></td>
+              <td><div class="ob-cell"><span class="ob-dot ob-dot--complete"></span>Complete</div></td>
+              <td>OH</td>
             </tr>
           </tbody>
         </table>
       </div>
+
     </div>
 
   </div>

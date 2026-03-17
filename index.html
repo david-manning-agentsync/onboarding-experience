@@ -275,58 +275,66 @@
       border-color: var(--color-gray-400, #9ca3af);
     }
 
-    /* ── Add Policy Set modal ── */
-    #ps-add-modal {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45); z-index: 10000;
-      align-items: center; justify-content: center;
+    /* ── Add Policy Set drawer ── */
+    #ps-add-overlay {
+      position: fixed; top: 44px; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 8000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    #ps-add-overlay.open { opacity: 1; pointer-events: auto; }
+    #ps-add-drawer {
+      position: fixed; top: 44px; right: 0; bottom: 0; width: 480px;
+      background: #fff;
+      box-shadow: -6px 0 32px rgba(0,0,0,0.14);
+      z-index: 8001;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
       font-family: system-ui, sans-serif;
     }
-    #ps-add-modal.open { display: flex; }
-    .ps-add-modal__dialog {
-      background: #fff; border-radius: 8px; width: 480px;
-      max-width: calc(100vw - 48px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25); overflow: hidden;
+    #ps-add-drawer.open { transform: translateX(0); }
+    #ps-add-drawer .psd-header {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px; border-bottom: 1px solid #e5e7eb;
     }
-    .ps-add-modal__header {
-      padding: 18px 20px 14px; border-bottom: 1px solid #e5e7eb;
-      display: flex; align-items: center; justify-content: space-between;
+    #ps-add-drawer .psd-title { font-size: 18px; font-weight: 700; color: #111827; }
+    #ps-add-drawer .psd-close {
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      border-radius: 6px; color: #6b7280; cursor: pointer; background: none; border: none;
+      flex-shrink: 0;
     }
-    .ps-add-modal__title { font-size: 16px; font-weight: 700; color: #111827; }
-    .ps-add-modal__close {
-      background: none; border: none; cursor: pointer;
-      color: #6b7280; display: flex; align-items: center; padding: 2px;
-    }
-    .ps-add-modal__close:hover { color: #111827; }
-    .ps-add-modal__body { padding: 16px 20px; }
-    .ps-add-modal__sub { font-size: 13px; color: #6b7280; margin-bottom: 16px; line-height: 1.5; }
-    .ps-add-modal__list { display: flex; flex-direction: column; gap: 8px; }
-    .ps-add-modal__option {
-      display: flex; align-items: flex-start; gap: 12px; padding: 12px;
-      border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer;
+    #ps-add-drawer .psd-close:hover { background: #f3f4f6; color: #111827; }
+    #ps-add-drawer .psd-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    #ps-add-drawer .psd-sub { font-size: 13px; color: #6b7280; margin-bottom: 16px; line-height: 1.5; }
+    #ps-add-drawer .psd-list { display: flex; flex-direction: column; gap: 8px; }
+    #ps-add-drawer .psd-option {
+      display: flex; align-items: flex-start; gap: 12px; padding: 14px;
+      border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;
       transition: border-color 100ms, background 100ms;
     }
-    .ps-add-modal__option:hover { border-color: #93c5fd; background: #f0f7ff; }
-    .ps-add-modal__option:has(input:checked) { border-color: #1a56db; background: #eff6ff; }
-    .ps-add-modal__option input[type="checkbox"] { margin-top: 2px; accent-color: #1a56db; flex-shrink: 0; width: 15px; height: 15px; }
-    .ps-add-modal__opt-name { font-size: 14px; font-weight: 600; color: #111827; }
-    .ps-add-modal__opt-desc { font-size: 12px; color: #6b7280; margin-top: 3px; line-height: 1.4; }
-    .ps-add-modal__footer {
-      padding: 12px 20px; border-top: 1px solid #e5e7eb;
-      display: flex; justify-content: flex-end; gap: 8px; background: #f9fafb;
+    #ps-add-drawer .psd-option:hover { border-color: #93c5fd; background: #f0f7ff; }
+    #ps-add-drawer .psd-option:has(input:checked) { border-color: #1a56db; background: #eff6ff; }
+    #ps-add-drawer .psd-option input[type="checkbox"] { margin-top: 2px; accent-color: #1a56db; flex-shrink: 0; width: 15px; height: 15px; }
+    #ps-add-drawer .psd-opt-name { font-size: 14px; font-weight: 600; color: #111827; }
+    #ps-add-drawer .psd-opt-desc { font-size: 12px; color: #6b7280; margin-top: 3px; line-height: 1.4; }
+    #ps-add-drawer .psd-footer {
+      flex-shrink: 0; display: flex; justify-content: flex-end; gap: 8px;
+      padding: 14px 24px; border-top: 1px solid #e5e7eb; background: #f9fafb;
     }
-    .ps-add-modal__cancel {
-      padding: 7px 16px; border-radius: 4px; border: 1px solid #d1d5db;
+    #ps-add-drawer .psd-cancel {
+      padding: 8px 18px; border-radius: 6px; border: 1px solid #d1d5db;
       background: #fff; color: #374151; font-size: 14px; font-weight: 600;
       cursor: pointer; font-family: system-ui, sans-serif;
     }
-    .ps-add-modal__cancel:hover { background: #f3f4f6; }
-    .ps-add-modal__confirm {
-      padding: 7px 16px; border-radius: 4px; border: 1px solid #1a56db;
+    #ps-add-drawer .psd-cancel:hover { background: #f3f4f6; }
+    #ps-add-drawer .psd-confirm {
+      padding: 8px 18px; border-radius: 6px; border: 1px solid #1a56db;
       background: #1a56db; color: #fff; font-size: 14px; font-weight: 600;
       cursor: pointer; font-family: system-ui, sans-serif;
     }
-    .ps-add-modal__confirm:hover { background: #1e40af; }
+    #ps-add-drawer .psd-confirm:hover { background: #1e40af; }
 
     /* Offset for demo nav */
     body { padding-top: 44px; }
@@ -607,45 +615,51 @@
   </div>
 </div>
 
-<!-- Producer: Add Policy Set modal -->
-<div id="ps-add-modal" onclick="if(event.target===this)prodHidePSModal()">
-  <div class="ps-add-modal__dialog">
-    <div class="ps-add-modal__header">
-      <span class="ps-add-modal__title" id="ps-add-modal-title">Add Policy Set</span>
-      <button class="ps-add-modal__close" onclick="prodHidePSModal()">
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
-      </button>
+<!-- Producer: Add Policy Set drawer -->
+<div id="ps-add-overlay" onclick="prodHidePSModal()"></div>
+<div id="ps-add-drawer">
+  <div class="psd-header">
+    <span class="psd-title" id="ps-add-drawer-title">Add Policy Set</span>
+    <button class="psd-close" onclick="prodHidePSModal()">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
+    </button>
+  </div>
+  <div class="psd-body">
+    <p class="psd-sub">Select one or more optional policy sets to apply. Only policy sets marked Optional on this account are available here.</p>
+    <div class="psd-list" id="ps-add-drawer-list">
+      <label class="psd-option">
+        <input type="checkbox" value="background-check">
+        <div>
+          <div class="psd-opt-name">Background Check — Tier 1</div>
+          <div class="psd-opt-desc">Criminal background screening through our compliance partner. Results returned within 3–5 business days.</div>
+        </div>
+      </label>
+      <label class="psd-option">
+        <input type="checkbox" value="eo-annual">
+        <div>
+          <div class="psd-opt-name">E&amp;O Verification — Annual Renewal</div>
+          <div class="psd-opt-desc">Verify current E&amp;O coverage and collect updated certificate on the producer's renewal schedule.</div>
+        </div>
+      </label>
+      <label class="psd-option">
+        <input type="checkbox" value="state-compliance">
+        <div>
+          <div class="psd-opt-name">State Compliance Attestation</div>
+          <div class="psd-opt-desc">Producer self-attests to compliance with applicable state regulations and continuing education requirements.</div>
+        </div>
+      </label>
+      <label class="psd-option">
+        <input type="checkbox" value="finra">
+        <div>
+          <div class="psd-opt-name">FINRA Registration</div>
+          <div class="psd-opt-desc">Verify FINRA registration status and collect supporting documentation for securities-licensed producers.</div>
+        </div>
+      </label>
     </div>
-    <div class="ps-add-modal__body">
-      <p class="ps-add-modal__sub">Select one or more optional policy sets to apply. Only policy sets marked Optional on this account are available here.</p>
-      <div class="ps-add-modal__list" id="ps-add-modal-list">
-        <label class="ps-add-modal__option">
-          <input type="checkbox" value="background-check">
-          <div>
-            <div class="ps-add-modal__opt-name">Background Check — Tier 1</div>
-            <div class="ps-add-modal__opt-desc">Criminal background screening through our compliance partner. Results returned within 3–5 business days.</div>
-          </div>
-        </label>
-        <label class="ps-add-modal__option">
-          <input type="checkbox" value="eo-annual">
-          <div>
-            <div class="ps-add-modal__opt-name">E&amp;O Verification — Annual Renewal</div>
-            <div class="ps-add-modal__opt-desc">Verify current E&amp;O coverage and collect updated certificate on the producer's renewal schedule.</div>
-          </div>
-        </label>
-        <label class="ps-add-modal__option">
-          <input type="checkbox" value="state-compliance">
-          <div>
-            <div class="ps-add-modal__opt-name">State Compliance Attestation</div>
-            <div class="ps-add-modal__opt-desc">Producer self-attests to compliance with applicable state regulations and continuing education requirements.</div>
-          </div>
-        </label>
-      </div>
-    </div>
-    <div class="ps-add-modal__footer">
-      <button class="ps-add-modal__cancel" onclick="prodHidePSModal()">Cancel</button>
-      <button class="ps-add-modal__confirm" onclick="prodConfirmPS()">Apply Policy Sets</button>
-    </div>
+  </div>
+  <div class="psd-footer">
+    <button class="psd-cancel" onclick="prodHidePSModal()">Cancel</button>
+    <button class="psd-confirm" onclick="prodConfirmPS()">Apply Policy Sets</button>
   </div>
 </div>
 
@@ -851,10 +865,11 @@
     window._prodActionBar = barEl;
     const wrap = barEl.closest('.table-wrapper, .ms-table-wrap');
     const count = wrap ? wrap.querySelectorAll('.prod-row-cb:checked').length : 0;
-    document.getElementById('ps-add-modal-title').textContent =
+    document.getElementById('ps-add-drawer-title').textContent =
       'Add Policy Set to ' + count + (count === 1 ? ' Producer' : ' Producers');
-    document.querySelectorAll('#ps-add-modal-list input').forEach(cb => cb.checked = false);
-    document.getElementById('ps-add-modal').classList.add('open');
+    document.querySelectorAll('#ps-add-drawer-list input').forEach(cb => cb.checked = false);
+    document.getElementById('ps-add-overlay').classList.add('open');
+    document.getElementById('ps-add-drawer').classList.add('open');
   }
 
   function showPermSetModal() {
@@ -899,11 +914,12 @@
   }
 
   function prodHidePSModal() {
-    document.getElementById('ps-add-modal').classList.remove('open');
+    document.getElementById('ps-add-overlay').classList.remove('open');
+    document.getElementById('ps-add-drawer').classList.remove('open');
   }
 
   function prodConfirmPS() {
-    const checked = document.querySelectorAll('#ps-add-modal-list input:checked');
+    const checked = document.querySelectorAll('#ps-add-drawer-list input:checked');
     if (checked.length === 0) return;
     prodHidePSModal();
     if (window._prodActionBar) {
@@ -1014,9 +1030,30 @@
     const rec = document.getElementById('screen-om-producer-record');
     if (!rec) return;
     const isAot = window._prContext === 'aot';
+    const cooChrome = rec.querySelector('.pr-chrome--coo');
+    const aotChrome = rec.querySelector('.pr-chrome--aot');
+    const sidebar = rec.querySelector('.coo-sidebar');
+    if (cooChrome) cooChrome.style.display = isAot ? 'none' : 'block';
+    if (aotChrome) aotChrome.style.display = isAot ? 'block' : 'none';
+    if (sidebar) sidebar.style.display = isAot ? 'none' : 'block';
     rec.querySelectorAll('.pr-nav-dashboard, .pr-nav-reports').forEach(el => {
-      el.style.display = isAot ? 'none' : '';
+      el.style.display = isAot ? '' : 'none';
     });
+  }
+
+  function openTaskDetail(context) {
+    const ctx = context || window._prContext || 'coo';
+    window._tdContext = ctx;
+    go('screen-om-task-detail');
+    const el = document.getElementById('screen-om-task-detail');
+    if (!el) return;
+    const isAot = ctx === 'aot';
+    const cooChrome = el.querySelector('.td-chrome--coo');
+    const aotChrome = el.querySelector('.td-chrome--aot');
+    const sidebar = el.querySelector('.td-sidebar');
+    if (cooChrome) cooChrome.style.display = isAot ? 'none' : 'block';
+    if (aotChrome) aotChrome.style.display = isAot ? 'block' : 'none';
+    if (sidebar) sidebar.style.display = isAot ? 'none' : 'block';
   }
 
   function prNavProducers() {

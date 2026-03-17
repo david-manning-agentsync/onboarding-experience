@@ -220,9 +220,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="clickable" onclick="go('screen-om-producer-record')">
+              <tr class="clickable" onclick="openProducerRecord('aot')">
                 <td><input type="checkbox" class="prod-row-cb" onclick="event.stopPropagation();prodToggleRow(this)"></td>
-                <td><a class="td-link" onclick="event.stopPropagation();go('screen-om-producer-record')">Claire Sutton</a></td>
+                <td><a class="td-link" onclick="event.stopPropagation();openProducerRecord('aot')">Claire Sutton</a></td>
                 <td>18472910</td>
                 <td><span class="pill pill--warning">Needs LOAs</span></td>
                 <td><span class="pill pill--info">In Progress</span></td>
@@ -326,7 +326,7 @@
               <tr class="clickable task-row" onclick="aoToggleDrawer('ao-drawer-1', this)">
                 <td><input type="checkbox" onclick="event.stopPropagation()"></td>
                 <td><a class="td-link">LOA Confirmation — P&amp;C</a></td>
-                <td><a class="td-link" onclick="event.stopPropagation();go('screen-om-producer-record')">Claire Sutton</a></td>
+                <td><a class="td-link" onclick="event.stopPropagation();openProducerRecord('aot')">Claire Sutton</a></td>
                 <td>18472910</td>
                 <td><span class="pill pill--warning">Needs LOAs</span></td>
                 <td><span class="pill pill--warning">In Progress</span></td>
@@ -340,7 +340,7 @@
                       <div class="task-drawer-title">LOA Confirmation — Property &amp; Casualty</div>
                       <div class="task-drawer-desc">Confirm that Claire Sutton holds active LOAs for Property and Casualty in her resident state (CO) and required non-resident states (TX, FL). 1 of 3 components verified.</div>
                     </div>
-                    <button class="btn btn--brand" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                    <button class="btn btn--brand" onclick="event.stopPropagation();openTaskDetail('aot')">View Task →</button>
                   </div>
                 </td>
               </tr>
@@ -362,7 +362,7 @@
                       <div class="task-drawer-title">License Upload</div>
                       <div class="task-drawer-desc">Marcus Webb needs to upload a copy of his resident state license. Currently in progress — awaiting document submission.</div>
                     </div>
-                    <button class="btn btn--brand" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                    <button class="btn btn--brand" onclick="event.stopPropagation();openTaskDetail('aot')">View Task →</button>
                   </div>
                 </td>
               </tr>
@@ -370,7 +370,7 @@
               <tr class="clickable task-row" onclick="aoToggleDrawer('ao-drawer-3', this)">
                 <td><input type="checkbox" onclick="event.stopPropagation()"></td>
                 <td><a class="td-link">E&amp;O Insurance Upload</a></td>
-                <td><a class="td-link" onclick="event.stopPropagation();go('screen-om-producer-record')">Claire Sutton</a></td>
+                <td><a class="td-link" onclick="event.stopPropagation();openProducerRecord('aot')">Claire Sutton</a></td>
                 <td>18472910</td>
                 <td><span class="pill pill--warning">Needs LOAs</span></td>
                 <td><span class="pill pill--success">Complete</span></td>
@@ -384,7 +384,7 @@
                       <div class="task-drawer-title">E&amp;O Insurance Upload</div>
                       <div class="task-drawer-desc">Claire Sutton has completed this task. E&O certificate uploaded and verified on Mar 8, 2026. Policy expiration: Apr 1, 2027.</div>
                     </div>
-                    <button class="btn btn--neutral" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                    <button class="btn btn--neutral" onclick="event.stopPropagation();openTaskDetail('aot')">View Task →</button>
                   </div>
                 </td>
               </tr>
@@ -406,7 +406,7 @@
                       <div class="task-drawer-title">Background Check Consent</div>
                       <div class="task-drawer-desc">Diego Flores has not yet started the background check consent form. This task is required by agency policy for all California-licensed producers.</div>
                     </div>
-                    <button class="btn btn--brand" onclick="event.stopPropagation();go('screen-om-task-detail')">View Task →</button>
+                    <button class="btn btn--brand" onclick="event.stopPropagation();openTaskDetail('aot')">View Task →</button>
                   </div>
                 </td>
               </tr>
