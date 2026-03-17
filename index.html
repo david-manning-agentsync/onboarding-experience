@@ -446,8 +446,8 @@
   <div class="demo-nav-center">
     <!-- Carrier flow buttons -->
     <div id="carrier-flows" class="demo-flow-group">
-      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'sysadmin')">System Admin</button>
-      <button class="demo-flow-btn active" onclick="goCarrierFlow(this, 'firmmgmt')">Firm Mgmt</button>
+      <button class="demo-flow-btn active" onclick="goCarrierFlow(this, 'sysadmin')">System Admin</button>
+      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'firmmgmt')">Firm Mgmt</button>
       <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'onboarding')">Onboarding Operations</button>
       <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'producer')">Producer</button>
     </div>
@@ -463,7 +463,7 @@
       <button class="season-btn active">Spring</button>
       <button class="season-btn disabled">Fall</button>
     </div>
-    <span id="persona-badge" class="demo-persona-badge persona-carrier-firmmgmt">Firm Mgmt</span>
+    <span id="persona-badge" class="demo-persona-badge persona-carrier-sysadmin">System Admin</span>
   </div>
 </nav>
 
@@ -774,12 +774,12 @@
     document.getElementById('agency-flows').style.display  = ctx === 'agency'  ? '' : 'none';
 
     if (ctx === 'carrier') {
-      const firmmgmtBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(2)');
-      goCarrierFlow(firmmgmtBtn, 'firmmgmt');
+      const sysadminBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(1)');
+      goCarrierFlow(sysadminBtn, 'sysadmin');
     } else {
-      // Land on Operations Team by default
-      const opsBtn = document.querySelector('#agency-flows .demo-flow-btn:nth-child(2)');
-      goAgencyFlow(opsBtn, 'ops');
+      // Land on System Admin by default
+      const sysadminBtn = document.querySelector('#agency-flows .demo-flow-btn:nth-child(1)');
+      goAgencyFlow(sysadminBtn, 'sysadmin');
     }
   }
 
@@ -1284,8 +1284,8 @@
   )).then(() => {
     // Init nav after all screens loaded
     if (typeof initDemoNav === 'function') initDemoNav();
-    const firmmgmtBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(2)');
-    goCarrierFlow(firmmgmtBtn, 'firmmgmt');
+    const sysadminBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(1)');
+    goCarrierFlow(sysadminBtn, 'sysadmin');
     // Init role mappings table
     rmRender();
   });
