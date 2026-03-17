@@ -1,0 +1,223 @@
+/* =============================================================
+   manage-chrome.css
+   Shared Salesforce Lightning (SLDS) chrome for all Manage screens.
+   Defines: utility bar, app nav bar, options sidebar, content area.
+   Each screen only needs its own active-tab + sidebar state.
+   ============================================================= */
+
+/* ── Shell ── */
+.ms-shell {
+  height: calc(100vh - 44px);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family-base);
+  overflow: hidden;
+  background: var(--color-bg-page);
+}
+
+/* ──────────────────────────────────────────────────────────
+   UTILITY BAR  (36px, white)
+   ────────────────────────────────────────────────────────── */
+.mc-utility {
+  flex-shrink: 0;
+  height: 36px;
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-default);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-medium);
+  gap: var(--space-medium);
+  z-index: 200;
+}
+
+.mc-utility__logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.mc-utility__appname {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.mc-utility__search {
+  flex: 1;
+  max-width: 320px;
+  height: 22px;
+  background: var(--color-bg-page);
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+  color: var(--color-text-muted);
+}
+
+.mc-utility__search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.mc-utility__search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.mc-utility__icons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.mc-utility__icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background var(--transition-fast);
+}
+
+.mc-utility__icon:hover {
+  background: var(--color-gray-100);
+}
+
+.mc-utility__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--color-brand-500);
+  color: #fff;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────────────────────────
+   APP NAV BAR  (44px, #f3f3f3)
+   ────────────────────────────────────────────────────────── */
+.mc-appnav {
+  flex-shrink: 0;
+  height: 44px;
+  background: var(--color-bg-page);
+  border-bottom: 1px solid var(--color-border-default);
+  display: flex;
+  align-items: stretch;
+  padding-left: var(--space-medium);
+  z-index: 100;
+}
+
+.mc-tab {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-medium);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-600);
+  cursor: pointer;
+  white-space: nowrap;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast), background var(--transition-fast);
+  user-select: none;
+}
+
+.mc-tab:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-text-primary);
+}
+
+.mc-tab.active {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
+  border-top-color: var(--color-brand-500);
+  border-bottom-color: transparent;
+  box-shadow: var(--shadow-xs);
+}
+
+/* ──────────────────────────────────────────────────────────
+   BODY ROW  (flex: 1, no overflow)
+   ────────────────────────────────────────────────────────── */
+.mc-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ──────────────────────────────────────────────────────────
+   OPTIONS SIDEBAR  (220px, white)
+   ────────────────────────────────────────────────────────── */
+.mc-options {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border-default);
+  overflow-y: auto;
+  padding-top: var(--space-x-small);
+}
+
+.mc-options__heading {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  padding: var(--space-x-small) var(--space-medium) var(--space-xx-small);
+}
+
+.mc-option {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-medium);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.mc-option:hover {
+  background: var(--color-gray-100);
+}
+
+.mc-option.active {
+  background: var(--color-brand-50, #f0f5ff);
+  border-left: 3px solid var(--color-brand-500);
+  color: var(--color-brand-500);
+  padding-left: calc(var(--space-medium) - 3px);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ──────────────────────────────────────────────────────────
+   CONTENT AREA  (#f3f3f3 background, scrollable)
+   ────────────────────────────────────────────────────────── */
+.mc-content {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-bg-page);
+  padding: var(--space-large);
+}
+
+/* ──────────────────────────────────────────────────────────
+   SHARED SF CLOUD LOGO SVG  (inline via class for easy reuse)
+   ────────────────────────────────────────────────────────── */
+/* (Logo rendered inline in HTML per screen — no CSS needed) */

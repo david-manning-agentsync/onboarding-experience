@@ -1,0 +1,371 @@
+<!-- m-account-record.html -->
+<div id="screen-m-account-record" class="screen">
+  <style>
+    #screen-m-account-record .m-shell {
+      position: relative;
+      height: calc(100vh - 44px);
+      background: var(--color-bg-page);
+    }
+
+    #screen-m-account-record .topnav {
+      top: 44px !important;
+    }
+
+    #screen-m-account-record .m-body {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      overflow: hidden;
+    }
+
+    #screen-m-account-record .options-panel {
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    #screen-m-account-record .m-content {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--color-bg-page);
+      padding: 0;
+    }
+
+    #screen-m-account-record .breadcrumb-bar {
+      background: var(--color-bg-subtle);
+      border-bottom: 1px solid var(--color-border-default);
+      padding: var(--space-xx-small) var(--space-large);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+    }
+
+    #screen-m-account-record .breadcrumb-bar a {
+      color: var(--color-text-link);
+      cursor: pointer;
+    }
+
+    #screen-m-account-record .breadcrumb-bar a:hover {
+      text-decoration: underline;
+    }
+
+    #screen-m-account-record .record-header__left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-x-small);
+      flex: 1;
+      min-width: 0;
+    }
+
+    #screen-m-account-record .record-body-content {
+      padding: var(--space-medium) var(--space-large);
+    }
+
+    #screen-m-account-record .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-medium);
+      margin-bottom: var(--space-medium);
+    }
+
+    #screen-m-account-record .policy-set-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-size-base);
+    }
+
+    #screen-m-account-record .policy-set-table th {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      padding: var(--space-xx-small) var(--space-x-small);
+      border-bottom: 1px solid var(--color-border-default);
+      text-align: left;
+      border-right: none;
+      cursor: default;
+    }
+
+    #screen-m-account-record .policy-set-table td {
+      padding: var(--space-x-small) var(--space-x-small);
+      border-bottom: 1px solid var(--color-border-default);
+      border-right: none;
+      height: auto;
+    }
+
+    #screen-m-account-record .policy-set-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    #screen-m-account-record .policy-set-actions {
+      margin-top: var(--space-small);
+    }
+
+    #screen-m-account-record .options-divider {
+      padding: var(--space-small) var(--space-medium) var(--space-xx-small);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+    }
+
+    #screen-m-account-record .toolbar-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+    }
+
+    #screen-m-account-record .related-producers {
+      margin-top: var(--space-medium);
+    }
+
+    #screen-m-account-record tbody tr {
+      cursor: default;
+    }
+  </style>
+
+  <div class="m-shell">
+    <!-- TOP NAV -->
+    <nav class="topnav">
+      <div class="topnav__utility">
+        <span class="topnav__brand">AgentSync</span>
+        <div class="topnav__search">
+          <input type="text" placeholder="Search AgentSync...">
+        </div>
+        <div class="topnav__icons">
+          <button class="topnav__icon-btn" title="Favorites">★</button>
+          <button class="topnav__icon-btn" title="New">＋</button>
+          <button class="topnav__icon-btn" title="Help">?</button>
+          <button class="topnav__icon-btn" title="Setup">⚙</button>
+          <button class="topnav__icon-btn" title="Notifications">🔔</button>
+          <div class="topnav__avatar" style="background:#0b8a6e;">JD</div>
+        </div>
+      </div>
+      <div class="topnav__app">
+        <div class="topnav__app-prefix">
+          <button class="topnav__icon-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="8" y="2" width="5" height="5" rx="1"/><rect x="14" y="2" width="5" height="5" rx="1"/><rect x="2" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/><rect x="14" y="8" width="5" height="5" rx="1"/><rect x="2" y="14" width="5" height="5" rx="1"/><rect x="8" y="14" width="5" height="5" rx="1"/><rect x="14" y="14" width="5" height="5" rx="1"/></svg>
+          </button>
+          <span class="topnav__app-name">AgentSync</span>
+        </div>
+        <div class="appnav-item active" onclick="go('screen-m-accounts')">
+          Accounts
+          <svg class="appnav-item__caret" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </div>
+        <div class="appnav-item" onclick="go('screen-m-policysets')">
+          Policy Sets
+          <svg class="appnav-item__caret" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </div>
+        <div class="appnav-item">
+          Producers
+          <svg class="appnav-item__caret" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </div>
+        <div class="appnav-item">
+          More
+          <svg class="appnav-item__caret" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </div>
+      </div>
+    </nav>
+
+    <!-- BODY -->
+    <div class="m-body">
+      <!-- OPTIONS PANEL -->
+      <div class="options-panel">
+        <div class="options-panel__title">Options</div>
+        <a class="options-item active">Account Detail</a>
+        <a class="options-item">Producers</a>
+        <a class="options-item">Tasks</a>
+        <a class="options-item">Activity</a>
+        <a class="options-item">Files</a>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="m-content">
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb-bar">
+          <a onclick="go('screen-m-accounts')">Accounts</a> / Globe Life Insurance
+        </div>
+
+        <!-- RECORD HEADER -->
+        <div class="record-header">
+          <div class="record-header__eyebrow">Account</div>
+          <div class="record-header__title-row">
+            <div class="record-header__left">
+              <div class="record-header__icon" style="background:#e8830a;">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.5"><rect x="2" y="4" width="16" height="14" rx="1"/><path d="M6 18V10h3v8M11 18V10h3v8M2 8h16"/></svg>
+              </div>
+              <span class="record-header__name">Globe Life Insurance</span>
+              <span class="badge badge--success">Active</span>
+            </div>
+            <div class="record-header__actions">
+              <button class="btn btn--brand" onclick="go('screen-m-invite')">Invite Onboarding Partner</button>
+              <button class="btn btn--neutral">Edit</button>
+              <button class="btn btn--neutral">&#8943;</button>
+            </div>
+          </div>
+          <div class="record-header__meta">
+            <div>
+              <div class="record-meta-item__label">Account Type</div>
+              <div class="record-meta-item__value">Carrier</div>
+            </div>
+            <div>
+              <div class="record-meta-item__label">Total Producers</div>
+              <div class="record-meta-item__value">142</div>
+            </div>
+            <div>
+              <div class="record-meta-item__label">Policy Sets</div>
+              <div class="record-meta-item__value">3</div>
+            </div>
+            <div>
+              <div class="record-meta-item__label">Status</div>
+              <div class="record-meta-item__value">Active</div>
+            </div>
+            <div>
+              <div class="record-meta-item__label">Last Modified</div>
+              <div class="record-meta-item__value">Mar 10, 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECORD BODY -->
+        <div class="record-body-content">
+          <div class="detail-grid">
+            <!-- Account Information -->
+            <div class="collapsible-section">
+              <div class="collapsible-section__header">&#9660; Account Information</div>
+              <div class="collapsible-section__body">
+                <div class="field-grid">
+                  <div>
+                    <div class="field-item__label">Account Name</div>
+                    <div class="field-item__value">Globe Life Insurance</div>
+                  </div>
+                  <div>
+                    <div class="field-item__label">Account Type</div>
+                    <div class="field-item__value">Carrier</div>
+                  </div>
+                  <div>
+                    <div class="field-item__label">Primary Contact</div>
+                    <div class="field-item__value"><a href="mailto:jsmith@globelife.com" style="color:var(--color-text-link);">jsmith@globelife.com</a></div>
+                  </div>
+                  <div>
+                    <div class="field-item__label">Phone</div>
+                    <div class="field-item__value">(800) 555-1234</div>
+                  </div>
+                  <div>
+                    <div class="field-item__label">Website</div>
+                    <div class="field-item__value"><a href="#" style="color:var(--color-text-link);">globelife.com</a></div>
+                  </div>
+                  <div>
+                    <div class="field-item__label">Created</div>
+                    <div class="field-item__value">Jan 5, 2025</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Policy Set Associations -->
+            <div class="collapsible-section">
+              <div class="collapsible-section__header">&#9660; Policy Set Associations</div>
+              <div class="collapsible-section__body">
+                <table class="policy-set-table">
+                  <thead>
+                    <tr>
+                      <th>Policy Set</th>
+                      <th>Requirement</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;" onclick="go('screen-m-policysets')">Standard Agent Onboarding</a></td>
+                      <td><span class="badge badge--error">Required</span></td>
+                      <td><span class="badge badge--success">Active</span></td>
+                    </tr>
+                    <tr>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;" onclick="go('screen-m-policysets')">E&amp;O Insurance Verification</a></td>
+                      <td><span class="badge badge--error">Required</span></td>
+                      <td><span class="badge badge--success">Active</span></td>
+                    </tr>
+                    <tr>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;" onclick="go('screen-m-policysets')">Background Check — Tier 1</a></td>
+                      <td><span class="badge badge--default">Optional</span></td>
+                      <td><span class="badge badge--success">Active</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="policy-set-actions">
+                  <button class="btn btn--neutral" onclick="go('screen-m-policysets')">Manage Policy Sets</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Related Producers -->
+          <div class="related-producers">
+            <div class="card">
+              <div class="card__header">Producers (142)</div>
+              <div class="card__body" style="padding:0;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="table-checkbox-col"><input type="checkbox"></th>
+                      <th class="sorted">Name <span class="sort-caret">▲</span></th>
+                      <th>NPN</th>
+                      <th>Status</th>
+                      <th>Readiness</th>
+                      <th>Invited</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="table-checkbox-col"><input type="checkbox"></td>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;">Claire Sutton</a></td>
+                      <td>18472910</td>
+                      <td><span class="badge badge--success">Active</span></td>
+                      <td><span class="badge badge--warning">Needs LOAs</span></td>
+                      <td>Mar 3, 2026</td>
+                    </tr>
+                    <tr>
+                      <td class="table-checkbox-col"><input type="checkbox"></td>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;">Marcus Webb</a></td>
+                      <td>29183740</td>
+                      <td><span class="badge badge--success">Active</span></td>
+                      <td><span class="badge badge--success">Sell-Ready</span></td>
+                      <td>Feb 15, 2026</td>
+                    </tr>
+                    <tr>
+                      <td class="table-checkbox-col"><input type="checkbox"></td>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;">Priya Nair</a></td>
+                      <td>38291047</td>
+                      <td><span class="badge badge--warning">In Progress</span></td>
+                      <td><span class="badge badge--warning">Pending E&amp;O</span></td>
+                      <td>Mar 1, 2026</td>
+                    </tr>
+                    <tr>
+                      <td class="table-checkbox-col"><input type="checkbox"></td>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;">Derek Osei</a></td>
+                      <td>47102938</td>
+                      <td><span class="badge badge--success">Active</span></td>
+                      <td><span class="badge badge--success">Sell-Ready</span></td>
+                      <td>Jan 28, 2026</td>
+                    </tr>
+                    <tr>
+                      <td class="table-checkbox-col"><input type="checkbox"></td>
+                      <td><a style="color:var(--color-text-link);cursor:pointer;">Tanya Brooks</a></td>
+                      <td>56291830</td>
+                      <td><span class="badge badge--default">Inactive</span></td>
+                      <td><span class="badge badge--default">—</span></td>
+                      <td>Dec 10, 2025</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
