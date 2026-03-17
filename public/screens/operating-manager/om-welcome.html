@@ -1,24 +1,36 @@
-<!-- om-welcome.html — Operating Manager welcome (Onboarding theme) -->
+<!-- om-welcome.html — OM Accounts view (SFDC chrome, Onboarding app) -->
 <style>
-  #screen-om-welcome .om-shell { height: calc(100vh - 44px); display: flex; flex-direction: column; }
+  #screen-om-welcome {
+    --lv-border: var(--color-gray-300);
+    --lv-icon-bg: #0176d3;
+  }
 
-  /* ── SFDC Chrome ── */
+  #screen-om-welcome .ms-shell {
+    position: relative;
+    height: calc(100vh - 44px);
+    background: var(--color-gray-100);
+    font-family: var(--font-family-base);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Nav utility bar ── */
   #screen-om-welcome .ms-nav {
     flex-shrink: 0;
     background: var(--color-bg-surface);
-    border-bottom: 1px solid var(--color-gray-300);
+    border-bottom: 1px solid var(--lv-border);
     display: flex; flex-direction: column; z-index: 200;
   }
   #screen-om-welcome .ms-nav__utility {
     display: flex; align-items: center;
     height: 50px; padding: 0 var(--space-medium); gap: var(--space-small);
-    border-bottom: 1px solid var(--color-gray-300);
+    border-bottom: 1px solid var(--lv-border);
   }
   #screen-om-welcome .ms-logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none; margin-right: 4px; }
   #screen-om-welcome .ms-nav__search {
     flex: 1; max-width: 480px; margin: 0 auto; height: 32px;
     display: flex; align-items: center;
-    border: 1px solid var(--color-gray-300); border-radius: 4px;
+    border: 1px solid var(--lv-border); border-radius: 4px;
     padding: 0 10px; gap: 6px; background: var(--color-bg-surface);
   }
   #screen-om-welcome .ms-nav__search input { flex: 1; border: none; outline: none; font-family: var(--font-family-base); font-size: var(--font-size-sm); color: var(--color-text-primary); background: transparent; }
@@ -43,45 +55,95 @@
     font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
     display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 4px;
   }
+
+  /* ── App bar ── */
   #screen-om-welcome .ms-nav__app { display: flex; align-items: stretch; height: 44px; }
   #screen-om-welcome .ms-nav__waffle {
     display: flex; align-items: center; justify-content: center;
-    width: 44px; flex-shrink: 0; color: var(--color-gray-600);
-    cursor: pointer; border-right: 1px solid var(--color-gray-300);
+    width: 44px; flex-shrink: 0; color: var(--color-gray-600); cursor: pointer;
+    border-right: 1px solid var(--lv-border);
   }
   #screen-om-welcome .ms-nav__appname {
-    display: flex; align-items: center;
-    font-size: var(--font-size-base); font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary); white-space: nowrap;
-    padding: 0 var(--space-medium); border-right: 1px solid var(--color-gray-300); flex-shrink: 0;
+    display: flex; align-items: center; font-size: var(--font-size-base); font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary); white-space: nowrap; padding: 0 var(--space-medium);
+    border-right: 1px solid var(--lv-border); flex-shrink: 0;
   }
   #screen-om-welcome .ms-nav__tabs { display: flex; align-items: stretch; flex: 1; }
   #screen-om-welcome .ms-nav__tab {
-    display: flex; align-items: center; gap: 3px; padding: 0 16px;
+    display: flex; align-items: center; gap: 3px; padding: 0 14px;
     font-size: var(--font-size-sm); color: var(--color-gray-600);
-    cursor: pointer; white-space: nowrap;
-    border-bottom: 3px solid transparent; transition: color var(--transition-fast); flex-shrink: 0;
+    cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent;
+    transition: color var(--transition-fast); flex-shrink: 0;
   }
   #screen-om-welcome .ms-nav__tab:hover { color: var(--color-text-primary); }
   #screen-om-welcome .ms-nav__tab.active { color: var(--color-brand-500); border-bottom-color: var(--color-brand-500); font-weight: var(--font-weight-semibold); }
-  #screen-om-welcome .ms-nav__tab--dim { color: var(--color-text-muted); cursor: default; }
   #screen-om-welcome .ms-nav__caret { font-size: 9px; color: var(--color-gray-400); }
   #screen-om-welcome .ms-nav__tab.active .ms-nav__caret { color: var(--color-brand-300); }
 
-  #screen-om-welcome .om-layout { position: relative; flex: 1; overflow: hidden; }
-  #screen-om-welcome .om-sidebar { position: absolute; top: 0; left: 0; bottom: 0; width: 220px; background: var(--color-bg-nav); border-right: 1px solid var(--color-border-default); padding: var(--space-4) 0; overflow-y: auto; }
-  #screen-om-welcome .om-main { position: absolute; top: 0; left: 220px; right: 0; bottom: 0; overflow-y: auto; background: var(--color-bg-page); padding: var(--space-8); }
-  #screen-om-welcome .welcome-hero { max-width: 560px; margin: var(--space-16) auto 0; text-align: center; }
-  #screen-om-welcome .welcome-hero__greeting { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); line-height: var(--line-height-tight); margin-bottom: var(--space-3); }
-  #screen-om-welcome .welcome-hero__sub { font-size: var(--font-size-base); color: var(--color-text-secondary); margin-bottom: var(--space-8); line-height: var(--line-height-relaxed); }
-  #screen-om-welcome .welcome-cta-row { display: flex; gap: var(--space-3); justify-content: center; }
-  #screen-om-welcome .welcome-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); max-width: 560px; margin: var(--space-10) auto 0; }
-  #screen-om-welcome .stat-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5); text-align: center; box-shadow: var(--shadow-xs); }
-  #screen-om-welcome .stat-card__num { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-primary-600); }
-  #screen-om-welcome .stat-card__label { font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-1); font-weight: var(--font-weight-medium); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+  /* ── Body ── */
+  #screen-om-welcome .ms-body {
+    flex: 1; overflow-y: auto; padding: var(--space-medium);
+    background: linear-gradient(160deg, #4673A5 0%, #B7C7DF 100%);
+  }
+
+  /* ── List View Card ── */
+  #screen-om-welcome .lv-card { background: var(--color-bg-surface); border: 1px solid var(--lv-border); border-radius: 4px; overflow: hidden; }
+  #screen-om-welcome .lv-card__header { display: flex; align-items: center; padding: 10px 16px; gap: var(--space-medium); border-bottom: 1px solid var(--lv-border); }
+  #screen-om-welcome .lv-card__header-left { display: flex; align-items: center; gap: 10px; }
+  #screen-om-welcome .lv-card__icon { width: 40px; height: 40px; border-radius: 6px; background: var(--lv-icon-bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
+  #screen-om-welcome .lv-card__object-name { font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1; margin-bottom: 2px; }
+  #screen-om-welcome .lv-card__view-name { display: flex; align-items: center; gap: 4px; font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); cursor: pointer; }
+  #screen-om-welcome .lv-card__view-caret { font-size: 12px; color: var(--color-gray-500); }
+  #screen-om-welcome .lv-card__pin { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--lv-border); cursor: pointer; color: var(--color-gray-500); margin-left: 2px; }
+  #screen-om-welcome .lv-card__pin:hover { background: var(--color-gray-100); }
+  #screen-om-welcome .lv-card__header-right { display: flex; align-items: center; gap: var(--space-x-small); margin-left: auto; }
+  #screen-om-welcome .lv-btn { height: 30px; padding: 0 12px; border-radius: 4px; font-size: var(--font-size-sm); font-family: var(--font-family-base); cursor: pointer; transition: background var(--transition-fast); white-space: nowrap; }
+  #screen-om-welcome .lv-btn--outline { background: #fff; border: 1px solid var(--lv-border); color: var(--color-brand-500); }
+  #screen-om-welcome .lv-btn--outline:hover { background: var(--color-brand-50); }
+  #screen-om-welcome .lv-btn--neutral { background: #fff; border: 1px solid var(--lv-border); color: var(--color-text-primary); }
+  #screen-om-welcome .lv-btn--neutral:hover { background: var(--color-gray-100); }
+
+  /* ── Toolbar ── */
+  #screen-om-welcome .lv-card__toolbar { display: flex; align-items: center; padding: 6px 16px; gap: var(--space-medium); border-bottom: 1px solid var(--lv-border); background: var(--color-bg-surface); }
+  #screen-om-welcome .lv-meta { font-size: var(--font-size-sm); color: var(--color-text-secondary); flex: 1; }
+  #screen-om-welcome .lv-toolbar-actions { display: flex; align-items: center; gap: 4px; }
+  #screen-om-welcome .lv-search-wrap { position: relative; display: inline-flex; align-items: center; }
+  #screen-om-welcome .lv-search-wrap svg { position: absolute; left: 7px; color: var(--color-text-muted); pointer-events: none; }
+  #screen-om-welcome .lv-search { height: 28px; border: 1px solid var(--lv-border); border-radius: 4px; padding: 0 8px 0 28px; font-family: var(--font-family-base); font-size: var(--font-size-sm); color: var(--color-text-primary); background: var(--color-bg-surface); outline: none; width: 200px; }
+  #screen-om-welcome .lv-icon-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid var(--lv-border); background: #fff; color: var(--color-gray-600); cursor: pointer; transition: background var(--transition-fast); }
+  #screen-om-welcome .lv-icon-btn:hover { background: var(--color-gray-100); }
+
+  /* ── Table (SFDC style — this is the outer Accounts/firm view) ── */
+  #screen-om-welcome table { width: 100%; border-collapse: collapse; }
+  #screen-om-welcome thead tr { background: var(--color-gray-100); border-bottom: 1px solid var(--lv-border); }
+  #screen-om-welcome th { padding: 0 12px; height: 32px; text-align: left; font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-gray-600); white-space: nowrap; border-right: 1px solid var(--lv-border); user-select: none; }
+  #screen-om-welcome th:last-child { border-right: none; }
+  #screen-om-welcome .th-num { width: 36px; text-align: right; color: var(--color-text-muted); border-right: 1px solid var(--lv-border); padding-right: 8px; }
+  #screen-om-welcome .th-chk { width: 40px; text-align: center; padding: 0; }
+  #screen-om-welcome .th-sort { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  #screen-om-welcome .th-sort:hover { color: var(--color-brand-500); }
+  #screen-om-welcome .sort-caret { font-size: 9px; color: var(--color-gray-400); }
+  #screen-om-welcome tbody tr { border-bottom: 1px solid var(--lv-border); transition: background var(--transition-fast); }
+  #screen-om-welcome tbody tr:last-child { border-bottom: none; }
+  #screen-om-welcome tbody tr:hover { background: var(--color-gray-100); }
+  #screen-om-welcome td { padding: 0 12px; height: 44px; vertical-align: middle; font-size: var(--font-size-sm); color: var(--color-text-primary); border-right: 1px solid var(--lv-border); }
+  #screen-om-welcome td:last-child { border-right: none; }
+  #screen-om-welcome .td-num { text-align: right; padding-right: 8px; color: var(--color-text-muted); font-size: var(--font-size-xs); width: 36px; }
+  #screen-om-welcome .td-chk { width: 40px; text-align: center; padding: 0; }
+  #screen-om-welcome .td-link { color: var(--color-brand-500); cursor: pointer; }
+  #screen-om-welcome .td-link:hover { text-decoration: underline; }
+  #screen-om-welcome .td-action { width: 36px; text-align: center; padding: 0; }
+  #screen-om-welcome .row-action-btn { width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--lv-border); border-radius: 3px; background: #fff; color: var(--color-gray-600); cursor: pointer; font-size: 10px; line-height: 1; }
+  #screen-om-welcome .row-action-btn:hover { background: var(--color-gray-100); }
+
+  #screen-om-welcome .pill { display: inline-flex; align-items: center; padding: 0 8px; height: 20px; border-radius: var(--radius-full); border: 1px solid; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); white-space: nowrap; }
+  #screen-om-welcome .pill--active { background: #f2fbf2; border-color: var(--color-success-base); color: var(--color-success-base); }
+  #screen-om-welcome .pill--warning { background: #fef7e6; border-color: var(--color-warning-base); color: var(--color-warning-dark); }
 </style>
 
-<div class="om-shell">
+<div class="ms-shell">
+
+  <!-- ── NAV ── -->
   <div class="ms-nav">
     <div class="ms-nav__utility">
       <a class="ms-logo">
@@ -125,42 +187,72 @@
     </div>
   </div>
 
-  <div class="om-layout">
-    <div class="om-sidebar">
-      <div class="sidebar__section-label">Navigation</div>
-      <div class="nav-item" onclick="go('screen-om-producers')">
-        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2 17c0-3.3 2.7-6 6-6h0m4 5l2 2 4-4"/></svg>
-        Producers
-      </div>
-      <div class="nav-item" onclick="go('screen-om-tasks')">
-        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10l2 2 4-4"/></svg>
-        Tasks
-      </div>
-    </div>
+  <!-- ── BODY ── -->
+  <div class="ms-body">
+    <div class="lv-card">
 
-    <div class="om-main">
-      <div class="welcome-hero">
-        <div class="welcome-hero__greeting">Welcome back, Jamie 👋</div>
-        <div class="welcome-hero__sub">You're the Operating Manager for Globe Life Insurance. Use AgentSync to track your producers' onboarding progress and ensure everyone is sell-ready.</div>
-        <div class="welcome-cta-row">
-          <button class="btn btn--primary btn--lg" onclick="go('screen-om-producers')">View Producers</button>
-          <button class="btn btn--secondary btn--lg" onclick="go('screen-om-invite-producer')">Invite Producer</button>
+      <div class="lv-card__header">
+        <div class="lv-card__header-left">
+          <div class="lv-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <div class="lv-card__object-name">Accounts</div>
+            <div class="lv-card__view-name">Recently Viewed <span class="lv-card__view-caret">▼</span></div>
+          </div>
+          <div class="lv-card__pin" title="Pin this view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+        </div>
+        <div class="lv-card__header-right">
+          <button class="lv-btn lv-btn--outline">New</button>
+          <button class="lv-btn lv-btn--neutral">Import</button>
         </div>
       </div>
-      <div class="welcome-stats">
-        <div class="stat-card">
-          <div class="stat-card__num">12</div>
-          <div class="stat-card__label">Active Producers</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card__num" style="color:var(--color-warning-600)">4</div>
-          <div class="stat-card__label">Needs Attention</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card__num" style="color:var(--color-success-600)">8</div>
-          <div class="stat-card__label">Sell-Ready</div>
+
+      <div class="lv-card__toolbar">
+        <span class="lv-meta">1 item &bull; Sorted by Account Name</span>
+        <div class="lv-toolbar-actions">
+          <div class="lv-search-wrap">
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-text-muted)"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+            <input class="lv-search" type="text" placeholder="Search this list...">
+          </div>
+          <div class="lv-icon-btn" title="List settings"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+          <div class="lv-icon-btn" title="Refresh"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
+          <div class="lv-icon-btn" title="Filter"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></div>
         </div>
       </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th class="th-num"></th>
+            <th class="th-chk"><input type="checkbox"></th>
+            <th style="min-width:280px"><div class="th-sort">Account Name <span class="sort-caret">▾</span></div></th>
+            <th style="width:120px"><div class="th-sort">Type <span class="sort-caret">▾</span></div></th>
+            <th style="width:110px"><div class="th-sort">Status <span class="sort-caret">▾</span></div></th>
+            <th style="width:80px"><div class="th-sort">Producers <span class="sort-caret">▾</span></div></th>
+            <th style="width:120px"><div class="th-sort">Policy Sets <span class="sort-caret">▾</span></div></th>
+            <th style="width:140px"><div class="th-sort">Last Modified <span class="sort-caret">▾</span></div></th>
+            <th class="td-action"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="go('screen-om-producers')" style="cursor:pointer">
+            <td class="td-num">1</td>
+            <td class="td-chk"><input type="checkbox" onclick="event.stopPropagation()"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();go('screen-om-producers')">Globe Life Insurance</a></td>
+            <td>Carrier</td>
+            <td><span class="pill pill--active">Active</span></td>
+            <td>12</td>
+            <td>3</td>
+            <td>Mar 14, 2026</td>
+            <td class="td-action"><button class="row-action-btn" onclick="event.stopPropagation()">▼</button></td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
+
 </div>
