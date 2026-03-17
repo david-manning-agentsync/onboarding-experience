@@ -55,9 +55,9 @@
     <div class="om-main">
       <div class="om-main-inner">
         <div class="breadcrumb">
-          <a onclick="go('screen-om-producers')" style="cursor:pointer;color:var(--color-primary-600);">Producers</a>
+          <a onclick="prNavProducers()" style="cursor:pointer;color:var(--color-primary-600);">Producers</a>
           <span class="breadcrumb__separator">/</span>
-          <a onclick="go('screen-om-producer-record')" style="cursor:pointer;color:var(--color-primary-600);">Claire Sutton</a>
+          <a onclick="openProducerRecord()" style="cursor:pointer;color:var(--color-primary-600);">Claire Sutton</a>
           <span class="breadcrumb__separator">/</span>
           <span class="breadcrumb__current">LOA Confirmation</span>
         </div>
@@ -118,8 +118,8 @@
         </div>
 
         <div class="action-row">
-          <button class="btn btn--secondary" onclick="go('screen-om-producer-record')">← Back to Producer</button>
-          <button class="btn btn--primary" style="background:var(--color-success-600);border-color:var(--color-success-600);" onclick="go('screen-om-producer-record');showToast('Task marked as done')">Mark as Done ✓</button>
+          <button class="btn btn--secondary" onclick="openProducerRecord()">← Back to Producer</button>
+          <button class="btn btn--primary" style="background:var(--color-success-600);border-color:var(--color-success-600);" onclick="openProducerRecord();showToast('Task marked as done')">Mark as Done ✓</button>
         </div>
       </div>
     </div>

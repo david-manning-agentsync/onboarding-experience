@@ -422,10 +422,10 @@
       </div>
       <span class="ms-nav__appname">Onboarding</span>
       <div class="ms-nav__tabs">
-        <div class="ms-nav__tab" onclick="go('screen-om-welcome')">Dashboard</div>
-        <div class="ms-nav__tab active" onclick="go('screen-om-producers')">Producers</div>
-        <div class="ms-nav__tab" onclick="go('screen-om-tasks')">Tasks</div>
-        <div class="ms-nav__tab ms-nav__tab--dim">Reports</div>
+        <div class="ms-nav__tab pr-nav-dashboard" onclick="go('screen-om-welcome')">Dashboard</div>
+        <div class="ms-nav__tab active" onclick="prNavProducers()">Producers</div>
+        <div class="ms-nav__tab" onclick="prNavTasks()">Tasks</div>
+        <div class="ms-nav__tab ms-nav__tab--dim pr-nav-reports">Reports</div>
       </div>
     </div>
   </div>
@@ -438,7 +438,7 @@
 
         <!-- Breadcrumb -->
         <div class="pr-breadcrumb">
-          <a onclick="go('screen-om-producers')">Producers</a>
+          <a onclick="prNavProducers()">Producers</a>
           <span class="pr-breadcrumb__sep">/</span>
           <span>Claire Sutton</span>
         </div>
