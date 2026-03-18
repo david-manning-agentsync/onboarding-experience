@@ -907,6 +907,8 @@
     });
     if (step === 'loading') {
       const dest = prefix === 'om' ? 'screen-om-welcome' : 'screen-p-intake';
+      document.body.classList.remove('theme-manage', 'theme-onboarding');
+      document.body.classList.add('theme-onboarding');
       setTimeout(() => go(dest), 2200);
     }
   }
