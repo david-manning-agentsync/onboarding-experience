@@ -530,6 +530,18 @@
     cursor: pointer;
   }
   #screen-m-account-record .ps-list-footer a:hover { text-decoration: underline; }
+  #screen-m-account-record .ps-list-section {
+    padding: 6px 16px 2px;
+    font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted); text-transform: uppercase;
+    letter-spacing: var(--tracking-caps); border-top: 1px solid #efefef;
+  }
+  #screen-m-account-record .ps-list-section:first-of-type { border-top: none; }
+  #screen-m-account-record .ps-req-tag {
+    font-size: 10px; font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted); margin-left: auto; padding-right: 8px; white-space: nowrap;
+  }
+  #screen-m-account-record .ps-req-tag--required { color: var(--color-brand-500); }
 
   /* ── Status pills ── */
   #screen-m-account-record .pill {
@@ -1023,20 +1035,26 @@
             <a class="rec-card__link" onclick="go('screen-m-policysets')">View All</a>
           </div>
 
+          <div class="ps-list-section">Producer</div>
           <div class="ps-list-row">
             <a class="ps-list-name" onclick="go('screen-m-policysets')">Standard Agent Onboarding</a>
-            <span class="pill pill--active">Active</span>
-          </div>
-          <div class="ps-list-row">
-            <a class="ps-list-name" onclick="go('screen-m-policysets')">E&amp;O Insurance Verification</a>
+            <span class="ps-req-tag ps-req-tag--required">Required</span>
             <span class="pill pill--active">Active</span>
           </div>
           <div class="ps-list-row">
             <a class="ps-list-name" onclick="go('screen-m-policysets')">Background Check — Tier 1</a>
+            <span class="ps-req-tag">Optional</span>
+            <span class="pill pill--active">Active</span>
+          </div>
+          <div class="ps-list-section">Firm</div>
+          <div class="ps-list-row">
+            <a class="ps-list-name" onclick="go('screen-m-policysets')">E&amp;O Insurance Verification</a>
+            <span class="ps-req-tag ps-req-tag--required">Required</span>
             <span class="pill pill--active">Active</span>
           </div>
           <div class="ps-list-row">
             <a class="ps-list-name" onclick="go('screen-m-policysets')">Globe Life — Custom LOA Requirements</a>
+            <span class="ps-req-tag">Optional</span>
             <span class="pill pill--draft">Draft</span>
           </div>
 

@@ -91,8 +91,46 @@
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    width: 100%; max-width: 560px; overflow: hidden;
+    width: 100%; max-width: 660px; overflow: hidden;
   }
+  #screen-m-invite .inv-ps-section {
+    margin-top: var(--space-medium);
+    padding-top: var(--space-medium);
+    border-top: 1px solid var(--color-border-default);
+  }
+  #screen-m-invite .inv-ps-title {
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary); margin-bottom: 4px;
+  }
+  #screen-m-invite .inv-ps-hint {
+    font-size: var(--font-size-xs); color: var(--color-text-secondary);
+    margin-bottom: var(--space-small);
+  }
+  #screen-m-invite .inv-ps-table {
+    width: 100%; border-collapse: collapse; font-size: var(--font-size-sm);
+  }
+  #screen-m-invite .inv-ps-table th {
+    font-size: 10px; font-weight: var(--font-weight-semibold);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted); padding: 4px 8px 6px;
+    border-bottom: 1px solid var(--color-border-default); text-align: left;
+  }
+  #screen-m-invite .inv-ps-table th:first-child { width: 32px; }
+  #screen-m-invite .inv-ps-table td {
+    padding: 8px 8px; border-bottom: 1px solid #f0f0f0;
+    color: var(--color-text-primary); vertical-align: middle;
+  }
+  #screen-m-invite .inv-ps-table tr:last-child td { border-bottom: none; }
+  #screen-m-invite .inv-ps-table td:first-child { text-align: center; }
+  #screen-m-invite .inv-req-tag {
+    display: inline-block; font-size: 10px; font-weight: var(--font-weight-semibold);
+    padding: 1px 6px; border-radius: 3px;
+    background: var(--color-gray-100); color: var(--color-text-muted);
+  }
+  #screen-m-invite .inv-req-tag--required {
+    background: var(--color-brand-50, #eff6ff); color: var(--color-brand-500);
+  }
+  #screen-m-invite .inv-ps-table input[type="checkbox"]:disabled { opacity: 0.5; cursor: not-allowed; }
   #screen-m-invite .invite-card__header {
     padding: var(--space-medium) var(--space-large);
     border-bottom: 1px solid var(--color-border-default);
@@ -213,14 +251,65 @@
           <span class="form-hint">Determines what this person can see and do in Onboarding.</span>
         </div>
 
-        <div style="margin-top:var(--space-medium);padding-top:var(--space-medium);border-top:1px solid var(--color-border-default);">
+        <!-- Firm Policy Sets (always shown) -->
+        <div class="inv-ps-section">
+          <div class="inv-ps-title">Firm Policy Sets</div>
+          <div class="inv-ps-hint">Required sets are automatically applied to this firm's onboarding. Optional sets may be included below.</div>
+          <table class="inv-ps-table">
+            <thead>
+              <tr><th></th><th>Policy Set</th><th>Requirement</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked disabled></td>
+                <td>E&amp;O Insurance Verification</td>
+                <td><span class="inv-req-tag inv-req-tag--required">Required</span></td>
+                <td><span class="pill pill--active" style="font-size:11px">Active</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Globe Life — Custom LOA Requirements</td>
+                <td><span class="inv-req-tag">Optional</span></td>
+                <td><span class="pill pill--draft" style="font-size:11px">Draft</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Also a producer toggle -->
+        <div class="inv-ps-section">
           <label class="form-checkbox">
-            <input type="checkbox">
+            <input type="checkbox" id="inv-also-producer" onchange="document.getElementById('inv-producer-ps').style.display=this.checked?'':'none'">
             <span>This person is also functioning as a producer</span>
           </label>
           <div class="form-hint" style="margin-top:4px;padding-left:24px;">
             They will receive both an Onboarding Partner invite and a Producer task checklist.
           </div>
+        </div>
+
+        <!-- Producer Policy Sets (shown when checkbox checked) -->
+        <div id="inv-producer-ps" style="display:none" class="inv-ps-section">
+          <div class="inv-ps-title">Producer Policy Sets</div>
+          <div class="inv-ps-hint">Required sets will be automatically assigned. Check optional sets to include in this producer's checklist.</div>
+          <table class="inv-ps-table">
+            <thead>
+              <tr><th></th><th>Policy Set</th><th>Requirement</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked disabled></td>
+                <td>Standard Agent Onboarding</td>
+                <td><span class="inv-req-tag inv-req-tag--required">Required</span></td>
+                <td><span class="pill pill--active" style="font-size:11px">Active</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Background Check — Tier 1</td>
+                <td><span class="inv-req-tag">Optional</span></td>
+                <td><span class="pill pill--active" style="font-size:11px">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="invite-card__footer">
