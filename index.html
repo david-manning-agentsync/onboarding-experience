@@ -826,6 +826,17 @@
     }
   }
 
+  function wzReset() {
+    ['m-ps-create', 'm-ps-gwbr', 'm-ps-tasks'].forEach(id => {
+      wzPanel(id, 'upload');
+      const empty  = document.getElementById(id + '-drop-empty');
+      const filled = document.getElementById(id + '-drop-filled');
+      if (empty)  empty.style.display  = '';
+      if (filled) filled.style.display = 'none';
+      wzModal(id, false);
+    });
+  }
+
   // ── Producer multi-select + Add Policy Set modal ─────────────
 
   function prodToggleRow(cb) {
