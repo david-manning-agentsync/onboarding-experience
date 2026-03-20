@@ -1343,6 +1343,7 @@
 
   function aotMarkDone(taskNum, nextNum) {
     _aotDone.add(taskNum);
+    // Task list: circle + sub-label
     const circle = document.getElementById('aot-circle-' + taskNum);
     if (circle) {
       circle.classList.add('pr-task-circle--done');
@@ -1356,6 +1357,17 @@
         sub.className = 'pr-task-item__sub';
       }
     }
+    // Detail panel: add done class + update status chip
+    const panel = document.getElementById('aot-td-' + taskNum);
+    if (panel) {
+      panel.classList.add('pr-task-detail-panel--done');
+      const statusChip = panel.querySelector('.aot-chip--status, .aot-chip--done-status');
+      if (statusChip) {
+        statusChip.textContent = 'Complete';
+        statusChip.className = 'aot-chip aot-chip--done-status';
+      }
+    }
+    // Progress bar
     const required = [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
@@ -1370,6 +1382,48 @@
     if (nextNum) aotNext(taskNum, nextNum);
   }
 
+  function aotReopenTask(taskNum) {
+    _aotDone.delete(taskNum);
+    // Restore panel
+    const panel = document.getElementById('aot-td-' + taskNum);
+    if (panel) {
+      panel.classList.remove('pr-task-detail-panel--done');
+      const statusChip = panel.querySelector('.aot-chip--status, .aot-chip--done-status');
+      if (statusChip) {
+        statusChip.textContent = 'Not Started';
+        statusChip.className = 'aot-chip aot-chip--status';
+      }
+    }
+    // Restore task list item
+    const circle = document.getElementById('aot-circle-' + taskNum);
+    if (circle) { circle.classList.remove('pr-task-circle--done'); circle.innerHTML = ''; }
+    const item = document.getElementById('aot-item-' + taskNum);
+    if (item) {
+      const sub = item.querySelector('.pr-task-item__sub');
+      if (sub) {
+        const isOpt = taskNum === 3;
+        sub.textContent = (isOpt ? 'Optional' : 'Required') + ' · Not Started';
+        sub.className = 'pr-task-item__sub ' + (isOpt ? 'pr-task-item__sub--opt' : 'pr-task-item__sub--req');
+      }
+    }
+    // Recount progress
+    const required = [1,2,4,5,6,7,8];
+    const doneCt = required.filter(n => _aotDone.has(n)).length;
+    const pct = Math.round(doneCt / required.length * 100);
+    const fill = document.getElementById('aot-progress-fill');
+    if (fill) fill.style.width = pct + '%';
+    const pctEl = document.getElementById('aot-pct');
+    if (pctEl) pctEl.textContent = pct + '%';
+    const pctLabel = document.getElementById('aot-pct-label');
+    if (pctLabel) pctLabel.textContent = pct + '%';
+    const progLabel = document.getElementById('aot-progress-label');
+    if (progLabel) progLabel.textContent = doneCt + ' of ' + required.length + ' required tasks complete';
+  }
+
+  function aotSkipTask(taskNum, nextNum) {
+    if (nextNum) aotNext(taskNum, nextNum);
+  }
+
   function aotNext(fromNum, toNum) {
     if (!toNum) return;
     const fromItem  = document.getElementById('aot-item-' + fromNum);
@@ -1380,6 +1434,21 @@
     if (toItem)    toItem.classList.add('active');
     if (fromPanel) fromPanel.classList.remove('active');
     if (toPanel)   toPanel.classList.add('active');
+  }
+
+  // ── Add contact row (email / phone) ──
+
+  function aotAddContactRow(containerId, type) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const row = document.createElement('div');
+    row.className = 'pr-repeat-row';
+    if (type === 'email') {
+      row.innerHTML = '<div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Work</option><option>Personal</option><option>Other</option></select></div><div class="pr-float-field"><span class="pr-float-label">Email *</span><input class="pr-float-value" type="email" placeholder="email@example.com"></div><button class="aot-preferred-btn" data-group="email" onclick="aotSetPreferred(this,\'email\')">Preferred</button><button class="pr-remove-btn" onclick="this.closest(\'.pr-repeat-row\').remove()" title="Remove">×</button>';
+    } else {
+      row.innerHTML = '<div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Cell</option><option>Work</option><option>Home</option></select></div><div class="pr-float-field"><span class="pr-float-label">Phone *</span><input class="pr-float-value" type="tel" placeholder="(000) 000-0000"></div><button class="aot-preferred-btn" data-group="phone" onclick="aotSetPreferred(this,\'phone\')">Preferred</button><button class="pr-remove-btn" onclick="this.closest(\'.pr-repeat-row\').remove()" title="Remove">×</button>';
+    }
+    container.appendChild(row);
   }
 
   // ── SSN toggle ──

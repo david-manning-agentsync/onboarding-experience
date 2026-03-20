@@ -51,10 +51,37 @@
   #screen-p-aot-tasks .pr-task-detail { flex:1; min-width:0; background:var(--color-bg-surface); border:1px solid var(--color-border-default); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-xs); }
   #screen-p-aot-tasks .pr-task-detail-panel { display:none; }
   #screen-p-aot-tasks .pr-task-detail-panel.active { display:block; }
-  #screen-p-aot-tasks .pr-detail-head { padding:var(--space-5) var(--space-6); border-bottom:1px solid var(--color-border-default); background:var(--color-bg-page); }
+  #screen-p-aot-tasks .pr-detail-head { padding:var(--space-4) var(--space-6); border-bottom:1px solid var(--color-border-default); background:var(--color-bg-page); }
   #screen-p-aot-tasks .pr-detail-head__title { font-size:var(--font-size-base); font-weight:var(--font-weight-bold); color:var(--color-text-primary); margin-bottom:var(--space-2); }
-  #screen-p-aot-tasks .pr-detail-head__meta { display:flex; align-items:center; gap:var(--space-2); flex-wrap:wrap; }
-  #screen-p-aot-tasks .pr-detail-body { padding:var(--space-5) var(--space-6); }
+  #screen-p-aot-tasks .pr-detail-body { }
+  #screen-p-aot-tasks .pr-detail-body-content { padding:var(--space-5) var(--space-6); }
+
+  /* ── Task attribute chips ── */
+  #screen-p-aot-tasks .aot-chips { display:flex; align-items:center; gap:var(--space-2); flex-wrap:wrap; }
+  #screen-p-aot-tasks .aot-chip { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:var(--font-weight-semibold); padding:3px 8px; border-radius:var(--radius-full); white-space:nowrap; }
+  #screen-p-aot-tasks .aot-chip--owner { background:var(--color-primary-50); color:var(--color-primary-700); border:1px solid var(--color-primary-100); }
+  #screen-p-aot-tasks .aot-chip--owner-ops { background:var(--color-gray-100); color:var(--color-gray-600); border:1px solid var(--color-gray-200); }
+  #screen-p-aot-tasks .aot-chip--req { background:var(--color-danger-100); color:var(--color-danger-600); }
+  #screen-p-aot-tasks .aot-chip--opt { background:var(--color-gray-100); color:var(--color-gray-500); }
+  #screen-p-aot-tasks .aot-chip--cat-org { background:var(--color-primary-50); color:var(--color-primary-700); }
+  #screen-p-aot-tasks .aot-chip--cat-reg { background:#f3e8ff; color:#7c3aed; }
+  #screen-p-aot-tasks .aot-chip--cat-sreg { background:var(--color-warning-50); color:var(--color-warning-700); }
+  #screen-p-aot-tasks .aot-chip--status { background:var(--color-gray-100); color:var(--color-gray-500); }
+  #screen-p-aot-tasks .aot-chip--done-status { background:var(--color-success-100); color:var(--color-success-700); }
+
+  /* ── Done banner ── */
+  #screen-p-aot-tasks .aot-done-banner { display:none; align-items:center; gap:var(--space-3); padding:var(--space-3) var(--space-6); background:var(--color-success-50); border-bottom:2px solid var(--color-success-200); }
+  #screen-p-aot-tasks .aot-done-banner__msg { flex:1; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--color-success-700); }
+  #screen-p-aot-tasks .aot-reopen-btn { font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); color:var(--color-text-muted); background:none; border:1px solid var(--color-border-default); border-radius:var(--radius-sm); padding:var(--space-1) var(--space-3); cursor:pointer; font-family:inherit; }
+  #screen-p-aot-tasks .aot-reopen-btn:hover { border-color:var(--color-border-strong); color:var(--color-text-primary); }
+
+  /* ── Done locked state ── */
+  #screen-p-aot-tasks .pr-task-detail-panel--done .aot-done-banner { display:flex; }
+  #screen-p-aot-tasks .pr-task-detail-panel--done .pr-detail-body-content { opacity:0.42; pointer-events:none; user-select:none; }
+
+  /* ── Skip button ── */
+  #screen-p-aot-tasks .aot-skip-btn { background:none; border:none; font-size:var(--font-size-xs); color:var(--color-text-muted); cursor:pointer; font-family:inherit; padding:0 var(--space-1); text-decoration:underline; text-underline-offset:2px; }
+  #screen-p-aot-tasks .aot-skip-btn:hover { color:var(--color-text-secondary); }
 
   /* ── Form layout ── */
   #screen-p-aot-tasks .pr-form-section { margin-bottom:var(--space-5); }
@@ -88,7 +115,6 @@
   #screen-p-aot-tasks .addr-card__title { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); text-transform:uppercase; letter-spacing:var(--tracking-wide); color:var(--color-text-secondary); display:flex; align-items:center; gap:var(--space-2); }
   #screen-p-aot-tasks .addr-card__body { padding:var(--space-4); }
   #screen-p-aot-tasks .addr-card__sameas { display:flex; align-items:center; gap:var(--space-2); font-size:var(--font-size-xs); color:var(--color-text-muted); cursor:pointer; }
-  #screen-p-aot-tasks .addr-card__fields { }
   #screen-p-aot-tasks .addr-card--collapsed .addr-card__fields { display:none; }
 
   /* ── SSN ── */
@@ -146,15 +172,12 @@
   #screen-p-aot-tasks .pr-detail-cta { margin-top:var(--space-5); padding-top:var(--space-4); border-top:1px solid var(--color-border-default); display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); }
   #screen-p-aot-tasks .pr-detail-cta__left { display:flex; align-items:center; gap:var(--space-3); }
 
-  /* ── State placeholder ── */
+  /* ── Misc ── */
   #screen-p-aot-tasks .state-placeholder { background:var(--color-warning-50); border:1px solid var(--color-warning-200); border-radius:var(--radius-md); padding:var(--space-4); display:flex; gap:var(--space-3); align-items:flex-start; margin-top:var(--space-4); }
-
-  /* ── Info callout ── */
   #screen-p-aot-tasks .info-callout { background:var(--color-primary-50); border:1px solid var(--color-primary-100); border-radius:var(--radius-md); padding:var(--space-3) var(--space-4); margin-bottom:var(--space-4); font-size:var(--font-size-xs); color:var(--color-primary-700); line-height:1.5; }
-
-  /* ── Success button ── */
   #screen-p-aot-tasks .btn--success { background:var(--color-success-600); border-color:var(--color-success-600); color:#fff; }
   #screen-p-aot-tasks .btn--success:hover { background:var(--color-success-700,#15803d); border-color:var(--color-success-700,#15803d); }
+  #screen-p-aot-tasks .dd-bank-card { border:1px solid var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-4); }
 
   /* ── Mobile back button (hidden on desktop) ── */
   #screen-p-aot-tasks .aot-mobile-back { display:none; align-items:center; gap:var(--space-2); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--color-primary-600); background:none; border:none; cursor:pointer; padding:var(--space-3) var(--space-5); border-bottom:1px solid var(--color-border-default); font-family:inherit; width:100%; }
@@ -176,9 +199,6 @@
     #screen-p-aot-tasks .pr-form-row--3,
     #screen-p-aot-tasks .pr-form-row--2 { grid-template-columns: 1fr; }
   }
-
-  /* ── Bank account card ── */
-  #screen-p-aot-tasks .dd-bank-card { border:1px solid var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-4); }
 </style>
 
 <div class="p-shell">
@@ -243,38 +263,52 @@
           <div id="aot-td-1" class="pr-task-detail-panel active">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Contact Info</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--req">Required</span>
+                <span class="aot-chip aot-chip--cat-org">Org</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-1">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-              <div class="pr-form-section">
-                <div class="pr-form-section__title">Identity</div>
-                <div class="pr-form-row pr-form-row--3">
-                  <div class="pr-float-field"><span class="pr-float-label">First Name *</span><input class="pr-float-value" type="text" value="James"></div>
-                  <div class="pr-float-field"><span class="pr-float-label">Middle Name</span><input class="pr-float-value" type="text" value="Patrick"></div>
-                  <div class="pr-float-field"><span class="pr-float-label">Last Name *</span><input class="pr-float-value" type="text" value="O'Brien"></div>
-                </div>
-                <div class="pr-form-row pr-form-row--2">
-                  <div class="pr-float-field"><span class="pr-float-label">Date of Birth *</span><input class="pr-float-value" type="text" value="04/12/1981"></div>
-                  <div class="pr-float-field"><span class="pr-float-label">SSN *</span><div class="pr-ssn-wrap"><input class="pr-float-value" type="password" value="987654321" id="aot-ssn" style="flex:1"><button class="pr-ssn-toggle" onclick="aotToggleSSN()">Show</button></div></div>
-                </div>
-                <div class="pr-form-row pr-form-row--2">
-                  <div class="pr-float-field"><span class="pr-float-label">NPN</span><input class="pr-float-value" type="text" value="19283746" readonly style="color:var(--color-text-muted)"></div>
-                  <div style="display:flex;align-items:center;padding:var(--space-2) var(--space-3);background:var(--color-success-50);border:1px solid var(--color-success-200);border-radius:var(--radius-md);gap:var(--space-2);">
-                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2"><path d="M4 10l5 5 7-7"/></svg>
-                    <span style="font-size:var(--font-size-xs);color:var(--color-success-700);">Verified via NIPR</span>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">This task is complete.</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(1)">Re-open</button>
+              </div>
+              <div class="pr-detail-body-content">
+                <div class="pr-form-section">
+                  <div class="pr-form-section__title">Identity</div>
+                  <div class="pr-form-row pr-form-row--3">
+                    <div class="pr-float-field"><span class="pr-float-label">First Name *</span><input class="pr-float-value" type="text" value="James"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">Middle Name</span><input class="pr-float-value" type="text" value="Patrick"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">Last Name *</span><input class="pr-float-value" type="text" value="O'Brien"></div>
+                  </div>
+                  <div class="pr-form-row pr-form-row--2">
+                    <div class="pr-float-field"><span class="pr-float-label">Date of Birth *</span><input class="pr-float-value" type="text" value="04/12/1981"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">SSN *</span><div class="pr-ssn-wrap"><input class="pr-float-value" type="password" value="987654321" id="aot-ssn" style="flex:1"><button class="pr-ssn-toggle" onclick="aotToggleSSN()">Show</button></div></div>
+                  </div>
+                  <div class="pr-form-row pr-form-row--2">
+                    <div class="pr-float-field"><span class="pr-float-label">NPN</span><input class="pr-float-value" type="text" value="19283746" readonly style="color:var(--color-text-muted)"></div>
+                    <div style="display:flex;align-items:center;padding:var(--space-2) var(--space-3);background:var(--color-success-50);border:1px solid var(--color-success-200);border-radius:var(--radius-md);gap:var(--space-2);">
+                      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2"><path d="M4 10l5 5 7-7"/></svg>
+                      <span style="font-size:var(--font-size-xs);color:var(--color-success-700);">Verified via NIPR</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="pr-form-section">
-                <div class="pr-form-section__title">Demographic</div>
-                <div class="pr-form-row pr-form-row--2">
-                  <div class="pr-float-field"><span class="pr-float-label">Citizenship Country *</span><select class="pr-float-value"><option selected>United States</option><option>Canada</option><option>Other</option></select></div>
-                  <div class="pr-float-field"><span class="pr-float-label">Gender</span><select class="pr-float-value"><option value="">— Select —</option><option selected>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
+                <div class="pr-form-section">
+                  <div class="pr-form-section__title">Demographic</div>
+                  <div class="pr-form-row pr-form-row--2">
+                    <div class="pr-float-field"><span class="pr-float-label">Citizenship Country *</span><select class="pr-float-value"><option selected>United States</option><option>Canada</option><option>Other</option></select></div>
+                    <div class="pr-float-field"><span class="pr-float-label">Gender</span><select class="pr-float-value"><option value="">— Select —</option><option selected>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
+                  </div>
                 </div>
-              </div>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button></div>
-                <button class="btn btn--secondary" onclick="aotNext(1,2)">Save &amp; Continue →</button>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left">
+                    <button class="btn btn--secondary" onclick="aotNext(1,2)">Save &amp; Continue →</button>
+                  </div>
+                  <button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button>
+                </div>
               </div>
             </div>
           </div>
@@ -283,148 +317,169 @@
           <div id="aot-td-2" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Contact Details</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--req">Required</span>
+                <span class="aot-chip aot-chip--cat-org">Org</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-2">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-
-              <!-- Emails -->
-              <div class="pr-form-section">
-                <div class="pr-form-section__title">Email Addresses</div>
-                <div id="aot-emails">
-                  <div class="pr-repeat-row">
-                    <div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Work</option><option>Personal</option><option>Other</option></select></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Email *</span><input class="pr-float-value" type="email" value="j.obrien@nationwide-brokers.com"></div>
-                    <button class="aot-preferred-btn aot-preferred--active" data-group="email" onclick="aotSetPreferred(this,'email')">✓ Preferred</button>
-                    <button class="pr-remove-btn" title="Remove">×</button>
-                  </div>
-                </div>
-                <button class="pr-add-btn" onclick="aotAddContactRow('aot-emails','email')">+ Add Email</button>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">This task is complete.</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(2)">Re-open</button>
               </div>
-
-              <!-- Phones -->
-              <div class="pr-form-section">
-                <div class="pr-form-section__title">Phone Numbers</div>
-                <div id="aot-phones">
-                  <div class="pr-repeat-row">
-                    <div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Cell</option><option>Work</option><option>Home</option></select></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Phone *</span><input class="pr-float-value" type="tel" value="(303) 555-0288"></div>
-                    <button class="aot-preferred-btn aot-preferred--active" data-group="phone" onclick="aotSetPreferred(this,'phone')">✓ Preferred</button>
-                    <button class="pr-remove-btn" title="Remove">×</button>
-                  </div>
-                </div>
-                <button class="pr-add-btn" onclick="aotAddContactRow('aot-phones','phone')">+ Add Phone</button>
-              </div>
-
-              <!-- Addresses — 3 NIPR required cards -->
-              <div class="pr-form-section">
-                <div class="pr-form-section__title">
-                  Addresses
-                  <span style="font-size:10px;font-weight:var(--font-weight-medium);text-transform:none;letter-spacing:0;color:var(--color-text-muted);margin-left:var(--space-2);">3 types required by NIPR</span>
-                </div>
-
-                <div id="aot-addr-list">
-                <!-- Resident -->
-                <div class="addr-card addr-card--preferred" id="addr-resident">
-                  <div class="addr-card__header">
-                    <div class="addr-card__title">
-                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l7-6 7 6v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 20v-8h4v8"/></svg>
-                      Resident Address
-                      <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
+              <div class="pr-detail-body-content">
+                <!-- Emails -->
+                <div class="pr-form-section">
+                  <div class="pr-form-section__title">Email Addresses</div>
+                  <div id="aot-emails">
+                    <div class="pr-repeat-row">
+                      <div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Work</option><option>Personal</option><option>Other</option></select></div>
+                      <div class="pr-float-field"><span class="pr-float-label">Email *</span><input class="pr-float-value" type="email" value="j.obrien@nationwide-brokers.com"></div>
+                      <button class="aot-preferred-btn aot-preferred--active" data-group="email" onclick="aotSetPreferred(this,'email')">✓ Preferred</button>
+                      <button class="pr-remove-btn" title="Remove">×</button>
                     </div>
-                    <button class="aot-preferred-btn aot-preferred--active" data-group="addr" onclick="aotSetPreferred(this,'addr')">✓ Preferred</button>
                   </div>
-                  <div class="addr-card__body">
-                    <div class="addr-card__fields">
-                      <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text" value="4821 Maple Ridge Rd"></div></div>
-                      <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
-                        <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text" value="Denver"></div>
-                        <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text" value="CO"></div>
-                        <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text" value="80204"></div>
+                  <button class="pr-add-btn" onclick="aotAddContactRow('aot-emails','email')">+ Add Email</button>
+                </div>
+                <!-- Phones -->
+                <div class="pr-form-section">
+                  <div class="pr-form-section__title">Phone Numbers</div>
+                  <div id="aot-phones">
+                    <div class="pr-repeat-row">
+                      <div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Cell</option><option>Work</option><option>Home</option></select></div>
+                      <div class="pr-float-field"><span class="pr-float-label">Phone *</span><input class="pr-float-value" type="tel" value="(303) 555-0288"></div>
+                      <button class="aot-preferred-btn aot-preferred--active" data-group="phone" onclick="aotSetPreferred(this,'phone')">✓ Preferred</button>
+                      <button class="pr-remove-btn" title="Remove">×</button>
+                    </div>
+                  </div>
+                  <button class="pr-add-btn" onclick="aotAddContactRow('aot-phones','phone')">+ Add Phone</button>
+                </div>
+                <!-- Addresses -->
+                <div class="pr-form-section">
+                  <div class="pr-form-section__title">
+                    Addresses
+                    <span style="font-size:10px;font-weight:var(--font-weight-medium);text-transform:none;letter-spacing:0;color:var(--color-text-muted);margin-left:var(--space-2);">3 types required by NIPR</span>
+                  </div>
+                  <div id="aot-addr-list">
+                    <!-- Resident -->
+                    <div class="addr-card addr-card--preferred" id="addr-resident">
+                      <div class="addr-card__header">
+                        <div class="addr-card__title">
+                          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l7-6 7 6v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 20v-8h4v8"/></svg>
+                          Resident Address
+                          <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
+                        </div>
+                        <button class="aot-preferred-btn aot-preferred--active" data-group="addr" onclick="aotSetPreferred(this,'addr')">✓ Preferred</button>
+                      </div>
+                      <div class="addr-card__body">
+                        <div class="addr-card__fields">
+                          <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text" value="4821 Maple Ridge Rd"></div></div>
+                          <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
+                            <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text" value="Denver"></div>
+                            <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text" value="CO"></div>
+                            <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text" value="80204"></div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <!-- Mailing -->
-                <div class="addr-card addr-card--collapsed" id="addr-mailing">
-                  <div class="addr-card__header">
-                    <div class="addr-card__title">
-                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="16" height="12" rx="1"/><path d="M2 5l8 7 8-7"/></svg>
-                      Mailing Address
-                      <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:var(--space-3);">
-                      <label class="addr-card__sameas"><input type="checkbox" id="addr-mailing-sameas" checked onchange="aotSyncAddress(this,'addr-mailing')"> Same as Resident</label>
-                      <button class="aot-preferred-btn" data-group="addr" onclick="aotSetPreferred(this,'addr')">Preferred</button>
-                    </div>
-                  </div>
-                  <div class="addr-card__body" style="display:none" id="addr-mailing-body">
-                    <div class="addr-card__fields">
-                      <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text"></div></div>
-                      <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
-                        <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text"></div>
-                        <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text"></div>
-                        <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text"></div>
+                    <!-- Mailing -->
+                    <div class="addr-card addr-card--collapsed" id="addr-mailing">
+                      <div class="addr-card__header">
+                        <div class="addr-card__title">
+                          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="16" height="12" rx="1"/><path d="M2 5l8 7 8-7"/></svg>
+                          Mailing Address
+                          <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:var(--space-3);">
+                          <label class="addr-card__sameas"><input type="checkbox" id="addr-mailing-sameas" checked onchange="aotSyncAddress(this,'addr-mailing')"> Same as Resident</label>
+                          <button class="aot-preferred-btn" data-group="addr" onclick="aotSetPreferred(this,'addr')">Preferred</button>
+                        </div>
+                      </div>
+                      <div class="addr-card__body" style="display:none">
+                        <div class="addr-card__fields">
+                          <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text"></div></div>
+                          <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
+                            <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text"></div>
+                            <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text"></div>
+                            <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text"></div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <!-- Business -->
-                <div class="addr-card addr-card--collapsed" id="addr-business">
-                  <div class="addr-card__header">
-                    <div class="addr-card__title">
-                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="12" rx="1"/><path d="M6 7V5a4 4 0 018 0v2"/></svg>
-                      Business Address
-                      <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:var(--space-3);">
-                      <label class="addr-card__sameas"><input type="checkbox" id="addr-business-sameas" onchange="aotSyncAddress(this,'addr-business')"> Same as Resident</label>
-                      <button class="aot-preferred-btn" data-group="addr" onclick="aotSetPreferred(this,'addr')">Preferred</button>
-                    </div>
-                  </div>
-                  <div class="addr-card__body" id="addr-business-body">
-                    <div class="addr-card__fields">
-                      <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text" value="1480 Blake St, Ste 200"></div></div>
-                      <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
-                        <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text" value="Denver"></div>
-                        <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text" value="CO"></div>
-                        <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text" value="80202"></div>
+                    <!-- Business -->
+                    <div class="addr-card addr-card--collapsed" id="addr-business">
+                      <div class="addr-card__header">
+                        <div class="addr-card__title">
+                          <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="12" rx="1"/><path d="M6 7V5a4 4 0 018 0v2"/></svg>
+                          Business Address
+                          <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:var(--space-3);">
+                          <label class="addr-card__sameas"><input type="checkbox" id="addr-business-sameas" onchange="aotSyncAddress(this,'addr-business')"> Same as Resident</label>
+                          <button class="aot-preferred-btn" data-group="addr" onclick="aotSetPreferred(this,'addr')">Preferred</button>
+                        </div>
+                      </div>
+                      <div class="addr-card__body">
+                        <div class="addr-card__fields">
+                          <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text" value="1480 Blake St, Ste 200"></div></div>
+                          <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
+                            <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text" value="Denver"></div>
+                            <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text" value="CO"></div>
+                            <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text" value="80202"></div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </div><!-- /aot-addr-list -->
+                  <button class="pr-add-btn" onclick="aotAddAddress()" style="margin-top:var(--space-1)">+ Add Additional Address</button>
                 </div>
-
-                </div><!-- /aot-addr-list -->
-                <button class="pr-add-btn" onclick="aotAddAddress()" style="margin-top:var(--space-1)">+ Add Additional Address</button>
-              </div>
-
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button></div>
-                <button class="btn btn--secondary" onclick="aotNext(2,3)">Save &amp; Continue →</button>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left">
+                    <button class="btn btn--secondary" onclick="aotNext(2,3)">Save &amp; Continue →</button>
+                  </div>
+                  <button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- ── Task 3: ID Document ── -->
+          <!-- ── Task 3: ID Document (Optional) ── -->
           <div id="aot-td-3" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">ID Document</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Optional</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--opt">Optional</span>
+                <span class="aot-chip aot-chip--cat-reg">Regulatory</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-3">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed);">Provide a valid government-issued photo ID. This is used to verify your identity during onboarding.</p>
-              <div class="pr-form-row pr-form-row--2">
-                <div class="pr-float-field"><span class="pr-float-label">Document Type</span><select class="pr-float-value"><option selected>Driver's License</option><option>State ID Card</option></select></div>
-                <div class="pr-float-field"><span class="pr-float-label">Issuing State</span><input class="pr-float-value" type="text" value="Colorado"></div>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">This task is complete.</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(3)">Re-open</button>
               </div>
-              <div class="pr-form-row pr-form-row--2">
-                <div class="pr-float-field"><span class="pr-float-label">License / ID Number *</span><input class="pr-float-value" type="text" value="CO-1983472"></div>
-                <div class="pr-float-field"><span class="pr-float-label">Expiration Date *</span><input class="pr-float-value" type="text" value="04/12/2029"></div>
-              </div>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button></div>
-                <button class="btn btn--secondary" onclick="aotNext(3,4)">Save &amp; Continue →</button>
+              <div class="pr-detail-body-content">
+                <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed);">Provide a valid government-issued photo ID. This is used to verify your identity during onboarding.</p>
+                <div class="pr-form-row pr-form-row--2">
+                  <div class="pr-float-field"><span class="pr-float-label">Document Type</span><select class="pr-float-value"><option selected>Driver's License</option><option>State ID Card</option></select></div>
+                  <div class="pr-float-field"><span class="pr-float-label">Issuing State</span><input class="pr-float-value" type="text" value="Colorado"></div>
+                </div>
+                <div class="pr-form-row pr-form-row--2">
+                  <div class="pr-float-field"><span class="pr-float-label">License / ID Number *</span><input class="pr-float-value" type="text" value="CO-1983472"></div>
+                  <div class="pr-float-field"><span class="pr-float-label">Expiration Date *</span><input class="pr-float-value" type="text" value="04/12/2029"></div>
+                </div>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left">
+                    <button class="btn btn--secondary" onclick="aotNext(3,4)">Save &amp; Continue →</button>
+                    <button class="aot-skip-btn" onclick="aotSkipTask(3,4)">Skip</button>
+                  </div>
+                  <button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button>
+                </div>
               </div>
             </div>
           </div>
@@ -433,18 +488,32 @@
           <div id="aot-td-4" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Employment History</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--req">Required</span>
+                <span class="aot-chip aot-chip--cat-reg">Regulatory</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-4">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-              <div class="coverage-bar">
-                <div class="coverage-bar__label"><span>5-year coverage requirement (60 months)</span><span id="aot-emp-coverage-label" style="font-weight:var(--font-weight-bold);color:var(--color-primary-600);">calculating…</span></div>
-                <div class="coverage-bar__track"><div class="coverage-bar__fill" id="aot-emp-coverage-fill" style="width:0%"></div></div>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">This task is complete.</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(4)">Re-open</button>
               </div>
-              <div id="aot-emp-list"><!-- rendered by aotRenderEmp() --></div>
-              <button class="pr-add-btn" onclick="aotAddEmployment()">+ Add Prior Employment</button>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button></div>
-                <button class="btn btn--secondary" onclick="aotNext(4,5)">Save &amp; Continue →</button>
+              <div class="pr-detail-body-content">
+                <div class="coverage-bar">
+                  <div class="coverage-bar__label"><span>5-year coverage requirement (60 months)</span><span id="aot-emp-coverage-label" style="font-weight:var(--font-weight-bold);color:var(--color-primary-600);">calculating…</span></div>
+                  <div class="coverage-bar__track"><div class="coverage-bar__fill" id="aot-emp-coverage-fill" style="width:0%"></div></div>
+                </div>
+                <div id="aot-emp-list"><!-- rendered by aotRenderEmp() --></div>
+                <button class="pr-add-btn" onclick="aotAddEmployment()">+ Add Prior Employment</button>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left">
+                    <button class="btn btn--secondary" onclick="aotNext(4,5)">Save &amp; Continue →</button>
+                  </div>
+                  <button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button>
+                </div>
               </div>
             </div>
           </div>
@@ -453,42 +522,73 @@
           <div id="aot-td-5" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Background Questions</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--req">Required</span>
+                <span class="aot-chip aot-chip--cat-reg">Regulatory</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-5">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed);">Answer each question accurately. Disclosures are reviewed during compliance screening.</p>
-              <div class="bg-question"><div class="bg-question__text">1. Have you ever been convicted of a felony, misdemeanor, or crime involving dishonesty or breach of trust?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq1" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq1" value="yes"> Yes — please explain</label></div></div>
-              <div class="bg-question"><div class="bg-question__text">2. Have you ever had an insurance license or financial services registration denied, suspended, or revoked?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq2" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq2" value="yes"> Yes — please explain</label></div></div>
-              <div class="bg-question"><div class="bg-question__text">3. Are you currently named as a defendant in any pending civil lawsuit related to your professional activities?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq3" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq3" value="yes"> Yes — please explain</label></div></div>
-              <div class="state-placeholder"><div style="color:var(--color-warning-500);flex-shrink:0;margin-top:1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div><div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-warning-700);">Colorado — State-Specific Disclosures</div><div style="font-size:var(--font-size-xs);color:var(--color-warning-600);line-height:1.5;margin-top:2px;">Additional questions required for Colorado-licensed producers will be presented during final review.</div></div></div>
-              <div class="pr-detail-cta"><div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button></div><button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue →</button></div>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">This task is complete.</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(5)">Re-open</button>
+              </div>
+              <div class="pr-detail-body-content">
+                <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed);">Answer each question accurately. Disclosures are reviewed during compliance screening.</p>
+                <div class="bg-question"><div class="bg-question__text">1. Have you ever been convicted of a felony, misdemeanor, or crime involving dishonesty or breach of trust?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq1" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq1" value="yes"> Yes — please explain</label></div></div>
+                <div class="bg-question"><div class="bg-question__text">2. Have you ever had an insurance license or financial services registration denied, suspended, or revoked?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq2" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq2" value="yes"> Yes — please explain</label></div></div>
+                <div class="bg-question"><div class="bg-question__text">3. Are you currently named as a defendant in any pending civil lawsuit related to your professional activities?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq3" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq3" value="yes"> Yes — please explain</label></div></div>
+                <div class="state-placeholder"><div style="color:var(--color-warning-500);flex-shrink:0;margin-top:1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div><div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-warning-700);">Colorado — State-Specific Disclosures</div><div style="font-size:var(--font-size-xs);color:var(--color-warning-600);line-height:1.5;margin-top:2px;">Additional questions required for Colorado-licensed producers will be presented during final review.</div></div></div>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left">
+                    <button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue →</button>
+                  </div>
+                  <button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- ── Task 6: NIPR Attestation ── -->
+          <!-- ── Task 6: NIPR Attestation (Operations) ── -->
           <div id="aot-td-6" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">NIPR Attestation</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner-ops"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg> Operations</span>
+                <span class="aot-chip aot-chip--req">Required</span>
+                <span class="aot-chip aot-chip--cat-sreg">State-Regulatory</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-6">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);">Scroll through the full attestation below, then check the box to confirm your agreement.</p>
-              <div class="attestation-text" id="aot-attest-scroll" onscroll="aotCheckScroll()">
-                <strong>NIPR PRODUCER ATTESTATION AGREEMENT</strong><br><br>
-                By completing this attestation, I, James Patrick O'Brien, hereby confirm and attest to the following under penalty of perjury and subject to the terms of the National Insurance Producer Registry (NIPR):<br><br>
-                <strong>1. Accuracy of Information.</strong> All information provided through AgentSync's onboarding platform is accurate, complete, and current to the best of my knowledge. Knowingly providing false or misleading information is a violation of state insurance laws and may result in license suspension, revocation, or criminal liability.<br><br>
-                <strong>2. Authorization for NIPR Data Access.</strong> I authorize NIPR and AgentSync, Inc. to access and retrieve my producer license and appointment data from the NIPR database, including current and historical license records, regulatory actions, and appointment status across all states.<br><br>
-                <strong>3. Continuing Compliance Obligations.</strong> I acknowledge that maintaining an active and valid license in my resident state is a condition of continued authorization to produce insurance business. I agree to promptly notify my appointing agency or carrier of any changes to my license status, regulatory actions, or criminal convictions.<br><br>
-                <strong>4. Electronic Signature Agreement.</strong> I understand and agree that submitting this form constitutes my electronic signature under the E-SIGN Act and applicable state electronic transaction laws. This electronic signature is legally binding and equivalent to a handwritten signature.<br><br>
-                <em>I have read, understood, and agree to all terms stated above.</em>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">Attestation submitted.</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(6)">Re-open</button>
               </div>
-              <label style="display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-bg-page);border:1px solid var(--color-border-default);border-radius:var(--radius-md);cursor:pointer;opacity:.4;pointer-events:none;" id="aot-attest-label">
-                <input type="checkbox" id="aot-attest-check" style="margin-top:2px;accent-color:var(--color-primary-600);flex-shrink:0" onchange="aotAttestChange()">
-                <span style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">I have read and agree to the NIPR Producer Attestation Agreement above.</span>
-              </label>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left"><button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:.5;cursor:not-allowed">Submit Attestation</button><span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Scroll and check the box to enable</span></div>
-                <button class="btn btn--secondary" onclick="aotNext(6,7)">Skip for now</button>
+              <div class="pr-detail-body-content">
+                <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);">Scroll through the full attestation below, then check the box to confirm your agreement.</p>
+                <div class="attestation-text" id="aot-attest-scroll" onscroll="aotCheckScroll()">
+                  <strong>NIPR PRODUCER ATTESTATION AGREEMENT</strong><br><br>
+                  By completing this attestation, I, James Patrick O'Brien, hereby confirm and attest to the following under penalty of perjury and subject to the terms of the National Insurance Producer Registry (NIPR):<br><br>
+                  <strong>1. Accuracy of Information.</strong> All information provided through AgentSync's onboarding platform is accurate, complete, and current to the best of my knowledge. Knowingly providing false or misleading information is a violation of state insurance laws and may result in license suspension, revocation, or criminal liability.<br><br>
+                  <strong>2. Authorization for NIPR Data Access.</strong> I authorize NIPR and AgentSync, Inc. to access and retrieve my producer license and appointment data from the NIPR database, including current and historical license records, regulatory actions, and appointment status across all states.<br><br>
+                  <strong>3. Continuing Compliance Obligations.</strong> I acknowledge that maintaining an active and valid license in my resident state is a condition of continued authorization to produce insurance business. I agree to promptly notify my appointing agency or carrier of any changes to my license status, regulatory actions, or criminal convictions.<br><br>
+                  <strong>4. Electronic Signature Agreement.</strong> I understand and agree that submitting this form constitutes my electronic signature under the E-SIGN Act and applicable state electronic transaction laws. This electronic signature is legally binding and equivalent to a handwritten signature.<br><br>
+                  <em>I have read, understood, and agree to all terms stated above.</em>
+                </div>
+                <label style="display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-bg-page);border:1px solid var(--color-border-default);border-radius:var(--radius-md);cursor:pointer;opacity:.4;pointer-events:none;" id="aot-attest-label">
+                  <input type="checkbox" id="aot-attest-check" style="margin-top:2px;accent-color:var(--color-primary-600);flex-shrink:0" onchange="aotAttestChange()">
+                  <span style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">I have read and agree to the NIPR Producer Attestation Agreement above.</span>
+                </label>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left">
+                    <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Scroll to bottom &amp; check the box to enable</span>
+                  </div>
+                  <button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:.5;cursor:not-allowed">Submit Attestation</button>
+                </div>
               </div>
             </div>
           </div>
@@ -497,40 +597,52 @@
           <div id="aot-td-7" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Direct Deposit</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--req">Required</span>
+                <span class="aot-chip aot-chip--cat-org">Org</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-7">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-              <div id="aot-bank-accounts">
-                <div class="dd-bank-card" id="aot-bank-1" data-index="1">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);"><span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Bank Account 1</span><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);font-size:11px;">Primary</span></div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Account Nickname</span><input class="pr-float-value dd-nickname" type="text" placeholder="e.g. Chase Checking"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Account Type</span><select class="pr-float-value"><option selected>Checking</option><option>Savings</option></select></div>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Routing Number *</span><input class="pr-float-value dd-routing" type="text" placeholder="9 digits"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Account Number *</span><input class="pr-float-value dd-acctnum" type="password" placeholder="•••••••••"></div>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">This task is complete.</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(7)">Re-open</button>
+              </div>
+              <div class="pr-detail-body-content">
+                <div id="aot-bank-accounts">
+                  <div class="dd-bank-card" id="aot-bank-1" data-index="1">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);"><span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Bank Account 1</span><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);font-size:11px;">Primary</span></div>
+                    <div class="pr-form-row pr-form-row--2">
+                      <div class="pr-float-field"><span class="pr-float-label">Account Nickname</span><input class="pr-float-value dd-nickname" type="text" placeholder="e.g. Chase Checking"></div>
+                      <div class="pr-float-field"><span class="pr-float-label">Account Type</span><select class="pr-float-value"><option selected>Checking</option><option>Savings</option></select></div>
+                    </div>
+                    <div class="pr-form-row pr-form-row--2">
+                      <div class="pr-float-field"><span class="pr-float-label">Routing Number *</span><input class="pr-float-value dd-routing" type="text" placeholder="9 digits"></div>
+                      <div class="pr-float-field"><span class="pr-float-label">Account Number *</span><input class="pr-float-value dd-acctnum" type="password" placeholder="•••••••••"></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <button class="pr-add-btn" id="aot-add-bank-btn" onclick="aotAddBankAccount()" style="margin-bottom:var(--space-3)">+ Add Another Account</button>
-
-              <!-- Allocation — shown when 2+ accounts -->
-              <div id="aot-dd-allocation" style="display:none">
-                <div class="aot-alloc-section">
-                  <div class="aot-alloc-title">Commission Allocation</div>
-                  <div id="aot-alloc-rows"></div>
-                  <div class="aot-alloc-total">
-                    <span style="color:var(--color-text-muted)">Total:</span>
-                    <span id="aot-alloc-total-val" class="aot-alloc-total--ok">100%</span>
-                    <span id="aot-alloc-note" style="font-size:var(--font-size-xs);color:var(--color-danger-600)"></span>
+                <button class="pr-add-btn" id="aot-add-bank-btn" onclick="aotAddBankAccount()" style="margin-bottom:var(--space-3)">+ Add Another Account</button>
+                <!-- Allocation — shown when 2+ accounts -->
+                <div id="aot-dd-allocation" style="display:none">
+                  <div class="aot-alloc-section">
+                    <div class="aot-alloc-title">Commission Allocation</div>
+                    <div id="aot-alloc-rows"></div>
+                    <div class="aot-alloc-total">
+                      <span style="color:var(--color-text-muted)">Total:</span>
+                      <span id="aot-alloc-total-val" class="aot-alloc-total--ok">100%</span>
+                      <span id="aot-alloc-note" style="font-size:var(--font-size-xs);color:var(--color-danger-600)"></span>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button></div>
-                <button class="btn btn--secondary" onclick="aotNext(7,8)">Save &amp; Continue →</button>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left">
+                    <button class="btn btn--secondary" onclick="aotNext(7,8)">Save &amp; Continue →</button>
+                  </div>
+                  <button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button>
+                </div>
               </div>
             </div>
           </div>
@@ -539,46 +651,59 @@
           <div id="aot-td-8" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">E-Signature</div>
-              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
+              <div class="aot-chips">
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--req">Required</span>
+                <span class="aot-chip aot-chip--cat-org">Org</span>
+                <span class="aot-chip aot-chip--status" id="aot-hstatus-8">Not Started</span>
+              </div>
             </div>
             <div class="pr-detail-body">
-              <div class="pr-form-section">
-                <div class="pr-form-section__title">Producer Agreement</div>
-                <div class="attestation-text">
-                  <strong>PRODUCER APPOINTMENT AGREEMENT</strong><br><br>
-                  This Producer Appointment Agreement ("Agreement") is entered into by and between Summit Financial Partners ("Agency") and James Patrick O'Brien ("Producer"), effective upon execution.<br><br>
-                  <strong>1. Appointment.</strong> Agency hereby appoints Producer to solicit and sell insurance products on behalf of Agency's appointed carriers, subject to the terms of this Agreement and applicable state regulations.<br><br>
-                  <strong>2. Compliance.</strong> Producer agrees to maintain all required licenses and comply with all applicable regulations. Producer shall notify Agency within 10 business days of any change in license status or regulatory action.<br><br>
-                  <strong>3. Compensation.</strong> Producer shall be compensated per the applicable commission schedule, which may be amended with 30 days written notice. Nothing in this Agreement creates an employment relationship.<br><br>
-                  <em>By signing below, both parties agree to the terms of this Agreement.</em>
-                </div>
+              <div class="aot-done-banner">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
+                <span class="aot-done-banner__msg">Signature submitted. Onboarding complete!</span>
+                <button class="aot-reopen-btn" onclick="aotReopenTask(8)">Re-open</button>
               </div>
-              <div class="pr-form-section">
-                <div class="pr-form-section__title">Your Signature</div>
-                <div class="sig-tabs">
-                  <div class="sig-tab active" onclick="aotSigTab(this,'sig-draw')">Draw</div>
-                  <div class="sig-tab" onclick="aotSigTab(this,'sig-type')">Type</div>
-                  <div class="sig-tab" onclick="aotSigTab(this,'sig-upload')">Upload</div>
-                </div>
-                <div id="sig-draw" class="sig-panel active">
-                  <div class="sig-canvas">Draw your signature here</div>
-                  <button class="pr-add-btn">Clear</button>
-                </div>
-                <div id="sig-type" class="sig-panel">
-                  <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-3)"><div class="pr-float-field"><span class="pr-float-label">Type your full name</span><input class="pr-float-value" type="text" id="aot-sig-text" oninput="aotSigPreview()" value="James P. O'Brien"></div></div>
-                  <div class="sig-type-preview" id="aot-sig-preview">James P. O'Brien</div>
-                  <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);">This cursive representation constitutes your legal electronic signature.</p>
-                </div>
-                <div id="sig-upload" class="sig-panel">
-                  <div class="sig-upload-area">
-                    <div style="font-size:24px;margin-bottom:var(--space-2)">🖊️</div>
-                    <div style="font-size:var(--font-size-sm);color:var(--color-text-muted)"><span style="color:var(--color-primary-600);font-weight:var(--font-weight-semibold)">Upload signature image</span> or drag and drop</div>
-                    <div style="font-size:11px;color:var(--color-text-muted);margin-top:var(--space-1)">PNG, JPG up to 2MB</div>
+              <div class="pr-detail-body-content">
+                <div class="pr-form-section">
+                  <div class="pr-form-section__title">Producer Agreement</div>
+                  <div class="attestation-text">
+                    <strong>PRODUCER APPOINTMENT AGREEMENT</strong><br><br>
+                    This Producer Appointment Agreement ("Agreement") is entered into by and between Summit Financial Partners ("Agency") and James Patrick O'Brien ("Producer"), effective upon execution.<br><br>
+                    <strong>1. Appointment.</strong> Agency hereby appoints Producer to solicit and sell insurance products on behalf of Agency's appointed carriers, subject to the terms of this Agreement and applicable state regulations.<br><br>
+                    <strong>2. Compliance.</strong> Producer agrees to maintain all required licenses and comply with all applicable regulations. Producer shall notify Agency within 10 business days of any change in license status or regulatory action.<br><br>
+                    <strong>3. Compensation.</strong> Producer shall be compensated per the applicable commission schedule, which may be amended with 30 days written notice. Nothing in this Agreement creates an employment relationship.<br><br>
+                    <em>By signing below, both parties agree to the terms of this Agreement.</em>
                   </div>
                 </div>
-              </div>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit Signature</button></div>
+                <div class="pr-form-section">
+                  <div class="pr-form-section__title">Your Signature</div>
+                  <div class="sig-tabs">
+                    <div class="sig-tab active" onclick="aotSigTab(this,'sig-draw')">Draw</div>
+                    <div class="sig-tab" onclick="aotSigTab(this,'sig-type')">Type</div>
+                    <div class="sig-tab" onclick="aotSigTab(this,'sig-upload')">Upload</div>
+                  </div>
+                  <div id="sig-draw" class="sig-panel active">
+                    <div class="sig-canvas">Draw your signature here</div>
+                    <button class="pr-add-btn">Clear</button>
+                  </div>
+                  <div id="sig-type" class="sig-panel">
+                    <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-3)"><div class="pr-float-field"><span class="pr-float-label">Type your full name</span><input class="pr-float-value" type="text" id="aot-sig-text" oninput="aotSigPreview()" value="James P. O'Brien"></div></div>
+                    <div class="sig-type-preview" id="aot-sig-preview">James P. O'Brien</div>
+                    <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);">This cursive representation constitutes your legal electronic signature.</p>
+                  </div>
+                  <div id="sig-upload" class="sig-panel">
+                    <div class="sig-upload-area">
+                      <div style="font-size:24px;margin-bottom:var(--space-2)">🖊️</div>
+                      <div style="font-size:var(--font-size-sm);color:var(--color-text-muted)"><span style="color:var(--color-primary-600);font-weight:var(--font-weight-semibold)">Upload signature image</span> or drag and drop</div>
+                      <div style="font-size:11px;color:var(--color-text-muted);margin-top:var(--space-1)">PNG, JPG up to 2MB</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pr-detail-cta">
+                  <div class="pr-detail-cta__left"></div>
+                  <button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit &amp; Sign</button>
+                </div>
               </div>
             </div>
           </div>
