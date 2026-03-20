@@ -1334,15 +1334,26 @@
 
   let _aotDone = new Set();
 
+  // ── Navigation ──
+
+  function aotSelectTask(el, panelId) {
+    selectPrTask(el, panelId);
+    document.getElementById('screen-p-aot-tasks').classList.add('detail-open');
+  }
+
+  function aotBackToList() {
+    document.getElementById('screen-p-aot-tasks').classList.remove('detail-open');
+  }
+
+  // ── Progress / completion ──
+
   function aotMarkDone(taskNum, nextNum) {
     _aotDone.add(taskNum);
-    // Update circle to checkmark
     const circle = document.getElementById('aot-circle-' + taskNum);
     if (circle) {
       circle.classList.add('pr-task-circle--done');
       circle.innerHTML = '<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>';
     }
-    // Update sub-label text
     const item = document.getElementById('aot-item-' + taskNum);
     if (item) {
       const sub = item.querySelector('.pr-task-item__sub');
@@ -1351,7 +1362,6 @@
         sub.className = 'pr-task-item__sub';
       }
     }
-    // Recount required done (tasks 1,2,4,5,6,7,8 = required; 3 = optional)
     const required = [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
@@ -1363,57 +1373,323 @@
     if (pctLabel) pctLabel.textContent = pct + '%';
     const progLabel = document.getElementById('aot-progress-label');
     if (progLabel) progLabel.textContent = doneCt + ' of ' + required.length + ' required tasks complete';
-    // Move to next
     if (nextNum) aotNext(taskNum, nextNum);
   }
 
   function aotNext(fromNum, toNum) {
     if (!toNum) return;
-    const fromItem = document.getElementById('aot-item-' + fromNum);
-    const toItem   = document.getElementById('aot-item-' + toNum);
+    const fromItem  = document.getElementById('aot-item-' + fromNum);
+    const toItem    = document.getElementById('aot-item-' + toNum);
     const fromPanel = document.getElementById('aot-td-' + fromNum);
     const toPanel   = document.getElementById('aot-td-' + toNum);
-    if (fromItem) fromItem.classList.remove('active');
-    if (toItem)   toItem.classList.add('active');
+    if (fromItem)  fromItem.classList.remove('active');
+    if (toItem)    toItem.classList.add('active');
     if (fromPanel) fromPanel.classList.remove('active');
     if (toPanel)   toPanel.classList.add('active');
   }
+
+  // ── SSN toggle ──
 
   function aotToggleSSN() {
     const el = document.getElementById('aot-ssn');
     if (!el) return;
     const btn = el.parentElement && el.parentElement.querySelector('.pr-ssn-toggle');
-    if (el.type === 'password') { el.type = 'text'; if (btn) btn.textContent = 'Hide'; }
-    else { el.type = 'password'; if (btn) btn.textContent = 'Show'; }
+    if (el.type === 'password') { el.type = 'text';     if (btn) btn.textContent = 'Hide'; }
+    else                        { el.type = 'password'; if (btn) btn.textContent = 'Show'; }
   }
 
-  function aotAddRow(containerId, type) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    const row = document.createElement('div');
-    row.className = 'pr-repeat-row';
-    if (type === 'email') {
-      row.innerHTML = '<div class="pr-float-field" style="max-width:120px;flex:0 0 120px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Work</option><option>Personal</option><option>Other</option></select></div><div class="pr-float-field"><span class="pr-float-label">Email *</span><input class="pr-float-value" type="email" placeholder="email@example.com"></div><button class="pr-remove-btn" onclick="this.closest(\'.pr-repeat-row\').remove()" title="Remove">×</button>';
-    } else {
-      row.innerHTML = '<div class="pr-float-field" style="max-width:120px;flex:0 0 120px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Cell</option><option>Work</option><option>Home</option></select></div><div class="pr-float-field"><span class="pr-float-label">Phone *</span><input class="pr-float-value" type="tel" placeholder="(000) 000-0000"></div><button class="pr-remove-btn" onclick="this.closest(\'.pr-repeat-row\').remove()" title="Remove">×</button>';
+  // ── Preferred toggle (email / phone / addr groups) ──
+
+  function aotSetPreferred(btn, group) {
+    const screen = document.getElementById('screen-p-aot-tasks');
+    if (!screen) return;
+    screen.querySelectorAll('[data-group="' + group + '"] .aot-preferred-btn').forEach(b => {
+      b.classList.remove('aot-preferred--active');
+    });
+    // For address cards, also clear preferred border
+    if (group === 'addr') {
+      screen.querySelectorAll('.addr-card').forEach(c => c.classList.remove('addr-card--preferred'));
     }
-    container.appendChild(row);
+    btn.classList.add('aot-preferred--active');
+    if (group === 'addr') {
+      const card = btn.closest('.addr-card');
+      if (card) card.classList.add('addr-card--preferred');
+    }
   }
 
-  function aotToggleMailing(cb) {
-    const fields = document.getElementById('aot-mailing-fields');
-    if (fields) fields.style.display = cb.checked ? 'none' : '';
+  // ── Address: "Same as Resident" sync ──
+
+  function aotSyncAddress(cb, targetCardId) {
+    const targetCard = document.getElementById(targetCardId);
+    if (!targetCard) return;
+    // The body wrapper may be hidden when "same as resident" is checked
+    const bodyWrapper = targetCard.querySelector('.addr-card__body');
+    const fieldsDiv   = targetCard.querySelector('.addr-card__fields');
+    if (cb.checked) {
+      // Hide body and copy resident values into hidden fields for data consistency
+      if (bodyWrapper) bodyWrapper.style.display = 'none';
+      const src = document.getElementById('addr-resident');
+      if (src && fieldsDiv) {
+        const srcInputs = src.querySelectorAll('.addr-card__fields input, .addr-card__fields select');
+        const dstInputs = fieldsDiv.querySelectorAll('input, select');
+        srcInputs.forEach((s, i) => { if (dstInputs[i]) dstInputs[i].value = s.value; });
+      }
+    } else {
+      if (bodyWrapper) bodyWrapper.style.display = '';
+    }
   }
 
-  function aotAddLicense() {
-    const container = document.getElementById('aot-licenses');
+  // ── Address: add a custom address card ──
+
+  function aotAddAddress() {
+    const container = document.getElementById('aot-addr-list');
     if (!container) return;
-    const count = container.querySelectorAll('[style*="border"]').length + 1;
-    const div = document.createElement('div');
-    div.style.cssText = 'border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);';
-    div.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);"><span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">License ${count}</span><button class="pr-remove-btn" style="width:auto;padding:0 8px;font-size:11px;height:22px;" onclick="this.closest('[style]').remove()">Remove</button></div><div class="pr-form-row pr-form-row--3"><div class="pr-float-field"><span class="pr-float-label">License #</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">Type</span><input class="pr-float-value" type="text"></div></div><div class="pr-form-row pr-form-row--3"><div class="pr-float-field"><span class="pr-float-label">Class</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">Effective</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">Expiration</span><input class="pr-float-value" type="text"></div></div>`;
-    container.appendChild(div);
+    const idx = container.querySelectorAll('.addr-card').length + 1;
+    const card = document.createElement('div');
+    card.className = 'addr-card';
+    card.setAttribute('data-group', 'addr');
+    card.innerHTML = `
+      <div class="addr-card__header">
+        <div class="addr-card__title">Additional Address ${idx - 3}</div>
+        <div style="display:flex;align-items:center;gap:var(--space-2);">
+          <button class="aot-preferred-btn" onclick="aotSetPreferred(this,'addr')">Set as Preferred</button>
+          <button class="pr-remove-btn" onclick="this.closest('.addr-card').remove()" title="Remove">×</button>
+        </div>
+      </div>
+      <div class="addr-card__body">
+        <div class="addr-card__fields">
+          <div class="pr-form-row pr-form-row--1"><div class="pr-float-field"><span class="pr-float-label">Street Address</span><input class="pr-float-value" type="text" placeholder="123 Main St"></div></div>
+          <div class="pr-form-row pr-form-row--3">
+            <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value" type="text"></div>
+            <div class="pr-float-field"><span class="pr-float-label">State</span><select class="pr-float-value"><option value="">Select…</option><option>CA</option><option>CO</option><option>TX</option><option>WA</option><option>NY</option><option>FL</option></select></div>
+            <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value" type="text" maxlength="10"></div>
+          </div>
+        </div>
+      </div>`;
+    container.appendChild(card);
   }
+
+  // ── Employment: data-driven rendering ──
+
+  window._aotEmpEntries = [
+    { id: 'emp-1', employer: 'Nationwide Brokers Group', role: 'Senior Broker', start: '2021-03', end: null }
+  ];
+
+  function _aotMonthDiff(startStr, endStr) {
+    // Returns number of months between two 'YYYY-MM' strings (inclusive of start, exclusive of end month)
+    const [sy, sm] = startStr.split('-').map(Number);
+    const now = new Date();
+    const ey = endStr ? Number(endStr.split('-')[0]) : now.getFullYear();
+    const em = endStr ? Number(endStr.split('-')[1]) : now.getMonth() + 1;
+    return (ey - sy) * 12 + (em - sm);
+  }
+
+  function _aotMonthAdd(str, months) {
+    const [y, m] = str.split('-').map(Number);
+    const d = new Date(y, m - 1 + months, 1);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+
+  function _aotFmtMonth(str) {
+    if (!str) return 'Present';
+    const [y, m] = str.split('-').map(Number);
+    return new Date(y, m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  }
+
+  function aotRenderEmp() {
+    const container = document.getElementById('aot-emp-list');
+    if (!container) return;
+    const entries = [...window._aotEmpEntries].sort((a, b) => {
+      // Sort newest first
+      const aEnd = a.end || '9999-99';
+      const bEnd = b.end || '9999-99';
+      return bEnd.localeCompare(aEnd) || b.start.localeCompare(a.start);
+    });
+
+    let html = '';
+    for (let i = 0; i < entries.length; i++) {
+      const e = entries[i];
+      const isCurrent = !e.end;
+      html += `<div class="emp-entry" id="${e.id}">
+        <div class="emp-entry__header">
+          <span class="emp-entry__label">${e.employer || 'Employer'}${isCurrent ? ' <span style="font-size:11px;font-weight:var(--font-weight-medium);color:var(--color-primary-600);">(Current)</span>' : ''}</span>
+          <button class="pr-remove-btn" onclick="aotRemoveEmp('${e.id}')" title="Remove">×</button>
+        </div>
+        <div class="pr-form-row pr-form-row--2">
+          <div class="pr-float-field"><span class="pr-float-label">Employer Name *</span><input class="pr-float-value" type="text" value="${e.employer || ''}" oninput="window._aotEmpEntries.find(x=>x.id==='${e.id}').employer=this.value;document.querySelector('#${e.id} .emp-entry__label').innerHTML=this.value+(${isCurrent}?' <span style=\\"font-size:11px;font-weight:var(--font-weight-medium);color:var(--color-primary-600);\\">(Current)</span>':'')"></div>
+          <div class="pr-float-field"><span class="pr-float-label">Job Title</span><input class="pr-float-value" type="text" value="${e.role || ''}" oninput="window._aotEmpEntries.find(x=>x.id==='${e.id}').role=this.value"></div>
+        </div>
+        <div class="pr-form-row pr-form-row--2">
+          <div class="pr-float-field"><span class="pr-float-label">Start Date *</span><input class="pr-float-value" type="month" value="${e.start || ''}" oninput="window._aotEmpEntries.find(x=>x.id==='${e.id}').start=this.value;aotRenderEmp()"></div>
+          <div class="pr-float-field"><span class="pr-float-label">End Date ${isCurrent ? '(leave blank if current)' : '*'}</span><input class="pr-float-value" type="month" value="${e.end || ''}" oninput="window._aotEmpEntries.find(x=>x.id==='${e.id}').end=this.value||null;aotRenderEmp()"></div>
+        </div>
+      </div>`;
+
+      // Gap detection between this entry and the next older one
+      if (i < entries.length - 1) {
+        const newerEnd   = e.end   || (new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2,'0'));
+        const olderStart = entries[i + 1].start;
+        const olderEnd   = entries[i + 1].end || newerEnd;
+        // Gap exists if the older entry ends before the newer one starts
+        const gapStart = olderEnd;
+        const gapEnd   = e.start;
+        if (gapStart < gapEnd) {
+          const gapMonths = _aotMonthDiff(gapStart, gapEnd);
+          if (gapMonths > 0) {
+            html += `<div class="emp-gap">
+              <span class="emp-gap__icon">⚠</span>
+              <span class="emp-gap__label">${gapMonths}-month gap: ${_aotFmtMonth(gapStart)} – ${_aotFmtMonth(gapEnd)}</span>
+              <button class="pr-add-btn" onclick="aotFillGap('${gapStart}','${gapEnd}')">+ Fill Gap</button>
+            </div>`;
+          }
+        }
+      }
+    }
+    container.innerHTML = html;
+    aotUpdateCoverage();
+  }
+
+  function aotRemoveEmp(id) {
+    window._aotEmpEntries = window._aotEmpEntries.filter(e => e.id !== id);
+    aotRenderEmp();
+  }
+
+  function aotAddEmployment() {
+    const entries = window._aotEmpEntries;
+    // Find the oldest existing entry to default end date to one month before its start
+    const sorted = [...entries].sort((a, b) => a.start.localeCompare(b.start));
+    const oldest = sorted[0];
+    const defaultEnd = oldest ? _aotMonthAdd(oldest.start, -1) : null;
+    const defaultStart = defaultEnd ? _aotMonthAdd(defaultEnd, -12) : '';
+    const newId = 'emp-' + Date.now();
+    window._aotEmpEntries.push({ id: newId, employer: '', role: '', start: defaultStart, end: defaultEnd });
+    aotRenderEmp();
+    // Scroll to the new entry
+    setTimeout(() => {
+      const el = document.getElementById(newId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+
+  function aotFillGap(start, end) {
+    const newId = 'emp-' + Date.now();
+    window._aotEmpEntries.push({ id: newId, employer: '', role: '', start: start, end: end });
+    aotRenderEmp();
+  }
+
+  function aotUpdateCoverage() {
+    const fill  = document.getElementById('aot-emp-coverage-fill');
+    const label = document.getElementById('aot-emp-coverage-label');
+    if (!fill || !label) return;
+    const now = new Date();
+    const nowStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2,'0');
+    const windowStart = _aotMonthAdd(nowStr, -60);
+    // Build a Set of covered YYYY-MM months within the 60-month window
+    const covered = new Set();
+    for (const e of window._aotEmpEntries) {
+      const s = e.start > windowStart ? e.start : windowStart;
+      const end = e.end || nowStr;
+      let cur = s;
+      while (cur < end && cur < nowStr) {
+        covered.add(cur);
+        cur = _aotMonthAdd(cur, 1);
+      }
+    }
+    const pct = Math.min(100, Math.round(covered.size / 60 * 100));
+    fill.style.width = pct + '%';
+    fill.className = 'coverage-bar__fill' + (pct < 100 ? ' coverage-bar__warn' : '');
+    label.textContent = pct + '% (' + covered.size + '/60 months)';
+  }
+
+  // ── Direct Deposit: add bank account ──
+
+  window._aotBankCount = 1;
+
+  function aotAddBankAccount() {
+    const container = document.getElementById('aot-bank-accounts');
+    if (!container) return;
+    window._aotBankCount++;
+    const idx = window._aotBankCount;
+    const card = document.createElement('div');
+    card.className = 'dd-bank-card';
+    card.id = 'aot-bank-' + idx;
+    card.setAttribute('data-index', idx);
+    card.style.marginTop = 'var(--space-3)';
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+        <span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Bank Account ${idx}</span>
+        <button class="pr-remove-btn" onclick="aotRemoveBankAccount(this)" title="Remove">×</button>
+      </div>
+      <div class="pr-form-row pr-form-row--2">
+        <div class="pr-float-field"><span class="pr-float-label">Account Nickname</span><input class="pr-float-value dd-nickname" type="text" placeholder="e.g. Bank of America Savings" oninput="aotUpdateAllocationRows()"></div>
+        <div class="pr-float-field"><span class="pr-float-label">Account Type</span><select class="pr-float-value"><option>Checking</option><option>Savings</option></select></div>
+      </div>
+      <div class="pr-form-row pr-form-row--2">
+        <div class="pr-float-field"><span class="pr-float-label">Routing Number *</span><input class="pr-float-value dd-routing" type="text" placeholder="9 digits"></div>
+        <div class="pr-float-field"><span class="pr-float-label">Account Number *</span><input class="pr-float-value dd-acctnum" type="password" placeholder="•••••••••"></div>
+      </div>`;
+    container.appendChild(card);
+    aotUpdateAllocationSection();
+  }
+
+  function aotRemoveBankAccount(btn) {
+    const card = btn.closest('.dd-bank-card');
+    if (card) card.remove();
+    aotUpdateAllocationSection();
+  }
+
+  function aotUpdateAllocationSection() {
+    const container = document.getElementById('aot-bank-accounts');
+    const alloc = document.getElementById('aot-dd-allocation');
+    if (!container || !alloc) return;
+    const count = container.querySelectorAll('.dd-bank-card').length;
+    alloc.style.display = count >= 2 ? '' : 'none';
+    if (count >= 2) aotUpdateAllocationRows();
+  }
+
+  function aotUpdateAllocationRows() {
+    const container = document.getElementById('aot-bank-accounts');
+    const rowsEl = document.getElementById('aot-alloc-rows');
+    if (!container || !rowsEl) return;
+    const cards = container.querySelectorAll('.dd-bank-card');
+    // Preserve existing % values by index
+    const existing = rowsEl.querySelectorAll('.aot-alloc-input');
+    const existingVals = Array.from(existing).map(i => i.value);
+    let html = '';
+    cards.forEach((card, i) => {
+      const nicknameEl = card.querySelector('.dd-nickname');
+      const name = (nicknameEl && nicknameEl.value.trim()) || ('Bank Account ' + (i + 1));
+      const val = existingVals[i] || (i === 0 ? '100' : '0');
+      html += `<div class="aot-alloc-row">
+        <span class="aot-alloc-row__name">${name}</span>
+        <input class="aot-alloc-input" type="number" min="0" max="100" value="${val}" oninput="aotUpdateAllocationTotal()">
+        <span style="font-size:var(--font-size-xs);color:var(--color-text-muted)">%</span>
+      </div>`;
+    });
+    rowsEl.innerHTML = html;
+    aotUpdateAllocationTotal();
+  }
+
+  function aotUpdateAllocationTotal() {
+    const inputs = document.querySelectorAll('#aot-alloc-rows .aot-alloc-input');
+    const totalEl = document.getElementById('aot-alloc-total-val');
+    const noteEl  = document.getElementById('aot-alloc-note');
+    if (!totalEl) return;
+    let sum = 0;
+    inputs.forEach(i => { sum += parseFloat(i.value) || 0; });
+    sum = Math.round(sum * 10) / 10;
+    totalEl.textContent = sum + '%';
+    if (Math.abs(sum - 100) < 0.01) {
+      totalEl.className = 'aot-alloc-total--ok';
+      if (noteEl) noteEl.textContent = '';
+    } else {
+      totalEl.className = 'aot-alloc-total--err';
+      const rem = Math.round((100 - sum) * 10) / 10;
+      if (noteEl) noteEl.textContent = rem > 0 ? rem + '% unallocated' : Math.abs(rem) + '% over';
+    }
+  }
+
+  // ── NIPR Attestation scroll + checkbox ──
 
   function aotCheckScroll() {
     const el = document.getElementById('aot-attest-scroll');
@@ -1421,16 +1697,24 @@
     const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 10;
     if (atBottom) {
       const label = document.getElementById('aot-attest-label');
-      const btn = document.getElementById('aot-attest-submit');
+      const btn   = document.getElementById('aot-attest-submit');
       if (label) { label.style.opacity = '1'; label.style.pointerEvents = ''; }
       if (btn)   { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = ''; }
     }
-    const cb = document.getElementById('aot-attest-check');
-    if (cb && cb.checked) {
-      const btn = document.getElementById('aot-attest-submit');
-      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = ''; }
+  }
+
+  function aotAttestChange() {
+    const cb  = document.getElementById('aot-attest-check');
+    const btn = document.getElementById('aot-attest-submit');
+    if (!cb || !btn) return;
+    if (cb.checked) {
+      btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = '';
+    } else {
+      btn.disabled = true;  btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed';
     }
   }
+
+  // ── Signature tabs + live preview ──
 
   function aotSigTab(tabEl, panelId) {
     const screen = document.getElementById('screen-p-aot-tasks');
@@ -1443,7 +1727,7 @@
   }
 
   function aotSigPreview() {
-    const input = document.getElementById('aot-sig-text');
+    const input   = document.getElementById('aot-sig-text');
     const preview = document.getElementById('aot-sig-preview');
     if (input && preview) preview.textContent = input.value || 'Your name here';
   }
@@ -1510,6 +1794,8 @@
     setCarrierMode('manage');
     // Init role mappings table
     rmRender();
+    // Init AOT employment list
+    aotRenderEmp();
   });
 </script>
 </body>

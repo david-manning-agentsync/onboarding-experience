@@ -1,145 +1,188 @@
 <!-- p-aot-tasks.html — Agency Onboarding Tasks (8-task producer checklist) -->
 <style>
-  #screen-p-aot-tasks .p-shell { position: relative; height: calc(100vh - 44px); background: var(--color-bg-surface); }
-  #screen-p-aot-tasks .p-topnav {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 200;
-    background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default);
-    height: 56px; display: flex; align-items: center; justify-content: space-between;
-    padding: 0 var(--space-6);
-  }
+  /* ── Shell — flex layout for drawer/responsive compat ── */
+  #screen-p-aot-tasks .p-shell { display: flex; flex-direction: column; height: calc(100vh - 44px); overflow: hidden; background: var(--color-bg-surface); }
+  #screen-p-aot-tasks .p-topnav { flex-shrink: 0; height: 56px; background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); }
   #screen-p-aot-tasks .p-topnav__logo { font-size: var(--font-size-base); font-weight: var(--font-weight-extrabold); color: var(--color-primary-600); }
   #screen-p-aot-tasks .p-topnav__right { display: flex; align-items: center; gap: var(--space-3); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
   #screen-p-aot-tasks .p-avatar { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; }
-  #screen-p-aot-tasks .p-body { position: absolute; top: 56px; left: 0; right: 0; bottom: 0; overflow-y: auto; background: var(--color-bg-page); padding: var(--space-6) var(--space-8); }
+  #screen-p-aot-tasks .p-body { flex: 1; overflow-y: auto; min-height: 0; background: var(--color-bg-page); padding: var(--space-6) var(--space-8); }
   #screen-p-aot-tasks .p-body__inner { max-width: 1100px; margin: 0 auto; padding: var(--space-6) var(--space-8); background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 
-  /* Header */
-  #screen-p-aot-tasks .pr-header { position: relative; padding: var(--space-6) 0; margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); overflow: visible; }
-  #screen-p-aot-tasks .pr-header::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: var(--radius-full); border: 40px solid var(--color-primary-50); pointer-events: none; z-index: 0; }
-  #screen-p-aot-tasks .pr-header::after { content: ''; position: absolute; top: 20px; right: 40px; width: 120px; height: 120px; border-radius: var(--radius-full); border: 28px solid var(--color-primary-100); pointer-events: none; z-index: 0; }
-  #screen-p-aot-tasks .pr-header__row { display: flex; align-items: center; gap: var(--space-5); position: relative; z-index: 1; }
-  #screen-p-aot-tasks .pr-header__avatar { width: 64px; height: 64px; border-radius: var(--radius-full); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 3px solid var(--color-bg-surface); box-shadow: 0 0 0 3px var(--color-primary-100); }
-  #screen-p-aot-tasks .pr-header__body { flex: 1; }
-  #screen-p-aot-tasks .pr-header__name { font-size: 22px; font-weight: var(--font-weight-bold); color: var(--color-text-primary); line-height: 1.2; margin-bottom: var(--space-2); }
-  #screen-p-aot-tasks .pr-header__meta { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
-  #screen-p-aot-tasks .pr-meta-item { display: flex; align-items: center; gap: var(--space-1); }
-  #screen-p-aot-tasks .pr-meta-item__label { font-size: var(--font-size-xs); color: var(--color-text-muted); font-weight: var(--font-weight-medium); }
-  #screen-p-aot-tasks .pr-meta-item__sep { color: var(--color-border-strong); font-size: var(--font-size-xs); }
-  #screen-p-aot-tasks .pr-meta-item__value { font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: var(--font-weight-semibold); }
+  /* ── Header ── */
+  #screen-p-aot-tasks .pr-header { position: relative; padding: var(--space-5) 0; margin-bottom: var(--space-5); border-bottom: 1px solid var(--color-border-default); overflow: visible; }
+  #screen-p-aot-tasks .pr-header::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:var(--radius-full); border:40px solid var(--color-primary-50); pointer-events:none; z-index:0; }
+  #screen-p-aot-tasks .pr-header::after  { content:''; position:absolute; top:20px;  right:40px;  width:120px; height:120px; border-radius:var(--radius-full); border:28px solid var(--color-primary-100); pointer-events:none; z-index:0; }
+  #screen-p-aot-tasks .pr-header__row { display:flex; align-items:center; gap:var(--space-5); position:relative; z-index:1; }
+  #screen-p-aot-tasks .pr-header__avatar { width:64px; height:64px; border-radius:var(--radius-full); background:var(--color-primary-600); color:#fff; font-size:var(--font-size-xl); font-weight:var(--font-weight-bold); display:flex; align-items:center; justify-content:center; flex-shrink:0; border:3px solid var(--color-bg-surface); box-shadow:0 0 0 3px var(--color-primary-100); }
+  #screen-p-aot-tasks .pr-header__body { flex:1; }
+  #screen-p-aot-tasks .pr-header__name { font-size:22px; font-weight:var(--font-weight-bold); color:var(--color-text-primary); line-height:1.2; margin-bottom:var(--space-2); }
+  #screen-p-aot-tasks .pr-header__meta { display:flex; align-items:center; gap:var(--space-4); flex-wrap:wrap; }
+  #screen-p-aot-tasks .pr-meta-item { display:flex; align-items:center; gap:var(--space-1); }
+  #screen-p-aot-tasks .pr-meta-item__label { font-size:var(--font-size-xs); color:var(--color-text-muted); font-weight:var(--font-weight-medium); }
+  #screen-p-aot-tasks .pr-meta-item__sep { color:var(--color-border-strong); font-size:var(--font-size-xs); }
+  #screen-p-aot-tasks .pr-meta-item__value { font-size:var(--font-size-sm); color:var(--color-text-secondary); font-weight:var(--font-weight-semibold); }
 
-  /* Progress bar */
-  #screen-p-aot-tasks .pr-progress-wrap { margin-bottom: var(--space-4); }
-  #screen-p-aot-tasks .pr-progress-label { display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-2); }
-  #screen-p-aot-tasks .pr-progress-pct { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-primary-600); }
-  #screen-p-aot-tasks .pr-progress-bar { height: 6px; border-radius: var(--radius-full); background: var(--color-gray-100); overflow: hidden; }
-  #screen-p-aot-tasks .pr-progress-bar__fill { height: 100%; border-radius: var(--radius-full); background: var(--color-primary-600); transition: width 0.3s ease; }
+  /* ── Progress ── */
+  #screen-p-aot-tasks .pr-progress-wrap { margin-bottom:var(--space-4); }
+  #screen-p-aot-tasks .pr-progress-label { display:flex; justify-content:space-between; align-items:center; font-size:var(--font-size-xs); color:var(--color-text-muted); margin-bottom:var(--space-2); }
+  #screen-p-aot-tasks .pr-progress-pct { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); color:var(--color-primary-600); }
+  #screen-p-aot-tasks .pr-progress-bar { height:6px; border-radius:var(--radius-full); background:var(--color-gray-100); overflow:hidden; }
+  #screen-p-aot-tasks .pr-progress-bar__fill { height:100%; border-radius:var(--radius-full); background:var(--color-primary-600); transition:width .3s ease; }
 
-  /* Task pane */
-  #screen-p-aot-tasks .pr-task-pane { display: flex; gap: var(--space-5); align-items: flex-start; }
-  #screen-p-aot-tasks .pr-task-list { width: 280px; flex-shrink: 0; }
+  /* ── Task pane ── */
+  #screen-p-aot-tasks .pr-task-pane { display:flex; gap:var(--space-5); align-items:flex-start; }
+  #screen-p-aot-tasks .pr-task-list { width:268px; flex-shrink:0; }
+  #screen-p-aot-tasks .pr-ps-header { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); text-transform:uppercase; letter-spacing:var(--tracking-wide); color:var(--color-text-muted); padding:var(--space-3) var(--space-2) var(--space-1); margin-top:var(--space-1); }
 
-  /* Policy set section header */
-  #screen-p-aot-tasks .pr-ps-header { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--color-text-muted); padding: var(--space-3) var(--space-2) var(--space-1); margin-top: var(--space-1); }
+  /* ── Task items ── */
+  #screen-p-aot-tasks .pr-task-item { display:flex; align-items:flex-start; gap:var(--space-3); padding:var(--space-3); border-radius:var(--radius-md); cursor:pointer; transition:background var(--transition-fast); border:1px solid transparent; margin-bottom:var(--space-1); }
+  #screen-p-aot-tasks .pr-task-item:hover { background:var(--color-bg-hover); }
+  #screen-p-aot-tasks .pr-task-item.active { background:var(--color-primary-50); border-color:var(--color-primary-200); }
+  #screen-p-aot-tasks .pr-task-circle { width:22px; height:22px; flex-shrink:0; margin-top:1px; border-radius:var(--radius-full); border:2px solid var(--color-border-strong); background:var(--color-bg-surface); display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  #screen-p-aot-tasks .pr-task-circle--done { background:var(--color-success-600); border-color:var(--color-success-600); }
+  #screen-p-aot-tasks .pr-task-item__body { flex:1; min-width:0; }
+  #screen-p-aot-tasks .pr-task-item__name { font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); color:var(--color-text-primary); line-height:1.3; margin-bottom:2px; }
+  #screen-p-aot-tasks .pr-task-item__sub { font-size:11px; color:var(--color-text-muted); font-weight:var(--font-weight-medium); }
+  #screen-p-aot-tasks .pr-task-item__sub--req { color:var(--color-danger-500); }
+  #screen-p-aot-tasks .pr-task-item__sub--opt { color:var(--color-gray-400); }
 
-  /* Task items */
-  #screen-p-aot-tasks .pr-task-item { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3); border-radius: var(--radius-md); cursor: pointer; transition: background var(--transition-fast); border: 1px solid transparent; margin-bottom: var(--space-1); }
-  #screen-p-aot-tasks .pr-task-item:hover { background: var(--color-bg-hover); }
-  #screen-p-aot-tasks .pr-task-item.active { background: var(--color-primary-50); border-color: var(--color-primary-200); }
-  #screen-p-aot-tasks .pr-task-circle { width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px; border-radius: var(--radius-full); border: 2px solid var(--color-border-strong); background: var(--color-bg-surface); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-  #screen-p-aot-tasks .pr-task-circle--done { background: var(--color-success-600); border-color: var(--color-success-600); }
-  #screen-p-aot-tasks .pr-task-item__body { flex: 1; min-width: 0; }
-  #screen-p-aot-tasks .pr-task-item__name { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-primary); line-height: 1.3; margin-bottom: 2px; }
-  #screen-p-aot-tasks .pr-task-item__sub { font-size: 11px; color: var(--color-text-muted); font-weight: var(--font-weight-medium); }
-  #screen-p-aot-tasks .pr-task-item__sub--req { color: var(--color-danger-500); }
-  #screen-p-aot-tasks .pr-task-item__sub--opt { color: var(--color-gray-400); }
+  /* ── Detail panel ── */
+  #screen-p-aot-tasks .pr-task-detail { flex:1; min-width:0; background:var(--color-bg-surface); border:1px solid var(--color-border-default); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-xs); }
+  #screen-p-aot-tasks .pr-task-detail-panel { display:none; }
+  #screen-p-aot-tasks .pr-task-detail-panel.active { display:block; }
+  #screen-p-aot-tasks .pr-detail-head { padding:var(--space-5) var(--space-6); border-bottom:1px solid var(--color-border-default); background:var(--color-bg-page); }
+  #screen-p-aot-tasks .pr-detail-head__title { font-size:var(--font-size-base); font-weight:var(--font-weight-bold); color:var(--color-text-primary); margin-bottom:var(--space-2); }
+  #screen-p-aot-tasks .pr-detail-head__meta { display:flex; align-items:center; gap:var(--space-2); flex-wrap:wrap; }
+  #screen-p-aot-tasks .pr-detail-body { padding:var(--space-5) var(--space-6); }
 
-  /* Task detail panel */
-  #screen-p-aot-tasks .pr-task-detail { flex: 1; min-width: 0; background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); }
-  #screen-p-aot-tasks .pr-task-detail-panel { display: none; }
-  #screen-p-aot-tasks .pr-task-detail-panel.active { display: block; }
-  #screen-p-aot-tasks .pr-detail-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-default); background: var(--color-bg-page); }
-  #screen-p-aot-tasks .pr-detail-head__title { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-2); }
-  #screen-p-aot-tasks .pr-detail-head__meta { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
-  #screen-p-aot-tasks .pr-detail-body { padding: var(--space-5) var(--space-6); }
+  /* ── Form layout ── */
+  #screen-p-aot-tasks .pr-form-section { margin-bottom:var(--space-5); }
+  #screen-p-aot-tasks .pr-form-section__title { font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--color-text-primary); margin-bottom:var(--space-3); padding-bottom:var(--space-2); border-bottom:1px solid var(--color-border-default); }
+  #screen-p-aot-tasks .pr-form-row { display:grid; gap:var(--space-3); margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .pr-form-row--3 { grid-template-columns:1fr 1fr 1fr; }
+  #screen-p-aot-tasks .pr-form-row--2 { grid-template-columns:1fr 1fr; }
+  #screen-p-aot-tasks .pr-form-row--1 { grid-template-columns:1fr; }
+  #screen-p-aot-tasks .pr-float-field { position:relative; border:1px solid var(--color-border-default); border-radius:var(--radius-md); background:var(--color-bg-input,#fff); padding:22px var(--space-4) 8px; }
+  #screen-p-aot-tasks .pr-float-field:focus-within { border-color:var(--color-primary-400); }
+  #screen-p-aot-tasks .pr-float-label { position:absolute; top:8px; left:var(--space-4); font-size:10px; font-weight:var(--font-weight-semibold); text-transform:uppercase; letter-spacing:var(--tracking-caps); color:var(--color-text-muted); pointer-events:none; }
+  #screen-p-aot-tasks .pr-float-value { font-size:var(--font-size-sm); color:var(--color-text-primary); font-weight:var(--font-weight-medium); background:none; border:none; outline:none; width:100%; font-family:inherit; padding:0; }
+  #screen-p-aot-tasks select.pr-float-value { appearance:none; cursor:pointer; }
 
-  /* Form layout inside panels */
-  #screen-p-aot-tasks .pr-form-section { margin-bottom: var(--space-5); }
-  #screen-p-aot-tasks .pr-form-section__title { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border-default); }
-  #screen-p-aot-tasks .pr-form-row { display: grid; gap: var(--space-3); margin-bottom: var(--space-3); }
-  #screen-p-aot-tasks .pr-form-row--3 { grid-template-columns: 1fr 1fr 1fr; }
-  #screen-p-aot-tasks .pr-form-row--2 { grid-template-columns: 1fr 1fr; }
-  #screen-p-aot-tasks .pr-form-row--1 { grid-template-columns: 1fr; }
-  #screen-p-aot-tasks .pr-float-field { position: relative; border: 1px solid var(--color-border-default); border-radius: var(--radius-md); background: var(--color-bg-input, #fff); padding: 22px var(--space-4) 8px; }
-  #screen-p-aot-tasks .pr-float-field:focus-within { border-color: var(--color-primary-400); }
-  #screen-p-aot-tasks .pr-float-label { position: absolute; top: 8px; left: var(--space-4); font-size: 10px; font-weight: var(--font-weight-semibold); text-transform: uppercase; letter-spacing: var(--tracking-caps); color: var(--color-text-muted); pointer-events: none; }
-  #screen-p-aot-tasks .pr-float-value { font-size: var(--font-size-sm); color: var(--color-text-primary); font-weight: var(--font-weight-medium); background: none; border: none; outline: none; width: 100%; font-family: inherit; padding: 0; }
-  #screen-p-aot-tasks select.pr-float-value { appearance: none; cursor: pointer; }
+  /* ── Repeat rows (email/phone) ── */
+  #screen-p-aot-tasks .pr-repeat-row { display:flex; align-items:flex-end; gap:var(--space-2); margin-bottom:var(--space-2); }
+  #screen-p-aot-tasks .pr-repeat-row .pr-float-field { flex:1; }
+  #screen-p-aot-tasks .pr-add-btn { display:inline-flex; align-items:center; gap:var(--space-1); font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); color:var(--color-primary-600); background:none; border:none; cursor:pointer; padding:var(--space-1) 0; font-family:inherit; }
+  #screen-p-aot-tasks .pr-add-btn:hover { color:var(--color-primary-700); }
+  #screen-p-aot-tasks .pr-remove-btn { width:28px; height:28px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); border:1px solid var(--color-border-default); background:var(--color-bg-surface); color:var(--color-text-muted); cursor:pointer; font-size:14px; }
+  #screen-p-aot-tasks .pr-remove-btn:hover { background:var(--color-danger-50); border-color:var(--color-danger-300); color:var(--color-danger-600); }
 
-  /* Repeating row */
-  #screen-p-aot-tasks .pr-repeat-row { display: flex; align-items: flex-end; gap: var(--space-2); margin-bottom: var(--space-2); }
-  #screen-p-aot-tasks .pr-repeat-row .pr-float-field { flex: 1; }
-  #screen-p-aot-tasks .pr-add-btn { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-primary-600); background: none; border: none; cursor: pointer; padding: var(--space-1) 0; font-family: inherit; }
-  #screen-p-aot-tasks .pr-add-btn:hover { color: var(--color-primary-700); }
-  #screen-p-aot-tasks .pr-remove-btn { width: 28px; height: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid var(--color-border-default); background: var(--color-bg-surface); color: var(--color-text-muted); cursor: pointer; font-size: 14px; }
-  #screen-p-aot-tasks .pr-remove-btn:hover { background: var(--color-danger-50); border-color: var(--color-danger-300); color: var(--color-danger-600); }
+  /* ── Preferred toggle pill ── */
+  #screen-p-aot-tasks .aot-preferred-btn { font-size:11px; font-weight:var(--font-weight-semibold); border:1px solid var(--color-border-default); border-radius:var(--radius-full); background:var(--color-bg-surface); color:var(--color-text-muted); padding:2px var(--space-3); cursor:pointer; white-space:nowrap; flex-shrink:0; transition:all var(--transition-fast); font-family:inherit; }
+  #screen-p-aot-tasks .aot-preferred-btn.aot-preferred--active { background:var(--color-primary-600); color:#fff; border-color:var(--color-primary-600); }
 
-  /* SSN field */
-  #screen-p-aot-tasks .pr-ssn-wrap { display: flex; align-items: center; gap: var(--space-2); }
-  #screen-p-aot-tasks .pr-ssn-toggle { background: none; border: none; cursor: pointer; color: var(--color-primary-600); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); font-family: inherit; padding: 0; white-space: nowrap; }
+  /* ── Address cards ── */
+  #screen-p-aot-tasks .addr-card { border:1px solid var(--color-border-default); border-radius:var(--radius-md); margin-bottom:var(--space-3); overflow:hidden; transition:border-color var(--transition-fast); }
+  #screen-p-aot-tasks .addr-card--preferred { border-color:var(--color-primary-300); }
+  #screen-p-aot-tasks .addr-card__header { display:flex; align-items:center; justify-content:space-between; padding:var(--space-3) var(--space-4); background:var(--color-bg-page); border-bottom:1px solid var(--color-border-default); gap:var(--space-3); }
+  #screen-p-aot-tasks .addr-card__title { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); text-transform:uppercase; letter-spacing:var(--tracking-wide); color:var(--color-text-secondary); display:flex; align-items:center; gap:var(--space-2); }
+  #screen-p-aot-tasks .addr-card__body { padding:var(--space-4); }
+  #screen-p-aot-tasks .addr-card__sameas { display:flex; align-items:center; gap:var(--space-2); font-size:var(--font-size-xs); color:var(--color-text-muted); cursor:pointer; }
+  #screen-p-aot-tasks .addr-card__fields { }
+  #screen-p-aot-tasks .addr-card--collapsed .addr-card__fields { display:none; }
 
-  /* Coverage bar */
-  #screen-p-aot-tasks .coverage-bar { background: var(--color-primary-50); border: 1px solid var(--color-primary-100); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-4); }
-  #screen-p-aot-tasks .coverage-bar__label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-2); display: flex; justify-content: space-between; }
-  #screen-p-aot-tasks .coverage-bar__track { height: 6px; border-radius: var(--radius-full); background: var(--color-primary-100); overflow: hidden; }
-  #screen-p-aot-tasks .coverage-bar__fill { height: 100%; border-radius: var(--radius-full); background: var(--color-primary-600); }
+  /* ── SSN ── */
+  #screen-p-aot-tasks .pr-ssn-wrap { display:flex; align-items:center; gap:var(--space-2); }
+  #screen-p-aot-tasks .pr-ssn-toggle { background:none; border:none; cursor:pointer; color:var(--color-primary-600); font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); font-family:inherit; padding:0; white-space:nowrap; }
 
-  /* Attestation scroll */
-  #screen-p-aot-tasks .attestation-text { border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-4); height: 200px; overflow-y: scroll; font-size: var(--font-size-xs); line-height: 1.7; color: var(--color-text-secondary); background: var(--color-bg-page); margin-bottom: var(--space-4); }
+  /* ── Employment ── */
+  #screen-p-aot-tasks .emp-entry { border:1px solid var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .emp-entry__header { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .emp-entry__label { font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--color-text-primary); }
+  #screen-p-aot-tasks .emp-gap { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); padding:var(--space-3) var(--space-4); background:var(--color-warning-50); border:1px dashed var(--color-warning-300); border-radius:var(--radius-md); margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .emp-gap__icon { color:var(--color-warning-500); flex-shrink:0; font-size:14px; }
+  #screen-p-aot-tasks .emp-gap__label { flex:1; font-size:var(--font-size-xs); color:var(--color-warning-700); font-weight:var(--font-weight-medium); }
 
-  /* Signature tabs */
-  #screen-p-aot-tasks .sig-tabs { display: flex; border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-4); gap: 0; }
-  #screen-p-aot-tasks .sig-tab { padding: var(--space-2) var(--space-4); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-  #screen-p-aot-tasks .sig-tab:hover { color: var(--color-text-primary); }
-  #screen-p-aot-tasks .sig-tab.active { color: var(--color-primary-600); border-bottom-color: var(--color-primary-600); font-weight: var(--font-weight-semibold); }
-  #screen-p-aot-tasks .sig-panel { display: none; }
-  #screen-p-aot-tasks .sig-panel.active { display: block; }
-  #screen-p-aot-tasks .sig-canvas { width: 100%; height: 120px; border: 1px solid var(--color-border-default); border-radius: var(--radius-md); background: var(--color-bg-surface); display: flex; align-items: center; justify-content: center; color: var(--color-text-muted); font-size: var(--font-size-xs); cursor: crosshair; margin-bottom: var(--space-3); }
-  #screen-p-aot-tasks .sig-type-preview { height: 80px; border: 1px solid var(--color-border-default); border-radius: var(--radius-md); background: var(--color-bg-surface); display: flex; align-items: center; justify-content: center; font-size: 28px; font-style: italic; color: var(--color-text-primary); margin-bottom: var(--space-3); font-family: Georgia, serif; }
-  #screen-p-aot-tasks .sig-upload-area { border: 2px dashed var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-6); text-align: center; cursor: pointer; background: var(--color-bg-page); margin-bottom: var(--space-3); }
-  #screen-p-aot-tasks .sig-upload-area:hover { border-color: var(--color-primary-400); background: var(--color-primary-50); }
+  /* ── Coverage bar ── */
+  #screen-p-aot-tasks .coverage-bar { background:var(--color-primary-50); border:1px solid var(--color-primary-100); border-radius:var(--radius-md); padding:var(--space-3) var(--space-4); margin-bottom:var(--space-4); }
+  #screen-p-aot-tasks .coverage-bar__label { font-size:var(--font-size-xs); color:var(--color-text-muted); margin-bottom:var(--space-2); display:flex; justify-content:space-between; }
+  #screen-p-aot-tasks .coverage-bar__track { height:6px; border-radius:var(--radius-full); background:var(--color-primary-100); overflow:hidden; }
+  #screen-p-aot-tasks .coverage-bar__fill { height:100%; border-radius:var(--radius-full); background:var(--color-primary-600); transition:width .4s ease; }
+  #screen-p-aot-tasks .coverage-bar__warn { background:var(--color-warning-400); }
 
-  /* Background question */
-  #screen-p-aot-tasks .bg-question { border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-3); }
-  #screen-p-aot-tasks .bg-question__text { font-size: var(--font-size-sm); color: var(--color-text-primary); margin-bottom: var(--space-3); line-height: var(--line-height-relaxed); }
-  #screen-p-aot-tasks .bg-question__options { display: flex; gap: var(--space-4); }
-  #screen-p-aot-tasks .bg-radio { display: flex; align-items: center; gap: var(--space-2); font-size: var(--font-size-sm); cursor: pointer; }
+  /* ── Allocation ── */
+  #screen-p-aot-tasks .aot-alloc-section { background:var(--color-bg-page); border:1px solid var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-4); margin-top:var(--space-4); }
+  #screen-p-aot-tasks .aot-alloc-title { font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); text-transform:uppercase; letter-spacing:var(--tracking-wide); color:var(--color-text-muted); margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .aot-alloc-row { display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-2); }
+  #screen-p-aot-tasks .aot-alloc-row__name { flex:1; font-size:var(--font-size-sm); color:var(--color-text-primary); }
+  #screen-p-aot-tasks .aot-alloc-input { width:64px; border:1px solid var(--color-border-default); border-radius:var(--radius-sm); padding:var(--space-1) var(--space-2); font-size:var(--font-size-sm); text-align:right; font-family:inherit; background:var(--color-bg-surface); }
+  #screen-p-aot-tasks .aot-alloc-input:focus { outline:none; border-color:var(--color-primary-400); }
+  #screen-p-aot-tasks .aot-alloc-total { display:flex; justify-content:flex-end; align-items:center; gap:var(--space-2); font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); padding-top:var(--space-2); border-top:1px solid var(--color-border-default); }
+  #screen-p-aot-tasks .aot-alloc-total--ok  { color:var(--color-success-600); }
+  #screen-p-aot-tasks .aot-alloc-total--err { color:var(--color-danger-600); }
 
-  /* CTA footer */
-  #screen-p-aot-tasks .pr-detail-cta { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-border-default); display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
-  #screen-p-aot-tasks .pr-detail-cta__left { display: flex; align-items: center; gap: var(--space-3); }
+  /* ── Attestation ── */
+  #screen-p-aot-tasks .attestation-text { border:1px solid var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-4); height:180px; overflow-y:scroll; font-size:var(--font-size-xs); line-height:1.7; color:var(--color-text-secondary); background:var(--color-bg-page); margin-bottom:var(--space-4); }
 
-  /* State placeholder */
-  #screen-p-aot-tasks .state-placeholder { background: var(--color-warning-50); border: 1px solid var(--color-warning-200); border-radius: var(--radius-md); padding: var(--space-4); display: flex; gap: var(--space-3); align-items: flex-start; margin-top: var(--space-4); }
-  #screen-p-aot-tasks .state-placeholder__icon { color: var(--color-warning-500); flex-shrink: 0; margin-top: 1px; }
-  #screen-p-aot-tasks .state-placeholder__title { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-warning-700); }
-  #screen-p-aot-tasks .state-placeholder__body { font-size: var(--font-size-xs); color: var(--color-warning-600); line-height: 1.5; margin-top: 2px; }
+  /* ── Signature tabs ── */
+  #screen-p-aot-tasks .sig-tabs { display:flex; border-bottom:1px solid var(--color-border-default); margin-bottom:var(--space-4); }
+  #screen-p-aot-tasks .sig-tab { padding:var(--space-2) var(--space-4); font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); color:var(--color-text-muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
+  #screen-p-aot-tasks .sig-tab:hover { color:var(--color-text-primary); }
+  #screen-p-aot-tasks .sig-tab.active { color:var(--color-primary-600); border-bottom-color:var(--color-primary-600); font-weight:var(--font-weight-semibold); }
+  #screen-p-aot-tasks .sig-panel { display:none; }
+  #screen-p-aot-tasks .sig-panel.active { display:block; }
+  #screen-p-aot-tasks .sig-canvas { width:100%; height:110px; border:1px solid var(--color-border-default); border-radius:var(--radius-md); background:var(--color-bg-surface); display:flex; align-items:center; justify-content:center; color:var(--color-text-muted); font-size:var(--font-size-xs); cursor:crosshair; margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .sig-type-preview { height:72px; border:1px solid var(--color-border-default); border-radius:var(--radius-md); background:var(--color-bg-surface); display:flex; align-items:center; justify-content:center; font-size:26px; font-style:italic; color:var(--color-text-primary); margin-bottom:var(--space-3); font-family:Georgia,serif; }
+  #screen-p-aot-tasks .sig-upload-area { border:2px dashed var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-5); text-align:center; cursor:pointer; background:var(--color-bg-page); margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .sig-upload-area:hover { border-color:var(--color-primary-400); background:var(--color-primary-50); }
 
-  /* Direct deposit allocation */
-  #screen-p-aot-tasks .dd-alloc { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-border-default); }
-  #screen-p-aot-tasks .dd-alloc__label { font-size: var(--font-size-xs); color: var(--color-text-muted); font-weight: var(--font-weight-medium); }
+  /* ── Background questions ── */
+  #screen-p-aot-tasks .bg-question { border:1px solid var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .bg-question__text { font-size:var(--font-size-sm); color:var(--color-text-primary); margin-bottom:var(--space-3); line-height:var(--line-height-relaxed); }
+  #screen-p-aot-tasks .bg-question__options { display:flex; gap:var(--space-4); }
+  #screen-p-aot-tasks .bg-radio { display:flex; align-items:center; gap:var(--space-2); font-size:var(--font-size-sm); cursor:pointer; }
 
-  /* NIPR info callout */
-  #screen-p-aot-tasks .nipr-callout { background: var(--color-primary-50); border: 1px solid var(--color-primary-100); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-4); font-size: var(--font-size-xs); color: var(--color-primary-700); line-height: 1.5; }
+  /* ── CTA footer ── */
+  #screen-p-aot-tasks .pr-detail-cta { margin-top:var(--space-5); padding-top:var(--space-4); border-top:1px solid var(--color-border-default); display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); }
+  #screen-p-aot-tasks .pr-detail-cta__left { display:flex; align-items:center; gap:var(--space-3); }
 
-  /* Success / Mark as Done button */
-  #screen-p-aot-tasks .btn--success { background: var(--color-success-600); border-color: var(--color-success-600); color: #fff; }
-  #screen-p-aot-tasks .btn--success:hover { background: var(--color-success-700, #15803d); border-color: var(--color-success-700, #15803d); }
-  #screen-p-aot-tasks .btn--success:disabled { opacity: 0.5; cursor: not-allowed; }
+  /* ── State placeholder ── */
+  #screen-p-aot-tasks .state-placeholder { background:var(--color-warning-50); border:1px solid var(--color-warning-200); border-radius:var(--radius-md); padding:var(--space-4); display:flex; gap:var(--space-3); align-items:flex-start; margin-top:var(--space-4); }
+
+  /* ── Info callout ── */
+  #screen-p-aot-tasks .info-callout { background:var(--color-primary-50); border:1px solid var(--color-primary-100); border-radius:var(--radius-md); padding:var(--space-3) var(--space-4); margin-bottom:var(--space-4); font-size:var(--font-size-xs); color:var(--color-primary-700); line-height:1.5; }
+
+  /* ── Success button ── */
+  #screen-p-aot-tasks .btn--success { background:var(--color-success-600); border-color:var(--color-success-600); color:#fff; }
+  #screen-p-aot-tasks .btn--success:hover { background:var(--color-success-700,#15803d); border-color:var(--color-success-700,#15803d); }
+
+  /* ── Mobile back button (hidden on desktop) ── */
+  #screen-p-aot-tasks .aot-mobile-back { display:none; align-items:center; gap:var(--space-2); font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--color-primary-600); background:none; border:none; cursor:pointer; padding:var(--space-3) var(--space-5); border-bottom:1px solid var(--color-border-default); font-family:inherit; width:100%; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    #screen-p-aot-tasks .p-body { padding: var(--space-3); }
+    #screen-p-aot-tasks .p-body__inner { padding: var(--space-4); }
+    #screen-p-aot-tasks .pr-task-pane { flex-direction: column; }
+    #screen-p-aot-tasks .pr-task-list { width: 100%; }
+    #screen-p-aot-tasks .pr-task-detail { display: none; }
+    #screen-p-aot-tasks.detail-open .pr-task-list { display: none; }
+    #screen-p-aot-tasks.detail-open .pr-task-detail { display: block; }
+    #screen-p-aot-tasks.detail-open .aot-mobile-back { display: flex; }
+    #screen-p-aot-tasks .pr-form-row--3 { grid-template-columns: 1fr 1fr; }
+    #screen-p-aot-tasks .pr-header::before, #screen-p-aot-tasks .pr-header::after { display: none; }
+  }
+  @media (max-width: 500px) {
+    #screen-p-aot-tasks .pr-form-row--3,
+    #screen-p-aot-tasks .pr-form-row--2 { grid-template-columns: 1fr; }
+  }
+
+  /* ── Bank account card ── */
+  #screen-p-aot-tasks .dd-bank-card { border:1px solid var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-4); }
 </style>
 
 <div class="p-shell">
 
-  <!-- Top Nav -->
   <div class="p-topnav">
     <div class="p-topnav__logo">AgentSync</div>
     <div class="p-topnav__right">
@@ -148,131 +191,59 @@
     </div>
   </div>
 
-  <!-- Body -->
   <div class="p-body">
     <div class="p-body__inner">
 
-      <!-- Header -->
       <div class="pr-header">
         <div class="pr-header__row">
           <div class="pr-header__avatar">JO</div>
           <div class="pr-header__body">
             <div class="pr-header__name">James O'Brien</div>
             <div class="pr-header__meta">
-              <div class="pr-meta-item">
-                <span class="pr-meta-item__label">NPN</span>
-                <span class="pr-meta-item__sep">·</span>
-                <span class="pr-meta-item__value">19283746</span>
-              </div>
-              <div class="pr-meta-item">
-                <span class="pr-meta-item__label">Policy Set</span>
-                <span class="pr-meta-item__sep">·</span>
-                <span class="pr-meta-item__value">Agency Onboarding</span>
-              </div>
-              <div class="pr-meta-item">
-                <span class="pr-meta-item__label">Progress</span>
-                <span class="pr-meta-item__sep">·</span>
-                <span class="pr-meta-item__value" style="color:var(--color-primary-600)" id="aot-pct-label">0%</span>
-              </div>
-              <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);">Not Started</span>
+              <div class="pr-meta-item"><span class="pr-meta-item__label">NPN</span><span class="pr-meta-item__sep">·</span><span class="pr-meta-item__value">19283746</span></div>
+              <div class="pr-meta-item"><span class="pr-meta-item__label">Policy Set</span><span class="pr-meta-item__sep">·</span><span class="pr-meta-item__value">Agency Onboarding</span></div>
+              <div class="pr-meta-item"><span class="pr-meta-item__label">Progress</span><span class="pr-meta-item__sep">·</span><span class="pr-meta-item__value" style="color:var(--color-primary-600)" id="aot-pct-label">0%</span></div>
+              <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);" id="aot-status-badge">Not Started</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Task pane -->
       <div class="pr-task-pane">
 
-        <!-- Left: Task List -->
+        <!-- ── Left: Task List ── -->
         <div class="pr-task-list">
           <div class="pr-progress-wrap">
             <div class="pr-progress-label">
               <span id="aot-progress-label">0 of 7 required tasks complete</span>
               <span class="pr-progress-pct" id="aot-pct">0%</span>
             </div>
-            <div class="pr-progress-bar">
-              <div class="pr-progress-bar__fill" style="width:0%" id="aot-progress-fill"></div>
-            </div>
+            <div class="pr-progress-bar"><div class="pr-progress-bar__fill" style="width:0%" id="aot-progress-fill"></div></div>
           </div>
-
           <div class="pr-ps-header">Agency Onboarding</div>
 
-          <div class="pr-task-item active" id="aot-item-1" onclick="selectPrTask(this,'aot-td-1')">
-            <div class="pr-task-circle" id="aot-circle-1"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">Contact Info</div>
-              <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-            </div>
-          </div>
+          <div class="pr-task-item active" id="aot-item-1" onclick="aotSelectTask(this,'aot-td-1')"><div class="pr-task-circle" id="aot-circle-1"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Contact Info</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div></div></div>
+          <div class="pr-task-item" id="aot-item-2" onclick="aotSelectTask(this,'aot-td-2')"><div class="pr-task-circle" id="aot-circle-2"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Contact Details</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div></div></div>
+          <div class="pr-task-item" id="aot-item-3" onclick="aotSelectTask(this,'aot-td-3')"><div class="pr-task-circle" id="aot-circle-3"></div><div class="pr-task-item__body"><div class="pr-task-item__name">ID Document</div><div class="pr-task-item__sub pr-task-item__sub--opt">Optional · Not Started</div></div></div>
+          <div class="pr-task-item" id="aot-item-4" onclick="aotSelectTask(this,'aot-td-4')"><div class="pr-task-circle" id="aot-circle-4"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Employment History</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div></div></div>
+          <div class="pr-task-item" id="aot-item-5" onclick="aotSelectTask(this,'aot-td-5')"><div class="pr-task-circle" id="aot-circle-5"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Background Questions</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div></div></div>
+          <div class="pr-task-item" id="aot-item-6" onclick="aotSelectTask(this,'aot-td-6')"><div class="pr-task-circle" id="aot-circle-6"></div><div class="pr-task-item__body"><div class="pr-task-item__name">NIPR Attestation</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div></div></div>
+          <div class="pr-task-item" id="aot-item-7" onclick="aotSelectTask(this,'aot-td-7')"><div class="pr-task-circle" id="aot-circle-7"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Direct Deposit</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div></div></div>
+          <div class="pr-task-item" id="aot-item-8" onclick="aotSelectTask(this,'aot-td-8')"><div class="pr-task-circle" id="aot-circle-8"></div><div class="pr-task-item__body"><div class="pr-task-item__name">E-Signature</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div></div></div>
+        </div>
 
-          <div class="pr-task-item" id="aot-item-2" onclick="selectPrTask(this,'aot-td-2')">
-            <div class="pr-task-circle" id="aot-circle-2"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">Contact Details</div>
-              <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-            </div>
-          </div>
-
-          <div class="pr-task-item" id="aot-item-3" onclick="selectPrTask(this,'aot-td-3')">
-            <div class="pr-task-circle" id="aot-circle-3"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">License</div>
-              <div class="pr-task-item__sub pr-task-item__sub--opt">Optional · Not Started</div>
-            </div>
-          </div>
-
-          <div class="pr-task-item" id="aot-item-4" onclick="selectPrTask(this,'aot-td-4')">
-            <div class="pr-task-circle" id="aot-circle-4"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">Employment History</div>
-              <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-            </div>
-          </div>
-
-          <div class="pr-task-item" id="aot-item-5" onclick="selectPrTask(this,'aot-td-5')">
-            <div class="pr-task-circle" id="aot-circle-5"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">Background Questions</div>
-              <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-            </div>
-          </div>
-
-          <div class="pr-task-item" id="aot-item-6" onclick="selectPrTask(this,'aot-td-6')">
-            <div class="pr-task-circle" id="aot-circle-6"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">NIPR Attestation</div>
-              <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-            </div>
-          </div>
-
-          <div class="pr-task-item" id="aot-item-7" onclick="selectPrTask(this,'aot-td-7')">
-            <div class="pr-task-circle" id="aot-circle-7"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">Direct Deposit</div>
-              <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-            </div>
-          </div>
-
-          <div class="pr-task-item" id="aot-item-8" onclick="selectPrTask(this,'aot-td-8')">
-            <div class="pr-task-circle" id="aot-circle-8"></div>
-            <div class="pr-task-item__body">
-              <div class="pr-task-item__name">E-Signature</div>
-              <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-            </div>
-          </div>
-        </div><!-- end .pr-task-list -->
-
-        <!-- Right: Task Detail Panels -->
+        <!-- ── Right: Detail panels ── -->
         <div class="pr-task-detail">
+          <button class="aot-mobile-back" onclick="aotBackToList()">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-7 6 7 6"/></svg>
+            Back to Tasks
+          </button>
 
           <!-- ── Task 1: Contact Info ── -->
           <div id="aot-td-1" class="pr-task-detail-panel active">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Contact Info</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
               <div class="pr-form-section">
@@ -284,13 +255,7 @@
                 </div>
                 <div class="pr-form-row pr-form-row--2">
                   <div class="pr-float-field"><span class="pr-float-label">Date of Birth *</span><input class="pr-float-value" type="text" value="04/12/1981"></div>
-                  <div class="pr-float-field">
-                    <span class="pr-float-label">SSN *</span>
-                    <div class="pr-ssn-wrap">
-                      <input class="pr-float-value" type="password" value="987654321" id="aot-ssn" style="flex:1;">
-                      <button class="pr-ssn-toggle" onclick="aotToggleSSN()">Show</button>
-                    </div>
-                  </div>
+                  <div class="pr-float-field"><span class="pr-float-label">SSN *</span><div class="pr-ssn-wrap"><input class="pr-float-value" type="password" value="987654321" id="aot-ssn" style="flex:1"><button class="pr-ssn-toggle" onclick="aotToggleSSN()">Show</button></div></div>
                 </div>
                 <div class="pr-form-row pr-form-row--2">
                   <div class="pr-float-field"><span class="pr-float-label">NPN</span><input class="pr-float-value" type="text" value="19283746" readonly style="color:var(--color-text-muted)"></div>
@@ -303,30 +268,12 @@
               <div class="pr-form-section">
                 <div class="pr-form-section__title">Demographic</div>
                 <div class="pr-form-row pr-form-row--2">
-                  <div class="pr-float-field">
-                    <span class="pr-float-label">Citizenship Country *</span>
-                    <select class="pr-float-value">
-                      <option selected>United States</option>
-                      <option>Canada</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                  <div class="pr-float-field">
-                    <span class="pr-float-label">Gender</span>
-                    <select class="pr-float-value">
-                      <option value="">— Select —</option>
-                      <option selected>Male</option>
-                      <option>Female</option>
-                      <option>Non-binary</option>
-                      <option>Prefer not to say</option>
-                    </select>
-                  </div>
+                  <div class="pr-float-field"><span class="pr-float-label">Citizenship Country *</span><select class="pr-float-value"><option selected>United States</option><option>Canada</option><option>Other</option></select></div>
+                  <div class="pr-float-field"><span class="pr-float-label">Gender</span><select class="pr-float-value"><option value="">— Select —</option><option selected>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
                 </div>
               </div>
               <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button>
-                </div>
+                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button></div>
                 <button class="btn btn--secondary" onclick="aotNext(1,2)">Save &amp; Continue →</button>
               </div>
             </div>
@@ -336,105 +283,147 @@
           <div id="aot-td-2" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Contact Details</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
+
+              <!-- Emails -->
               <div class="pr-form-section">
                 <div class="pr-form-section__title">Email Addresses</div>
                 <div id="aot-emails">
                   <div class="pr-repeat-row">
-                    <div class="pr-float-field" style="max-width:120px;flex:0 0 120px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Work</option><option>Personal</option><option>Other</option></select></div>
+                    <div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Work</option><option>Personal</option><option>Other</option></select></div>
                     <div class="pr-float-field"><span class="pr-float-label">Email *</span><input class="pr-float-value" type="email" value="j.obrien@nationwide-brokers.com"></div>
+                    <button class="aot-preferred-btn aot-preferred--active" data-group="email" onclick="aotSetPreferred(this,'email')">✓ Preferred</button>
                     <button class="pr-remove-btn" title="Remove">×</button>
                   </div>
                 </div>
-                <button class="pr-add-btn" onclick="aotAddRow('aot-emails','email')">+ Add Email</button>
+                <button class="pr-add-btn" onclick="aotAddContactRow('aot-emails','email')">+ Add Email</button>
               </div>
+
+              <!-- Phones -->
               <div class="pr-form-section">
                 <div class="pr-form-section__title">Phone Numbers</div>
                 <div id="aot-phones">
                   <div class="pr-repeat-row">
-                    <div class="pr-float-field" style="max-width:120px;flex:0 0 120px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Cell</option><option>Work</option><option>Home</option></select></div>
+                    <div class="pr-float-field" style="max-width:110px;flex:0 0 110px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Cell</option><option>Work</option><option>Home</option></select></div>
                     <div class="pr-float-field"><span class="pr-float-label">Phone *</span><input class="pr-float-value" type="tel" value="(303) 555-0288"></div>
+                    <button class="aot-preferred-btn aot-preferred--active" data-group="phone" onclick="aotSetPreferred(this,'phone')">✓ Preferred</button>
                     <button class="pr-remove-btn" title="Remove">×</button>
                   </div>
                 </div>
-                <button class="pr-add-btn" onclick="aotAddRow('aot-phones','phone')">+ Add Phone</button>
+                <button class="pr-add-btn" onclick="aotAddContactRow('aot-phones','phone')">+ Add Phone</button>
               </div>
+
+              <!-- Addresses — 3 NIPR required cards -->
               <div class="pr-form-section">
-                <div class="pr-form-section__title">Addresses</div>
-                <div style="margin-bottom:var(--space-3);">
-                  <div style="font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wide);margin-bottom:var(--space-2);">Resident Address <span style="color:var(--color-danger-500)">*</span></div>
-                  <div class="pr-form-row pr-form-row--1"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value" type="text" value="4821 Maple Ridge Rd"></div></div>
-                  <div class="pr-form-row pr-form-row--3">
-                    <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value" type="text" value="Denver"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value" type="text" value="CO"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value" type="text" value="80204"></div>
-                  </div>
+                <div class="pr-form-section__title">
+                  Addresses
+                  <span style="font-size:10px;font-weight:var(--font-weight-medium);text-transform:none;letter-spacing:0;color:var(--color-text-muted);margin-left:var(--space-2);">3 types required by NIPR</span>
                 </div>
-                <div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2);">
-                    <div style="font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wide);">Mailing Address</div>
-                    <label style="display:flex;align-items:center;gap:var(--space-2);font-size:var(--font-size-xs);color:var(--color-text-muted);cursor:pointer;"><input type="checkbox" checked onclick="aotToggleMailing(this)"> Same as Resident</label>
+
+                <div id="aot-addr-list">
+                <!-- Resident -->
+                <div class="addr-card addr-card--preferred" id="addr-resident">
+                  <div class="addr-card__header">
+                    <div class="addr-card__title">
+                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l7-6 7 6v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M8 20v-8h4v8"/></svg>
+                      Resident Address
+                      <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
+                    </div>
+                    <button class="aot-preferred-btn aot-preferred--active" data-group="addr" onclick="aotSetPreferred(this,'addr')">✓ Preferred</button>
                   </div>
-                  <div id="aot-mailing-fields" style="display:none">
-                    <div class="pr-form-row pr-form-row--1"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value" type="text"></div></div>
-                    <div class="pr-form-row pr-form-row--3">
-                      <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value" type="text"></div>
-                      <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value" type="text"></div>
-                      <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value" type="text"></div>
+                  <div class="addr-card__body">
+                    <div class="addr-card__fields">
+                      <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text" value="4821 Maple Ridge Rd"></div></div>
+                      <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
+                        <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text" value="Denver"></div>
+                        <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text" value="CO"></div>
+                        <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text" value="80204"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button>
+
+                <!-- Mailing -->
+                <div class="addr-card addr-card--collapsed" id="addr-mailing">
+                  <div class="addr-card__header">
+                    <div class="addr-card__title">
+                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="16" height="12" rx="1"/><path d="M2 5l8 7 8-7"/></svg>
+                      Mailing Address
+                      <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:var(--space-3);">
+                      <label class="addr-card__sameas"><input type="checkbox" id="addr-mailing-sameas" checked onchange="aotSyncAddress(this,'addr-mailing')"> Same as Resident</label>
+                      <button class="aot-preferred-btn" data-group="addr" onclick="aotSetPreferred(this,'addr')">Preferred</button>
+                    </div>
+                  </div>
+                  <div class="addr-card__body" style="display:none" id="addr-mailing-body">
+                    <div class="addr-card__fields">
+                      <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text"></div></div>
+                      <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
+                        <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text"></div>
+                        <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text"></div>
+                        <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Business -->
+                <div class="addr-card addr-card--collapsed" id="addr-business">
+                  <div class="addr-card__header">
+                    <div class="addr-card__title">
+                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="12" rx="1"/><path d="M6 7V5a4 4 0 018 0v2"/></svg>
+                      Business Address
+                      <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;text-transform:none;letter-spacing:0;">NIPR Required</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:var(--space-3);">
+                      <label class="addr-card__sameas"><input type="checkbox" id="addr-business-sameas" onchange="aotSyncAddress(this,'addr-business')"> Same as Resident</label>
+                      <button class="aot-preferred-btn" data-group="addr" onclick="aotSetPreferred(this,'addr')">Preferred</button>
+                    </div>
+                  </div>
+                  <div class="addr-card__body" id="addr-business-body">
+                    <div class="addr-card__fields">
+                      <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-2)"><div class="pr-float-field"><span class="pr-float-label">Street</span><input class="pr-float-value addr-street" type="text" value="1480 Blake St, Ste 200"></div></div>
+                      <div class="pr-form-row pr-form-row--3" style="margin-bottom:0">
+                        <div class="pr-float-field"><span class="pr-float-label">City</span><input class="pr-float-value addr-city" type="text" value="Denver"></div>
+                        <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value addr-state" type="text" value="CO"></div>
+                        <div class="pr-float-field"><span class="pr-float-label">ZIP</span><input class="pr-float-value addr-zip" type="text" value="80202"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                </div><!-- /aot-addr-list -->
+                <button class="pr-add-btn" onclick="aotAddAddress()" style="margin-top:var(--space-1)">+ Add Additional Address</button>
+              </div>
+
+              <div class="pr-detail-cta">
+                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button></div>
                 <button class="btn btn--secondary" onclick="aotNext(2,3)">Save &amp; Continue →</button>
               </div>
             </div>
           </div>
 
-          <!-- ── Task 3: License (Optional) ── -->
+          <!-- ── Task 3: ID Document ── -->
           <div id="aot-td-3" class="pr-task-detail-panel">
             <div class="pr-detail-head">
-              <div class="pr-detail-head__title">License</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Optional</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__title">ID Document</div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Optional</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
-              <div class="nipr-callout">
-                <strong>Auto-populated from NIPR.</strong> AgentSync has pulled your active license data automatically. Review and confirm, or add licenses that aren't listed.
+              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed);">Provide a valid government-issued photo ID. This is used to verify your identity during onboarding.</p>
+              <div class="pr-form-row pr-form-row--2">
+                <div class="pr-float-field"><span class="pr-float-label">Document Type</span><select class="pr-float-value"><option selected>Driver's License</option><option>State ID Card</option></select></div>
+                <div class="pr-float-field"><span class="pr-float-label">Issuing State</span><input class="pr-float-value" type="text" value="Colorado"></div>
               </div>
-              <div id="aot-licenses">
-                <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
-                    <span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">License 1</span>
-                    <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:11px;">Active</span>
-                  </div>
-                  <div class="pr-form-row pr-form-row--3">
-                    <div class="pr-float-field"><span class="pr-float-label">License #</span><input class="pr-float-value" type="text" value="CO-3847291"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value" type="text" value="Colorado"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Type</span><input class="pr-float-value" type="text" value="Property &amp; Casualty"></div>
-                  </div>
-                  <div class="pr-form-row pr-form-row--3">
-                    <div class="pr-float-field"><span class="pr-float-label">Class</span><input class="pr-float-value" type="text" value="Individual"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Effective</span><input class="pr-float-value" type="text" value="01/15/2019"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Expiration</span><input class="pr-float-value" type="text" value="12/31/2026"></div>
-                  </div>
-                </div>
+              <div class="pr-form-row pr-form-row--2">
+                <div class="pr-float-field"><span class="pr-float-label">License / ID Number *</span><input class="pr-float-value" type="text" value="CO-1983472"></div>
+                <div class="pr-float-field"><span class="pr-float-label">Expiration Date *</span><input class="pr-float-value" type="text" value="04/12/2029"></div>
               </div>
-              <button class="pr-add-btn" onclick="aotAddLicense()">+ Add License</button>
               <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button>
-                </div>
+                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button></div>
                 <button class="btn btn--secondary" onclick="aotNext(3,4)">Save &amp; Continue →</button>
               </div>
             </div>
@@ -444,71 +433,17 @@
           <div id="aot-td-4" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Employment History</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
               <div class="coverage-bar">
-                <div class="coverage-bar__label">
-                  <span>5-year coverage requirement</span>
-                  <span style="font-weight:var(--font-weight-bold);color:var(--color-primary-600);">5 of 5 years covered</span>
-                </div>
-                <div class="coverage-bar__track"><div class="coverage-bar__fill" style="width:100%"></div></div>
+                <div class="coverage-bar__label"><span>5-year coverage requirement (60 months)</span><span id="aot-emp-coverage-label" style="font-weight:var(--font-weight-bold);color:var(--color-primary-600);">calculating…</span></div>
+                <div class="coverage-bar__track"><div class="coverage-bar__fill" id="aot-emp-coverage-fill" style="width:0%"></div></div>
               </div>
-              <div id="aot-employment">
-                <!-- Entry 3 (current) -->
-                <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
-                    <span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Current Position</span>
-                    <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:11px;">Current</span>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Employer</span><input class="pr-float-value" type="text" value="Nationwide Brokers Group"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Role / Title</span><input class="pr-float-value" type="text" value="Senior Broker"></div>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Start Date</span><input class="pr-float-value" type="text" value="03/2021"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">End Date</span><input class="pr-float-value" type="text" placeholder="Present" disabled style="color:var(--color-text-muted)"></div>
-                  </div>
-                </div>
-                <!-- Entry 2 -->
-                <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
-                    <span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Previous Position</span>
-                    <button class="pr-remove-btn" title="Remove" style="width:auto;padding:0 8px;font-size:11px;height:22px;">Remove</button>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Employer</span><input class="pr-float-value" type="text" value="Mountain State Insurance"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Role / Title</span><input class="pr-float-value" type="text" value="Licensed Agent"></div>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Start Date</span><input class="pr-float-value" type="text" value="06/2018"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">End Date</span><input class="pr-float-value" type="text" value="02/2021"></div>
-                  </div>
-                </div>
-                <!-- Entry 1 -->
-                <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
-                    <span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Previous Position</span>
-                    <button class="pr-remove-btn" title="Remove" style="width:auto;padding:0 8px;font-size:11px;height:22px;">Remove</button>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Employer</span><input class="pr-float-value" type="text" value="Front Range Financial Group"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Role / Title</span><input class="pr-float-value" type="text" value="Insurance Advisor"></div>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Start Date</span><input class="pr-float-value" type="text" value="01/2021"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">End Date</span><input class="pr-float-value" type="text" value="05/2021"></div>
-                  </div>
-                </div>
-              </div>
-              <button class="pr-add-btn" onclick="">+ Add Employment</button>
+              <div id="aot-emp-list"><!-- rendered by aotRenderEmp() --></div>
+              <button class="pr-add-btn" onclick="aotAddEmployment()">+ Add Prior Employment</button>
               <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button>
-                </div>
+                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button></div>
                 <button class="btn btn--secondary" onclick="aotNext(4,5)">Save &amp; Continue →</button>
               </div>
             </div>
@@ -518,49 +453,15 @@
           <div id="aot-td-5" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Background Questions</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
-              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed);">Answer each question accurately and completely. Disclosures are reviewed during the compliance screening process.</p>
-              <div class="bg-question">
-                <div class="bg-question__text">1. Have you ever been convicted of a felony, misdemeanor, or crime involving dishonesty or breach of trust?</div>
-                <div class="bg-question__options">
-                  <label class="bg-radio"><input type="radio" name="bgq1" value="no" checked> No</label>
-                  <label class="bg-radio"><input type="radio" name="bgq1" value="yes"> Yes — please explain</label>
-                </div>
-              </div>
-              <div class="bg-question">
-                <div class="bg-question__text">2. Have you ever had an insurance license or financial services registration denied, suspended, revoked, or had a regulatory action taken against you?</div>
-                <div class="bg-question__options">
-                  <label class="bg-radio"><input type="radio" name="bgq2" value="no" checked> No</label>
-                  <label class="bg-radio"><input type="radio" name="bgq2" value="yes"> Yes — please explain</label>
-                </div>
-              </div>
-              <div class="bg-question">
-                <div class="bg-question__text">3. Are you currently named as a defendant in any pending civil lawsuit related to your professional activities?</div>
-                <div class="bg-question__options">
-                  <label class="bg-radio"><input type="radio" name="bgq3" value="no" checked> No</label>
-                  <label class="bg-radio"><input type="radio" name="bgq3" value="yes"> Yes — please explain</label>
-                </div>
-              </div>
-              <div class="state-placeholder">
-                <div class="state-placeholder__icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-                </div>
-                <div>
-                  <div class="state-placeholder__title">Colorado — State-Specific Disclosures</div>
-                  <div class="state-placeholder__body">Additional background questions required for Colorado-licensed producers will be presented during final review. These are pulled from NIPR state requirements and vary by jurisdiction.</div>
-                </div>
-              </div>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button>
-                </div>
-                <button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue →</button>
-              </div>
+              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);line-height:var(--line-height-relaxed);">Answer each question accurately. Disclosures are reviewed during compliance screening.</p>
+              <div class="bg-question"><div class="bg-question__text">1. Have you ever been convicted of a felony, misdemeanor, or crime involving dishonesty or breach of trust?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq1" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq1" value="yes"> Yes — please explain</label></div></div>
+              <div class="bg-question"><div class="bg-question__text">2. Have you ever had an insurance license or financial services registration denied, suspended, or revoked?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq2" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq2" value="yes"> Yes — please explain</label></div></div>
+              <div class="bg-question"><div class="bg-question__text">3. Are you currently named as a defendant in any pending civil lawsuit related to your professional activities?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq3" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq3" value="yes"> Yes — please explain</label></div></div>
+              <div class="state-placeholder"><div style="color:var(--color-warning-500);flex-shrink:0;margin-top:1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div><div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-warning-700);">Colorado — State-Specific Disclosures</div><div style="font-size:var(--font-size-xs);color:var(--color-warning-600);line-height:1.5;margin-top:2px;">Additional questions required for Colorado-licensed producers will be presented during final review.</div></div></div>
+              <div class="pr-detail-cta"><div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button></div><button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue →</button></div>
             </div>
           </div>
 
@@ -568,35 +469,25 @@
           <div id="aot-td-6" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">NIPR Attestation</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
-              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);">Read the full attestation below before agreeing. Scrolling to the bottom enables the acknowledgement checkbox.</p>
+              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);">Scroll through the full attestation below, then check the box to confirm your agreement.</p>
               <div class="attestation-text" id="aot-attest-scroll" onscroll="aotCheckScroll()">
                 <strong>NIPR PRODUCER ATTESTATION AGREEMENT</strong><br><br>
                 By completing this attestation, I, James Patrick O'Brien, hereby confirm and attest to the following under penalty of perjury and subject to the terms of the National Insurance Producer Registry (NIPR):<br><br>
-                <strong>1. Accuracy of Information</strong><br>
-                All information provided through AgentSync's onboarding platform, including personal identity information, license history, employment history, and background disclosures, is accurate, complete, and current to the best of my knowledge. I understand that knowingly providing false or misleading information is a violation of state insurance laws and may result in license suspension, revocation, or criminal liability.<br><br>
-                <strong>2. Authorization for NIPR Data Access</strong><br>
-                I authorize the National Insurance Producer Registry (NIPR) and AgentSync, Inc. to access and retrieve my producer license and appointment data from the NIPR database, including current and historical license records, regulatory actions, and appointment status across all states. This authorization is granted for the purpose of fulfilling compliance requirements associated with my appointment to sell insurance products on behalf of participating carriers and agencies.<br><br>
-                <strong>3. Continuing Compliance Obligations</strong><br>
-                I acknowledge that maintaining an active and valid license in my resident state is a condition of continued authorization to produce insurance business. I agree to promptly notify my appointing agency or carrier of any changes to my license status, regulatory actions, criminal convictions, or material changes to the information provided herein.<br><br>
-                <strong>4. Electronic Signature Agreement</strong><br>
-                I understand and agree that submitting this form constitutes my electronic signature as defined under the Electronic Signatures in Global and National Commerce Act (E-SIGN) and applicable state electronic transaction laws. This electronic signature is legally binding and equivalent to a handwritten signature.<br><br>
+                <strong>1. Accuracy of Information.</strong> All information provided through AgentSync's onboarding platform is accurate, complete, and current to the best of my knowledge. Knowingly providing false or misleading information is a violation of state insurance laws and may result in license suspension, revocation, or criminal liability.<br><br>
+                <strong>2. Authorization for NIPR Data Access.</strong> I authorize NIPR and AgentSync, Inc. to access and retrieve my producer license and appointment data from the NIPR database, including current and historical license records, regulatory actions, and appointment status across all states.<br><br>
+                <strong>3. Continuing Compliance Obligations.</strong> I acknowledge that maintaining an active and valid license in my resident state is a condition of continued authorization to produce insurance business. I agree to promptly notify my appointing agency or carrier of any changes to my license status, regulatory actions, or criminal convictions.<br><br>
+                <strong>4. Electronic Signature Agreement.</strong> I understand and agree that submitting this form constitutes my electronic signature under the E-SIGN Act and applicable state electronic transaction laws. This electronic signature is legally binding and equivalent to a handwritten signature.<br><br>
                 <em>I have read, understood, and agree to all terms stated above.</em>
               </div>
-              <label id="aot-attest-label" style="display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-bg-page);border:1px solid var(--color-border-default);border-radius:var(--radius-md);cursor:pointer;opacity:0.4;pointer-events:none;" id="aot-attest-check-wrap">
-                <input type="checkbox" id="aot-attest-check" style="margin-top:2px;accent-color:var(--color-primary-600);flex-shrink:0;">
-                <span style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">I have read and agree to the NIPR Producer Attestation Agreement above. I understand this constitutes my legal electronic signature.</span>
+              <label style="display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-bg-page);border:1px solid var(--color-border-default);border-radius:var(--radius-md);cursor:pointer;opacity:.4;pointer-events:none;" id="aot-attest-label">
+                <input type="checkbox" id="aot-attest-check" style="margin-top:2px;accent-color:var(--color-primary-600);flex-shrink:0" onchange="aotAttestChange()">
+                <span style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">I have read and agree to the NIPR Producer Attestation Agreement above.</span>
               </label>
               <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:0.5;cursor:not-allowed;">Submit Attestation</button>
-                  <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Check the box above to enable</span>
-                </div>
+                <div class="pr-detail-cta__left"><button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:.5;cursor:not-allowed">Submit Attestation</button><span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Scroll and check the box to enable</span></div>
                 <button class="btn btn--secondary" onclick="aotNext(6,7)">Skip for now</button>
               </div>
             </div>
@@ -606,36 +497,39 @@
           <div id="aot-td-7" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Direct Deposit</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
               <div id="aot-bank-accounts">
-                <div style="border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
-                    <span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Bank Account 1</span>
-                    <span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);font-size:11px;">Primary</span>
+                <div class="dd-bank-card" id="aot-bank-1" data-index="1">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);"><span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">Bank Account 1</span><span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);font-size:11px;">Primary</span></div>
+                  <div class="pr-form-row pr-form-row--2">
+                    <div class="pr-float-field"><span class="pr-float-label">Account Nickname</span><input class="pr-float-value dd-nickname" type="text" placeholder="e.g. Chase Checking"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">Account Type</span><select class="pr-float-value"><option selected>Checking</option><option>Savings</option></select></div>
                   </div>
                   <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Account Nickname</span><input class="pr-float-value" type="text" placeholder="e.g. Chase Checking"></div>
-                    <div class="pr-float-field">
-                      <span class="pr-float-label">Account Type</span>
-                      <select class="pr-float-value"><option selected>Checking</option><option>Savings</option></select>
-                    </div>
-                  </div>
-                  <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">Routing Number *</span><input class="pr-float-value" type="text" placeholder="9 digits"></div>
-                    <div class="pr-float-field"><span class="pr-float-label">Account Number *</span><input class="pr-float-value" type="password" placeholder="•••••••••"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">Routing Number *</span><input class="pr-float-value dd-routing" type="text" placeholder="9 digits"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">Account Number *</span><input class="pr-float-value dd-acctnum" type="password" placeholder="•••••••••"></div>
                   </div>
                 </div>
               </div>
-              <button class="pr-add-btn" onclick="">+ Add Another Account</button>
-              <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button>
+              <button class="pr-add-btn" id="aot-add-bank-btn" onclick="aotAddBankAccount()" style="margin-bottom:var(--space-3)">+ Add Another Account</button>
+
+              <!-- Allocation — shown when 2+ accounts -->
+              <div id="aot-dd-allocation" style="display:none">
+                <div class="aot-alloc-section">
+                  <div class="aot-alloc-title">Commission Allocation</div>
+                  <div id="aot-alloc-rows"></div>
+                  <div class="aot-alloc-total">
+                    <span style="color:var(--color-text-muted)">Total:</span>
+                    <span id="aot-alloc-total-val" class="aot-alloc-total--ok">100%</span>
+                    <span id="aot-alloc-note" style="font-size:var(--font-size-xs);color:var(--color-danger-600)"></span>
+                  </div>
                 </div>
+              </div>
+
+              <div class="pr-detail-cta">
+                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button></div>
                 <button class="btn btn--secondary" onclick="aotNext(7,8)">Save &amp; Continue →</button>
               </div>
             </div>
@@ -645,20 +539,17 @@
           <div id="aot-td-8" class="pr-task-detail-panel">
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">E-Signature</div>
-              <div class="pr-detail-head__meta">
-                <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-              </div>
+              <div class="pr-detail-head__meta"><span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span></div>
             </div>
             <div class="pr-detail-body">
               <div class="pr-form-section">
                 <div class="pr-form-section__title">Producer Agreement</div>
-                <div class="attestation-text" style="height:160px;">
+                <div class="attestation-text">
                   <strong>PRODUCER APPOINTMENT AGREEMENT</strong><br><br>
                   This Producer Appointment Agreement ("Agreement") is entered into by and between Summit Financial Partners ("Agency") and James Patrick O'Brien ("Producer"), effective upon execution.<br><br>
-                  <strong>1. Appointment.</strong> Agency hereby appoints Producer to solicit and sell insurance products on behalf of Agency's appointed carriers, subject to the terms of this Agreement and applicable state regulations. Producer's authority is limited to the lines of authority held under Producer's current resident state license.<br><br>
-                  <strong>2. Compliance.</strong> Producer agrees to maintain all required licenses and comply with all state and federal regulations governing the sale of insurance products. Producer shall notify Agency within 10 business days of any change in license status, regulatory action, or material change in personal circumstances affecting appointment eligibility.<br><br>
-                  <strong>3. Compensation.</strong> Producer shall be compensated in accordance with the applicable commission schedule, which may be amended by Agency from time to time with 30 days written notice. Nothing in this Agreement creates an employment relationship between Agency and Producer.<br><br>
+                  <strong>1. Appointment.</strong> Agency hereby appoints Producer to solicit and sell insurance products on behalf of Agency's appointed carriers, subject to the terms of this Agreement and applicable state regulations.<br><br>
+                  <strong>2. Compliance.</strong> Producer agrees to maintain all required licenses and comply with all applicable regulations. Producer shall notify Agency within 10 business days of any change in license status or regulatory action.<br><br>
+                  <strong>3. Compensation.</strong> Producer shall be compensated per the applicable commission schedule, which may be amended with 30 days written notice. Nothing in this Agreement creates an employment relationship.<br><br>
                   <em>By signing below, both parties agree to the terms of this Agreement.</em>
                 </div>
               </div>
@@ -674,31 +565,26 @@
                   <button class="pr-add-btn">Clear</button>
                 </div>
                 <div id="sig-type" class="sig-panel">
-                  <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-3);">
-                    <div class="pr-float-field"><span class="pr-float-label">Type your full name</span><input class="pr-float-value" type="text" id="aot-sig-text" oninput="aotSigPreview()" value="James P. O'Brien"></div>
-                  </div>
+                  <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-3)"><div class="pr-float-field"><span class="pr-float-label">Type your full name</span><input class="pr-float-value" type="text" id="aot-sig-text" oninput="aotSigPreview()" value="James P. O'Brien"></div></div>
                   <div class="sig-type-preview" id="aot-sig-preview">James P. O'Brien</div>
-                  <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);">This cursive representation of your typed name constitutes your legal electronic signature.</p>
+                  <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);">This cursive representation constitutes your legal electronic signature.</p>
                 </div>
                 <div id="sig-upload" class="sig-panel">
                   <div class="sig-upload-area">
-                    <div style="font-size:24px;margin-bottom:var(--space-2);">🖊️</div>
-                    <div style="font-size:var(--font-size-sm);color:var(--color-text-muted);"><span style="color:var(--color-primary-600);font-weight:var(--font-weight-semibold);">Upload signature image</span> or drag and drop</div>
-                    <div style="font-size:11px;color:var(--color-text-muted);margin-top:var(--space-1);">PNG, JPG up to 2MB</div>
+                    <div style="font-size:24px;margin-bottom:var(--space-2)">🖊️</div>
+                    <div style="font-size:var(--font-size-sm);color:var(--color-text-muted)"><span style="color:var(--color-primary-600);font-weight:var(--font-weight-semibold)">Upload signature image</span> or drag and drop</div>
+                    <div style="font-size:11px;color:var(--color-text-muted);margin-top:var(--space-1)">PNG, JPG up to 2MB</div>
                   </div>
                 </div>
               </div>
               <div class="pr-detail-cta">
-                <div class="pr-detail-cta__left">
-                  <button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit Signature</button>
-                </div>
+                <div class="pr-detail-cta__left"><button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit Signature</button></div>
               </div>
             </div>
           </div>
 
         </div><!-- end .pr-task-detail -->
       </div><!-- end .pr-task-pane -->
-
-    </div><!-- end .p-body__inner -->
-  </div><!-- end .p-body -->
-</div><!-- end .p-shell -->
+    </div>
+  </div>
+</div>
