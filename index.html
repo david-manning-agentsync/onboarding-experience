@@ -109,40 +109,86 @@
       flex-shrink: 0;
     }
     #demo-nav .demo-persona-badge {
-      padding: 3px 10px;
+      padding: 3px 8px 3px 10px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 700;
       font-family: system-ui, sans-serif;
       white-space: nowrap;
-    }
-    /* Carrier persona badges */
-    .demo-persona-badge.persona-carrier-sysadmin  { background: #374151; color: #fff; }
-    .demo-persona-badge.persona-carrier-firmmgmt  { background: #0176d3; color: #fff; }
-    .demo-persona-badge.persona-carrier-onboarding { background: #16a34a; color: #fff; }
-    .demo-persona-badge.persona-carrier-producer  { background: #d97706; color: #fff; }
-    /* Agency persona badges */
-    .demo-persona-badge.persona-agency-sysadmin { background: #7c3aed; color: #fff; }
-    .demo-persona-badge.persona-agency-ops      { background: #0891b2; color: #fff; }
-    .demo-persona-badge.persona-agency-producer { background: #d97706; color: #fff; }
-
-    #demo-nav .demo-season-toggle {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-family: system-ui, sans-serif;
+      gap: 5px;
+      cursor: pointer;
+      border: none;
+      outline: none;
     }
-    .season-btn {
-      padding: 3px 8px;
+    .demo-persona-caret { opacity: 0.7; flex-shrink: 0; }
+    /* Carrier persona badges */
+    .demo-persona-badge.persona-carrier-sysadmin { background: #374151; color: #fff; }
+    .demo-persona-badge.persona-carrier-psa      { background: #0176d3; color: #fff; }
+    .demo-persona-badge.persona-carrier-ops      { background: #16a34a; color: #fff; }
+    .demo-persona-badge.persona-carrier-producer { background: #d97706; color: #fff; }
+    /* Agency persona badges */
+    .demo-persona-badge.persona-agency-sysadmin  { background: #374151; color: #fff; }
+    .demo-persona-badge.persona-agency-psa       { background: #7c3aed; color: #fff; }
+    .demo-persona-badge.persona-agency-ops       { background: #0891b2; color: #fff; }
+    .demo-persona-badge.persona-agency-producer  { background: #d97706; color: #fff; }
+    /* Persona dropdown */
+    .demo-persona-wrap { position: relative; }
+    .demo-persona-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 150px;
+      background: #1f2133;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      overflow: hidden;
+      z-index: 10000;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    .demo-persona-menu.open { display: block; }
+    .demo-persona-item {
+      display: block;
+      width: 100%;
+      padding: 8px 14px;
+      text-align: left;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.75);
+      font-size: 12px;
+      font-family: system-ui, sans-serif;
+      cursor: pointer;
+      transition: background 100ms;
+    }
+    .demo-persona-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    /* Mode toggle (Manage / External) — Carrier only */
+    .demo-mode-toggle {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border-radius: 5px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .demo-mode-btn {
+      padding: 3px 10px;
       border-radius: 3px;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.45);
       font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       cursor: pointer;
       font-family: system-ui, sans-serif;
+      transition: all 120ms;
+      white-space: nowrap;
     }
-    .season-btn.active  { background: rgba(255,255,255,0.2); color: #fff; }
-    .season-btn.disabled { background: transparent; color: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.1); cursor: default; }
+    .demo-mode-btn.active { color: #fff; }
+    .demo-mode-btn:hover:not(.active) { color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.06); }
 
     /* Screen system */
     .screen { display: none; }
@@ -448,28 +494,20 @@
       <button class="demo-context-btn active" id="btn-ctx-carrier" onclick="setContext('carrier')">Carrier</button>
     </div>
     <div class="demo-nav-divider"></div>
-  </div>
-  <div class="demo-nav-center">
-    <!-- Carrier flow buttons -->
-    <div id="carrier-flows" class="demo-flow-group">
-      <button class="demo-flow-btn active" onclick="goCarrierFlow(this, 'sysadmin')">System Admin</button>
-      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'firmmgmt')">Firm Mgmt</button>
-      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'onboarding')">Onboarding Operations</button>
-      <button class="demo-flow-btn" onclick="goCarrierFlow(this, 'producer')">Producer</button>
-    </div>
-    <!-- Agency flow buttons (placeholder) -->
-    <div id="agency-flows" class="demo-flow-group" style="display:none">
-      <button class="demo-flow-btn" onclick="goAgencyFlow(this, 'sysadmin')">System Admin</button>
-      <button class="demo-flow-btn" onclick="goAgencyFlow(this, 'ops')">Operations Team</button>
-      <button class="demo-flow-btn" onclick="goAgencyFlow(this, 'producer')">Producer</button>
+    <!-- Level 2: Carrier mode toggle (hidden when agency active) -->
+    <div id="carrier-mode-toggle" class="demo-mode-toggle">
+      <button class="demo-mode-btn active" id="btn-mode-manage" onclick="setCarrierMode('manage')">Manage</button>
+      <button class="demo-mode-btn" id="btn-mode-external" onclick="setCarrierMode('external')">External</button>
     </div>
   </div>
   <div class="demo-right">
-    <div class="demo-season-toggle">
-      <button class="season-btn active">Spring</button>
-      <button class="season-btn disabled">Fall</button>
+    <div class="demo-persona-wrap" id="persona-wrap">
+      <button id="persona-badge" class="demo-persona-badge persona-carrier-sysadmin" onclick="togglePersonaMenu(event)">
+        <span id="persona-label">System Admin</span>
+        <svg class="demo-persona-caret" width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><path d="M2 3l3 4 3-4H2z"/></svg>
+      </button>
+      <div class="demo-persona-menu" id="persona-menu"></div>
     </div>
-    <span id="persona-badge" class="demo-persona-badge persona-carrier-sysadmin">System Admin</span>
   </div>
 </nav>
 
@@ -672,10 +710,12 @@
 <!-- ============================================================
      MANAGE SCREENS
      ============================================================ -->
-<div id="screen-m-accounts"   class="screen active"></div>
+<div id="screen-m-accounts"         class="screen active"></div>
+<div id="screen-m-accounts-agency"   class="screen"></div>
+<div id="screen-m-contacts"          class="screen"></div>
 <div id="screen-m-record-type-select" class="screen"></div>
-<div id="screen-m-new-account" class="screen"></div>
-<div id="screen-m-account-record" class="screen"></div>
+<div id="screen-m-new-account"       class="screen"></div>
+<div id="screen-m-account-record"    class="screen"></div>
 <div id="screen-m-new-policy-set" class="screen"></div>
 <div id="screen-m-invite"     class="screen"></div>
 <div id="screen-m-policysets" class="screen"></div>
@@ -720,6 +760,7 @@
 <div id="screen-p-task-detail-2" class="screen"></div>
 <div id="screen-p-task-detail-3" class="screen"></div>
 <div id="screen-p-done"         class="screen"></div>
+<div id="screen-p-aot-tasks"    class="screen"></div>
 
 <!-- ============================================================
      SYSTEM ADMIN SCREENS (shared by Carrier + Agency)
@@ -730,6 +771,8 @@
 <div id="screen-m-role-mappings"  class="screen"></div>
 
 
+<script src="src/js/screen-data.js"></script>
+<script src="src/js/components.js"></script>
 <script src="js/router.js"></script>
 <script src="js/demo-nav.js"></script>
 <script>
@@ -743,63 +786,98 @@
     };
   })();
 
-  // ── Carrier flow handler ──────────────────────────────────────
+  // ── Context-aware navigation helpers ─────────────────────────
 
-  const _carrierPersonas = {
-    sysadmin:   { label: 'System Admin',           badgeCls: 'persona-carrier-sysadmin',   theme: 'theme-manage',      screen: 'screen-m-policysets' },
-    firmmgmt:   { label: 'Firm Mgmt',              badgeCls: 'persona-carrier-firmmgmt',   theme: 'theme-manage',      screen: 'screen-m-accounts' },
-    onboarding: { label: 'Onboarding Operations',  badgeCls: 'persona-carrier-onboarding', theme: 'theme-onboarding',  screen: 'screen-om-email' },
-    producer:   { label: 'Producer',               badgeCls: 'persona-carrier-producer',   theme: 'theme-onboarding',  screen: 'screen-p-email' },
+  function goAccountsCtx() {
+    go(_currentCtx === 'agency' ? 'screen-m-accounts-agency' : 'screen-m-accounts');
+  }
+
+  // ── Persona definitions ───────────────────────────────────────
+
+  const _personaSets = {
+    carrier: {
+      manage: [
+        { key: 'sysadmin', label: 'System Admin', badgeCls: 'persona-carrier-sysadmin', theme: 'theme-manage',     screen: 'screen-m-sysadmin' },
+        { key: 'psa',      label: 'Policy Admin',  badgeCls: 'persona-carrier-psa',      theme: 'theme-manage',     screen: 'screen-m-policysets' },
+      ],
+      external: [
+        { key: 'ops',      label: 'Operations',    badgeCls: 'persona-carrier-ops',      theme: 'theme-onboarding', screen: 'screen-om-email' },
+        { key: 'producer', label: 'Producer',       badgeCls: 'persona-carrier-producer', theme: 'theme-onboarding', screen: 'screen-p-email' },
+      ],
+    },
+    agency: [
+      { key: 'sysadmin', label: 'System Admin', badgeCls: 'persona-agency-sysadmin', theme: 'theme-manage',     screen: 'screen-m-sysadmin' },
+      { key: 'psa',      label: 'Policy Admin',  badgeCls: 'persona-agency-psa',      theme: 'theme-manage',     screen: 'screen-m-policysets' },
+      { key: 'ops',      label: 'Operations',    badgeCls: 'persona-agency-ops',      theme: 'theme-onboarding', screen: 'screen-om-aot-producers' },
+      { key: 'producer', label: 'Producer',       badgeCls: 'persona-agency-producer', theme: 'theme-onboarding', screen: 'screen-p-aot-tasks' },
+    ],
   };
 
-  function goCarrierFlow(btnEl, persona) {
-    document.querySelectorAll('#carrier-flows .demo-flow-btn').forEach(b => b.classList.remove('active'));
-    if (btnEl) btnEl.classList.add('active');
-    const p = _carrierPersonas[persona];
+  let _currentCtx  = 'carrier';
+  let _currentMode = 'manage';
+
+  function _activePersonaSet() {
+    return _currentCtx === 'agency'
+      ? _personaSets.agency
+      : _personaSets.carrier[_currentMode];
+  }
+
+  function selectPersona(key) {
+    const p = _activePersonaSet().find(x => x.key === key);
     if (!p) return;
     document.body.classList.remove('theme-manage', 'theme-onboarding');
     document.body.classList.add(p.theme);
+    document.getElementById('persona-label').textContent = p.label;
     const badge = document.getElementById('persona-badge');
-    badge.textContent = p.label;
     badge.className = 'demo-persona-badge ' + p.badgeCls;
+    closePersonaMenu();
     go(p.screen);
+  }
+
+  function togglePersonaMenu(e) {
+    e.stopPropagation();
+    const menu = document.getElementById('persona-menu');
+    if (menu.classList.contains('open')) { closePersonaMenu(); return; }
+    menu.innerHTML = _activePersonaSet().map(p =>
+      `<button class="demo-persona-item" onclick="selectPersona('${p.key}')">${p.label}</button>`
+    ).join('');
+    menu.classList.add('open');
+  }
+
+  function closePersonaMenu() {
+    document.getElementById('persona-menu').classList.remove('open');
+  }
+
+  document.addEventListener('click', closePersonaMenu);
+
+  // ── Carrier mode toggle ───────────────────────────────────────
+
+  function setCarrierMode(mode) {
+    _currentMode = mode;
+    const isManage = mode === 'manage';
+    const accent = isManage ? '#0176d3' : '#16a34a';
+    document.getElementById('demo-nav').style.borderBottom = '3px solid ' + accent;
+    document.getElementById('btn-mode-manage').classList.toggle('active', isManage);
+    document.getElementById('btn-mode-external').classList.toggle('active', !isManage);
+    document.getElementById('btn-mode-manage').style.background  = isManage ? accent : '';
+    document.getElementById('btn-mode-external').style.background = !isManage ? accent : '';
+    selectPersona(_activePersonaSet()[0].key);
   }
 
   // ── Agency / Carrier context toggle ──────────────────────────
 
-  const _agencyPersonas = {
-    sysadmin: { label: 'System Admin',    badgeCls: 'persona-agency-sysadmin', screen: 'screen-m-policysets',  theme: 'theme-manage' },
-    ops:      { label: 'Operations Team', badgeCls: 'persona-agency-ops',      screen: 'screen-om-aot-producers',  theme: 'theme-onboarding' },
-    producer: { label: 'Producer',        badgeCls: 'persona-agency-producer', screen: 'screen-p-email',       theme: 'theme-onboarding' },
-  };
-
   function setContext(ctx) {
+    _currentCtx = ctx;
     document.getElementById('btn-ctx-carrier').classList.toggle('active', ctx === 'carrier');
     document.getElementById('btn-ctx-agency').classList.toggle('active', ctx === 'agency');
-    document.getElementById('carrier-flows').style.display = ctx === 'carrier' ? '' : 'none';
-    document.getElementById('agency-flows').style.display  = ctx === 'agency'  ? '' : 'none';
-
+    document.getElementById('carrier-mode-toggle').style.display = ctx === 'carrier' ? '' : 'none';
     if (ctx === 'carrier') {
-      const sysadminBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(1)');
-      goCarrierFlow(sysadminBtn, 'sysadmin');
+      _currentMode = 'manage';
+      setCarrierMode('manage');
     } else {
-      // Land on System Admin by default
-      const sysadminBtn = document.querySelector('#agency-flows .demo-flow-btn:nth-child(1)');
-      goAgencyFlow(sysadminBtn, 'sysadmin');
+      document.getElementById('demo-nav').style.borderBottom = '';
+      selectPersona(_activePersonaSet()[0].key);
     }
-  }
-
-  function goAgencyFlow(btnEl, persona) {
-    document.querySelectorAll('#agency-flows .demo-flow-btn').forEach(b => b.classList.remove('active'));
-    if (btnEl) btnEl.classList.add('active');
-    const p = _agencyPersonas[persona];
-    if (!p) return;
-    const badge = document.getElementById('persona-badge');
-    badge.textContent = p.label;
-    badge.className = 'demo-persona-badge ' + p.badgeCls;
-    document.body.classList.remove('theme-manage', 'theme-onboarding');
-    document.body.classList.add(p.theme || 'theme-onboarding');
-    go(p.screen);
   }
 
   // ── Policy Set Wizard helpers ─────────────────────────────────
@@ -839,13 +917,15 @@
 
   // ── Producer multi-select + Add Policy Set modal ─────────────
 
+  const _WRAP_SEL = '.table-wrapper, .ms-table-wrap, .ob-table-wrap';
+
   function prodToggleRow(cb) {
     cb.closest('tr').classList.toggle('row-selected', cb.checked);
-    prodSyncActionBar(cb.closest('.table-wrapper, .ms-table-wrap'));
+    prodSyncActionBar(cb.closest(_WRAP_SEL));
   }
 
   function prodToggleAll(masterCb) {
-    const wrap = masterCb.closest('.table-wrapper, .ms-table-wrap');
+    const wrap = masterCb.closest(_WRAP_SEL);
     if (!wrap) return;
     wrap.querySelectorAll('.prod-row-cb').forEach(cb => {
       cb.checked = masterCb.checked;
@@ -858,7 +938,7 @@
     if (!wrap) return;
     const count = wrap.querySelectorAll('.prod-row-cb:checked').length;
     wrap.classList.toggle('has-selection', count > 0);
-    const countEl = wrap.querySelector('.prod-action-count');
+    const countEl = wrap.querySelector('.prod-action-count, .ob-action-bar__count');
     if (countEl) countEl.textContent = count + (count === 1 ? ' producer' : ' producers') + ' selected';
     // Keep master checkbox in sync
     const all = wrap.querySelectorAll('.prod-row-cb');
@@ -867,7 +947,7 @@
   }
 
   function prodClearSelection(barEl) {
-    const wrap = barEl.closest('.table-wrapper, .ms-table-wrap');
+    const wrap = barEl.closest(_WRAP_SEL);
     if (!wrap) return;
     wrap.querySelectorAll('.prod-row-cb').forEach(cb => {
       cb.checked = false;
@@ -880,7 +960,7 @@
 
   function prodShowPSModal(barEl) {
     window._prodActionBar = barEl;
-    const wrap = barEl.closest('.table-wrapper, .ms-table-wrap');
+    const wrap = barEl.closest(_WRAP_SEL);
     const count = wrap ? wrap.querySelectorAll('.prod-row-cb:checked').length : 0;
     document.getElementById('ps-add-drawer-title').textContent =
       'Add Policy Set to ' + count + (count === 1 ? ' Producer' : ' Producers');
@@ -1250,6 +1330,124 @@
     rmRender();
   }
 
+  // ── Agency Onboarding Tasks (p-aot-tasks) helpers ────────────
+
+  let _aotDone = new Set();
+
+  function aotMarkDone(taskNum, nextNum) {
+    _aotDone.add(taskNum);
+    // Update circle to checkmark
+    const circle = document.getElementById('aot-circle-' + taskNum);
+    if (circle) {
+      circle.classList.add('pr-task-circle--done');
+      circle.innerHTML = '<svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>';
+    }
+    // Update sub-label text
+    const item = document.getElementById('aot-item-' + taskNum);
+    if (item) {
+      const sub = item.querySelector('.pr-task-item__sub');
+      if (sub) {
+        sub.textContent = (taskNum === 3 ? 'Optional' : 'Required') + ' · Complete';
+        sub.className = 'pr-task-item__sub';
+      }
+    }
+    // Recount required done (tasks 1,2,4,5,6,7,8 = required; 3 = optional)
+    const required = [1,2,4,5,6,7,8];
+    const doneCt = required.filter(n => _aotDone.has(n)).length;
+    const pct = Math.round(doneCt / required.length * 100);
+    const fill = document.getElementById('aot-progress-fill');
+    if (fill) fill.style.width = pct + '%';
+    const pctEl = document.getElementById('aot-pct');
+    if (pctEl) pctEl.textContent = pct + '%';
+    const pctLabel = document.getElementById('aot-pct-label');
+    if (pctLabel) pctLabel.textContent = pct + '%';
+    const progLabel = document.getElementById('aot-progress-label');
+    if (progLabel) progLabel.textContent = doneCt + ' of ' + required.length + ' required tasks complete';
+    // Move to next
+    if (nextNum) aotNext(taskNum, nextNum);
+  }
+
+  function aotNext(fromNum, toNum) {
+    if (!toNum) return;
+    const fromItem = document.getElementById('aot-item-' + fromNum);
+    const toItem   = document.getElementById('aot-item-' + toNum);
+    const fromPanel = document.getElementById('aot-td-' + fromNum);
+    const toPanel   = document.getElementById('aot-td-' + toNum);
+    if (fromItem) fromItem.classList.remove('active');
+    if (toItem)   toItem.classList.add('active');
+    if (fromPanel) fromPanel.classList.remove('active');
+    if (toPanel)   toPanel.classList.add('active');
+  }
+
+  function aotToggleSSN() {
+    const el = document.getElementById('aot-ssn');
+    if (!el) return;
+    const btn = el.parentElement && el.parentElement.querySelector('.pr-ssn-toggle');
+    if (el.type === 'password') { el.type = 'text'; if (btn) btn.textContent = 'Hide'; }
+    else { el.type = 'password'; if (btn) btn.textContent = 'Show'; }
+  }
+
+  function aotAddRow(containerId, type) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const row = document.createElement('div');
+    row.className = 'pr-repeat-row';
+    if (type === 'email') {
+      row.innerHTML = '<div class="pr-float-field" style="max-width:120px;flex:0 0 120px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Work</option><option>Personal</option><option>Other</option></select></div><div class="pr-float-field"><span class="pr-float-label">Email *</span><input class="pr-float-value" type="email" placeholder="email@example.com"></div><button class="pr-remove-btn" onclick="this.closest(\'.pr-repeat-row\').remove()" title="Remove">×</button>';
+    } else {
+      row.innerHTML = '<div class="pr-float-field" style="max-width:120px;flex:0 0 120px"><span class="pr-float-label">Type</span><select class="pr-float-value"><option>Cell</option><option>Work</option><option>Home</option></select></div><div class="pr-float-field"><span class="pr-float-label">Phone *</span><input class="pr-float-value" type="tel" placeholder="(000) 000-0000"></div><button class="pr-remove-btn" onclick="this.closest(\'.pr-repeat-row\').remove()" title="Remove">×</button>';
+    }
+    container.appendChild(row);
+  }
+
+  function aotToggleMailing(cb) {
+    const fields = document.getElementById('aot-mailing-fields');
+    if (fields) fields.style.display = cb.checked ? 'none' : '';
+  }
+
+  function aotAddLicense() {
+    const container = document.getElementById('aot-licenses');
+    if (!container) return;
+    const count = container.querySelectorAll('[style*="border"]').length + 1;
+    const div = document.createElement('div');
+    div.style.cssText = 'border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);';
+    div.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);"><span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);">License ${count}</span><button class="pr-remove-btn" style="width:auto;padding:0 8px;font-size:11px;height:22px;" onclick="this.closest('[style]').remove()">Remove</button></div><div class="pr-form-row pr-form-row--3"><div class="pr-float-field"><span class="pr-float-label">License #</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">State</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">Type</span><input class="pr-float-value" type="text"></div></div><div class="pr-form-row pr-form-row--3"><div class="pr-float-field"><span class="pr-float-label">Class</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">Effective</span><input class="pr-float-value" type="text"></div><div class="pr-float-field"><span class="pr-float-label">Expiration</span><input class="pr-float-value" type="text"></div></div>`;
+    container.appendChild(div);
+  }
+
+  function aotCheckScroll() {
+    const el = document.getElementById('aot-attest-scroll');
+    if (!el) return;
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 10;
+    if (atBottom) {
+      const label = document.getElementById('aot-attest-label');
+      const btn = document.getElementById('aot-attest-submit');
+      if (label) { label.style.opacity = '1'; label.style.pointerEvents = ''; }
+      if (btn)   { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = ''; }
+    }
+    const cb = document.getElementById('aot-attest-check');
+    if (cb && cb.checked) {
+      const btn = document.getElementById('aot-attest-submit');
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = ''; }
+    }
+  }
+
+  function aotSigTab(tabEl, panelId) {
+    const screen = document.getElementById('screen-p-aot-tasks');
+    if (!screen) return;
+    screen.querySelectorAll('.sig-tab').forEach(t => t.classList.remove('active'));
+    screen.querySelectorAll('.sig-panel').forEach(p => p.classList.remove('active'));
+    tabEl.classList.add('active');
+    const panel = document.getElementById(panelId);
+    if (panel) panel.classList.add('active');
+  }
+
+  function aotSigPreview() {
+    const input = document.getElementById('aot-sig-text');
+    const preview = document.getElementById('aot-sig-preview');
+    if (input && preview) preview.textContent = input.value || 'Your name here';
+  }
+
   // ── Load all screen HTML files ────────────────────────────────
 
   const screens = [
@@ -1257,7 +1455,9 @@
     { id: 'screen-m-sysadmin',         src: 'screens/manage/m-sysadmin.html' },
     { id: 'screen-m-settings',         src: 'screens/manage/m-settings.html' },
     { id: 'screen-m-record-type-select', src: 'screens/manage/m-record-type-select.html' },
-    { id: 'screen-m-accounts',        src: 'screens/manage/m-accounts.html' },
+    { id: 'screen-m-accounts',         src: 'screens/manage/m-accounts.html' },
+    { id: 'screen-m-accounts-agency', src: 'screens/manage/m-accounts-agency.html' },
+    { id: 'screen-m-contacts',        src: 'screens/manage/m-contacts.html' },
     { id: 'screen-m-new-account',     src: 'screens/manage/m-new-account.html' },
     { id: 'screen-m-account-record',  src: 'screens/manage/m-account-record.html' },
     { id: 'screen-m-invite',          src: 'screens/manage/m-invite.html' },
@@ -1293,6 +1493,7 @@
     { id: 'screen-p-task-detail-2',   src: 'screens/producer/p-task-detail-2.html' },
     { id: 'screen-p-task-detail-3',   src: 'screens/producer/p-task-detail-3.html' },
     { id: 'screen-p-done',            src: 'screens/producer/p-done.html' },
+    { id: 'screen-p-aot-tasks',       src: 'screens/producer/p-aot-tasks.html' },
   ];
 
   Promise.all(screens.map(s =>
@@ -1302,10 +1503,11 @@
       document.getElementById(s.id).innerHTML = `<div style="padding:48px;text-align:center;color:#9ca3af;font-family:system-ui">[${s.src} — not yet built]</div>`;
     })
   )).then(() => {
-    // Init nav after all screens loaded
+    // Render shared components into all data-component mount points
+    if (typeof initScreenComponents === 'function') initScreenComponents();
+    // Init nav: boot into Carrier / Manage / System Admin
     if (typeof initDemoNav === 'function') initDemoNav();
-    const sysadminBtn = document.querySelector('#carrier-flows .demo-flow-btn:nth-child(1)');
-    goCarrierFlow(sysadminBtn, 'sysadmin');
+    setCarrierMode('manage');
     // Init role mappings table
     rmRender();
   });
