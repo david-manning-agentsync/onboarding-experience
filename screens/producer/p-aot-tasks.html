@@ -10,7 +10,7 @@
   #screen-p-aot-tasks .p-body__inner { max-width: 1100px; margin: 0 auto; padding: var(--space-6) var(--space-8); background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 
   /* ── Header ── */
-  #screen-p-aot-tasks .pr-header { position: relative; padding: var(--space-5) 0; margin-bottom: var(--space-5); border-bottom: 1px solid var(--color-border-default); overflow: visible; }
+  #screen-p-aot-tasks .pr-header { position: relative; padding: var(--space-5) 0; margin-bottom: var(--space-5); border-bottom: 1px solid var(--color-border-default); overflow: hidden; }
   #screen-p-aot-tasks .pr-header::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:var(--radius-full); border:40px solid var(--color-primary-50); pointer-events:none; z-index:0; }
   #screen-p-aot-tasks .pr-header::after  { content:''; position:absolute; top:20px;  right:40px;  width:120px; height:120px; border-radius:var(--radius-full); border:28px solid var(--color-primary-100); pointer-events:none; z-index:0; }
   #screen-p-aot-tasks .pr-header__row { display:flex; align-items:center; gap:var(--space-5); position:relative; z-index:1; }
@@ -168,9 +168,10 @@
   #screen-p-aot-tasks .bg-question__options { display:flex; gap:var(--space-4); }
   #screen-p-aot-tasks .bg-radio { display:flex; align-items:center; gap:var(--space-2); font-size:var(--font-size-sm); cursor:pointer; }
 
-  /* ── CTA footer — full-bleed tray, all buttons right-aligned ── */
-  #screen-p-aot-tasks .pr-detail-cta { margin-top:var(--space-5); margin-left:calc(-1 * var(--space-6)); margin-right:calc(-1 * var(--space-6)); margin-bottom:calc(-1 * var(--space-5)); padding:var(--space-4) var(--space-6); background:var(--color-bg-page); border-top:2px solid var(--color-border-default); display:flex; align-items:center; justify-content:flex-end; gap:var(--space-3); }
+  /* ── CTA footer — full-bleed tray outside padded body content ── */
+  #screen-p-aot-tasks .pr-detail-cta { padding:var(--space-4) var(--space-6); background:var(--color-bg-page); border-top:2px solid var(--color-border-default); display:flex; align-items:center; justify-content:flex-end; gap:var(--space-3); }
   #screen-p-aot-tasks .pr-detail-cta__hint { margin-right:auto; font-size:var(--font-size-xs); color:var(--color-text-muted); }
+  #screen-p-aot-tasks .pr-task-detail-panel--done .pr-detail-cta { display:none; }
 
   /* ── Misc ── */
   #screen-p-aot-tasks .state-placeholder { background:var(--color-warning-50); border:1px solid var(--color-warning-200); border-radius:var(--radius-md); padding:var(--space-4); display:flex; gap:var(--space-3); align-items:flex-start; margin-top:var(--space-4); }
@@ -303,10 +304,10 @@
                     <div class="pr-float-field"><span class="pr-float-label">Gender</span><select class="pr-float-value"><option value="">— Select —</option><option selected>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
                   </div>
                 </div>
-                <div class="pr-detail-cta">
-                  <button class="btn btn--secondary" onclick="aotNext(1,2)">Save &amp; Continue</button>
-                  <button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <button class="btn btn--secondary" onclick="aotNext(1,2)">Save &amp; Continue</button>
+                <button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button>
               </div>
             </div>
           </div>
@@ -434,10 +435,10 @@
                   </div><!-- /aot-addr-list -->
                   <button class="pr-add-btn" onclick="aotAddAddress()" style="margin-top:var(--space-1)">+ Add Additional Address</button>
                 </div>
-                <div class="pr-detail-cta">
-                  <button class="btn btn--secondary" onclick="aotNext(2,3)">Save &amp; Continue</button>
-                  <button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <button class="btn btn--secondary" onclick="aotNext(2,3)">Save &amp; Continue</button>
+                <button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button>
               </div>
             </div>
           </div>
@@ -469,11 +470,11 @@
                   <div class="pr-float-field"><span class="pr-float-label">License / ID Number *</span><input class="pr-float-value" type="text" value="CO-1983472"></div>
                   <div class="pr-float-field"><span class="pr-float-label">Expiration Date *</span><input class="pr-float-value" type="text" value="04/12/2029"></div>
                 </div>
-                <div class="pr-detail-cta">
-                  <button class="aot-skip-btn" onclick="aotSkipTask(3,4)">Skip</button>
-                  <button class="btn btn--secondary" onclick="aotNext(3,4)">Save &amp; Continue</button>
-                  <button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <button class="aot-skip-btn" onclick="aotSkipTask(3,4)">Skip</button>
+                <button class="btn btn--secondary" onclick="aotNext(3,4)">Save &amp; Continue</button>
+                <button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button>
               </div>
             </div>
           </div>
@@ -502,10 +503,10 @@
                 </div>
                 <div id="aot-emp-list"><!-- rendered by aotRenderEmp() --></div>
                 <button class="pr-add-btn" onclick="aotAddEmployment()">+ Add Prior Employment</button>
-                <div class="pr-detail-cta">
-                  <button class="btn btn--secondary" onclick="aotNext(4,5)">Save &amp; Continue</button>
-                  <button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <button class="btn btn--secondary" onclick="aotNext(4,5)">Save &amp; Continue</button>
+                <button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button>
               </div>
             </div>
           </div>
@@ -533,10 +534,10 @@
                 <div class="bg-question"><div class="bg-question__text">2. Have you ever had an insurance license or financial services registration denied, suspended, or revoked?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq2" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq2" value="yes"> Yes — please explain</label></div></div>
                 <div class="bg-question"><div class="bg-question__text">3. Are you currently named as a defendant in any pending civil lawsuit related to your professional activities?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq3" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq3" value="yes"> Yes — please explain</label></div></div>
                 <div class="state-placeholder"><div style="color:var(--color-warning-500);flex-shrink:0;margin-top:1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div><div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-warning-700);">Colorado — State-Specific Disclosures</div><div style="font-size:var(--font-size-xs);color:var(--color-warning-600);line-height:1.5;margin-top:2px;">Additional questions required for Colorado-licensed producers will be presented during final review.</div></div></div>
-                <div class="pr-detail-cta">
-                  <button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue</button>
-                  <button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue</button>
+                <button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button>
               </div>
             </div>
           </div>
@@ -573,10 +574,10 @@
                   <input type="checkbox" id="aot-attest-check" style="margin-top:2px;accent-color:var(--color-primary-600);flex-shrink:0" onchange="aotAttestChange()">
                   <span style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">I have read and agree to the NIPR Producer Attestation Agreement above.</span>
                 </label>
-                <div class="pr-detail-cta">
-                  <span class="pr-detail-cta__hint">Scroll to bottom &amp; check the box to enable</span>
-                  <button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:.5;cursor:not-allowed">Submit Attestation</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <span class="pr-detail-cta__hint">Scroll to bottom &amp; check the box to enable</span>
+                <button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:.5;cursor:not-allowed">Submit Attestation</button>
               </div>
             </div>
           </div>
@@ -625,10 +626,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="pr-detail-cta">
-                  <button class="btn btn--secondary" onclick="aotNext(7,8)">Save &amp; Continue</button>
-                  <button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <button class="btn btn--secondary" onclick="aotNext(7,8)">Save &amp; Continue</button>
+                <button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button>
               </div>
             </div>
           </div>
@@ -686,9 +687,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="pr-detail-cta">
-                  <button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit &amp; Sign</button>
-                </div>
+              </div>
+              <div class="pr-detail-cta">
+                <button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit &amp; Sign</button>
               </div>
             </div>
           </div>
