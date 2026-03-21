@@ -1363,7 +1363,7 @@
       panel.classList.add('pr-task-detail-panel--done');
       const statusChip = panel.querySelector('.aot-chip--status, .aot-chip--done-status');
       if (statusChip) {
-        statusChip.textContent = 'Complete';
+        statusChip.textContent = 'Closed';
         statusChip.className = 'aot-chip aot-chip--done-status';
       }
     }
@@ -1390,7 +1390,7 @@
       panel.classList.remove('pr-task-detail-panel--done');
       const statusChip = panel.querySelector('.aot-chip--status, .aot-chip--done-status');
       if (statusChip) {
-        statusChip.textContent = 'Not Started';
+        statusChip.textContent = 'Open';
         statusChip.className = 'aot-chip aot-chip--status';
       }
     }
@@ -1402,7 +1402,7 @@
       const sub = item.querySelector('.pr-task-item__sub');
       if (sub) {
         const isOpt = taskNum === 3;
-        sub.textContent = (isOpt ? 'Optional' : 'Required') + ' · Not Started';
+        sub.textContent = (isOpt ? 'Optional' : 'Required') + ' · Open';
         sub.className = 'pr-task-item__sub ' + (isOpt ? 'pr-task-item__sub--opt' : 'pr-task-item__sub--req');
       }
     }
