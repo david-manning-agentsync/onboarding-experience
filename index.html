@@ -226,13 +226,15 @@
     #screen-m-agency-om #ao-panel-producers tbody tr.row-selected { background: #eff6ff; }
 
     /* ── Permission Sets modal ── */
-    #perm-set-modal {
+    #perm-set-modal,
+    #manage-ps-modal {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.45); z-index: 10000;
       align-items: center; justify-content: center;
       font-family: var(--font-family-base, system-ui, sans-serif);
     }
-    #perm-set-modal.open { display: flex; }
+    #perm-set-modal.open,
+    #manage-ps-modal.open { display: flex; }
     .perm-set-modal__dialog {
       background: var(--color-bg-surface, #fff);
       border-radius: 4px;
@@ -389,6 +391,10 @@
     }
     #ps-add-drawer .psd-confirm:hover { background: #1e40af; }
 
+    /* Gear/Setup icon: hidden by default, shown only for System Admin */
+    .ms-nav__icon[title="Setup"] { display: none; }
+    body.role-sysadmin .ms-nav__icon[title="Setup"] { display: flex; }
+
     /* Offset for demo nav */
     body { padding-top: 44px; }
 
@@ -481,6 +487,319 @@
       padding: 16px 24px; border-top: 1px solid var(--color-border-default);
     }
 
+    /* ── Task Detail drawer (Onboarding Tasks tab) ── */
+    #task-detail-overlay {
+      position: fixed; top: 44px; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 8000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    #task-detail-overlay.open { opacity: 1; pointer-events: auto; }
+    #task-detail-drawer {
+      position: fixed; top: 44px; right: 0; bottom: 0; width: 520px;
+      background: #fff;
+      box-shadow: -6px 0 32px rgba(0,0,0,0.14);
+      z-index: 8001;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    #task-detail-drawer.open { transform: translateX(0); }
+
+    /* Header — matches producer record right panel (.pr-detail-head) */
+    #task-detail-drawer .tdd-head {
+      position: relative; flex-shrink: 0;
+      padding: 20px 52px 16px 24px;
+      border-bottom: 2px solid #bfdbfe;
+      background: #eff6ff;
+    }
+    #task-detail-drawer .tdd-title {
+      font-size: 17px; font-weight: 800; color: #111827;
+      letter-spacing: -0.01em; margin-bottom: 4px;
+    }
+    #task-detail-drawer .tdd-producer {
+      font-size: 13px; color: #2563eb; font-weight: 500; cursor: pointer;
+      text-decoration: none; display: inline-block; margin-bottom: 10px;
+    }
+    #task-detail-drawer .tdd-producer:hover { text-decoration: underline; }
+    #task-detail-drawer .tdd-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      border-radius: 6px; color: #6b7280; cursor: pointer; background: none; border: none;
+    }
+    #task-detail-drawer .tdd-close:hover { background: #dbeafe; color: #1e40af; }
+
+    /* Chip system — mirrors aot-chip in p-aot-tasks-embed.html */
+    #task-detail-drawer .aot-chips { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    #task-detail-drawer .aot-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600; padding: 3px 8px;
+      border-radius: 999px; white-space: nowrap;
+    }
+    #task-detail-drawer .aot-chip--owner     { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    #task-detail-drawer .aot-chip--owner-ops { background: #f3f4f6; color: #4b5563; border: 1px solid #e5e7eb; }
+    #task-detail-drawer .aot-chip--req       { background: #fee2e2; color: #dc2626; }
+    #task-detail-drawer .aot-chip--opt       { background: #f3f4f6; color: #6b7280; }
+    #task-detail-drawer .aot-chip--cat-org   { background: #eff6ff; color: #1d4ed8; }
+    #task-detail-drawer .aot-chip--cat-reg   { background: #f3e8ff; color: #7c3aed; }
+    #task-detail-drawer .aot-chip--cat-sreg  { background: #fffbeb; color: #b45309; }
+    #task-detail-drawer .aot-chip--status    { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+    /* Body */
+    #task-detail-drawer .tdd-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    #task-detail-drawer .tdd-section { margin-bottom: 22px; }
+    #task-detail-drawer .tdd-label {
+      font-size: 11px; font-weight: 700; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
+    }
+    #task-detail-drawer .tdd-text { font-size: 13px; color: #374151; line-height: 1.6; }
+    #task-detail-drawer .tdd-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* Form field layout */
+    #task-detail-drawer .tdd-form-section-head {
+      font-size: 14px; font-weight: 700; color: #111827;
+      margin: 0 0 14px; padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    #task-detail-drawer .tdd-field-grid-3 {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px;
+    }
+    #task-detail-drawer .tdd-field-grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
+    }
+    #task-detail-drawer .tdd-field-row-npn {
+      display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; margin-bottom: 4px;
+    }
+    #task-detail-drawer .tdd-field {
+      border: 1px solid #d1d5db; border-radius: 4px;
+      padding: 8px 12px; background: #fff; position: relative;
+    }
+    #task-detail-drawer .tdd-field__label {
+      font-size: 10px; font-weight: 700; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    #task-detail-drawer .tdd-field__value {
+      font-size: 13px; color: #111827;
+    }
+    #task-detail-drawer .tdd-field--ssn { display: flex; flex-direction: column; }
+    #task-detail-drawer .tdd-field--ssn .tdd-field__row { display: flex; align-items: center; justify-content: space-between; }
+    #task-detail-drawer .tdd-field__show {
+      font-size: 12px; font-weight: 600; color: #2563eb; cursor: pointer; background: none; border: none; padding: 0; font-family: inherit;
+    }
+    #task-detail-drawer .tdd-field__show:hover { text-decoration: underline; }
+    #task-detail-drawer .tdd-verified {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; color: #15803d;
+      background: #f0fdf4; border: 1px solid #bbf7d0;
+      border-radius: 4px; padding: 8px 12px; white-space: nowrap;
+    }
+
+    /* Footer */
+    #task-detail-drawer .tdd-footer {
+      flex-shrink: 0; display: flex; justify-content: flex-end; gap: 8px;
+      padding: 14px 24px; border-top: 1px solid #e5e7eb; background: #f9fafb;
+    }
+    #task-detail-drawer .tdd-btn {
+      padding: 8px 18px; border-radius: 4px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+    #task-detail-drawer .tdd-btn--secondary { border: 1px solid #ddd; background: #fff; color: #374151; }
+    #task-detail-drawer .tdd-btn--secondary:hover { background: #f3f4f6; }
+    #task-detail-drawer .tdd-btn--primary { border: none; background: #0176d3; color: #fff; }
+    #task-detail-drawer .tdd-btn--primary:hover { background: #0161b5; }
+
+    /* ── Policy Set Explainer Modal (PSM) ── */
+    #psm-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.50); z-index: 10500;
+      align-items: center; justify-content: center;
+      padding: 24px; opacity: 0; transition: opacity 150ms ease;
+    }
+    #psm-overlay.psm-open { opacity: 1; }
+    #psm-dialog {
+      background: #fff; border-radius: 6px;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.28);
+      width: 960px; height: 700px;
+      display: flex; flex-direction: column; overflow: hidden;
+      transform: scale(0.96); transition: transform 150ms ease;
+      font-family: system-ui, sans-serif;
+    }
+    #psm-overlay.psm-open #psm-dialog { transform: scale(1); }
+    /* Header */
+    .psm-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; background: #1e293b; flex-shrink: 0;
+    }
+    .psm-header-left { display: flex; align-items: center; gap: 12px; }
+    .psm-header-icon { color: rgba(255,255,255,0.8); flex-shrink: 0; }
+    .psm-header-eyebrow {
+      font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    #psm-name { font-size: 15px; font-weight: 500; color: #fff; }
+    .psm-close {
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; border: none; background: none;
+      color: rgba(255,255,255,0.75); font-size: 20px; line-height: 1; cursor: pointer;
+      transition: background 120ms;
+    }
+    .psm-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    /* Two-panel body — equal halves */
+    .psm-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+    .psm-left {
+      flex: 1; border-right: 1px solid #e2e8f0;
+      overflow-y: auto; background: #f8fafc;
+      display: flex; flex-direction: column;
+    }
+    .psm-right {
+      flex: 1; display: flex; flex-direction: column; overflow: hidden;
+      position: relative;
+    }
+    /* Left panel — requirement cards */
+    .psm-req-cards {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      gap: 16px; padding: 24px;
+    }
+    .psm-req-card {
+      flex: 0 0 calc(42.5% - 27px); background: #fff; border: none; border-radius: 8px;
+      box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.10);
+      padding: 17px 17px; display: flex; align-items: center; gap: 16px;
+    }
+    .psm-req-card--reg { border-left: 4px solid #1e293b; }
+    .psm-req-card--org { border-left: 4px solid #0d9488; }
+    .psm-req-card__icon {
+      width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .psm-req-card__icon--reg  { background: #eff6ff; color: #1d4ed8; }
+    .psm-req-card__icon--org  { background: #f0fdf4; color: #15803d; }
+    .psm-req-card__body { flex: 1; min-width: 0; }
+    .psm-req-card__title {
+      font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 6px;
+    }
+    .psm-req-card__stat {
+      font-size: 12px; color: #475569; display: flex; align-items: center;
+      gap: 6px; margin-bottom: 3px;
+    }
+    .psm-req-card__stat:last-child { margin-bottom: 0; }
+    .psm-req-card__dot {
+      width: 3px; height: 3px; border-radius: 50%; background: #cbd5e1; flex-shrink: 0;
+    }
+    /* Right panel — empty state (intentionally muted) */
+    .psm-empty {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      background: #f7f7f7; transition: opacity 180ms ease;
+    }
+    .psm-empty.psm-empty--hiding { opacity: 0; pointer-events: none; }
+    .psm-empty__wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .psm-empty__show {
+      padding: 6px 18px; background: #fff;
+      border: 1px solid #ccc; border-radius: 4px;
+      font-size: 12px; font-weight: 500; color: #aaa;
+      cursor: pointer; font-family: inherit; transition: border-color 120ms, color 120ms;
+    }
+    .psm-empty__show:hover { border-color: #aaa; color: #666; }
+    .psm-empty__hint { font-size: 11px; color: #bbb; }
+    /* Right panel — revealed state */
+    .psm-revealed {
+      flex: 1; display: flex; flex-direction: column; overflow: hidden;
+      opacity: 0; transition: opacity 180ms ease;
+    }
+    .psm-revealed--visible { opacity: 1; }
+    .psm-revealed--hidden { display: none; }
+    .psm-back-row {
+      padding: 8px 16px; border-bottom: 1px solid #e2e8f0;
+      background: #f8fafc; flex-shrink: 0;
+    }
+    .psm-back-btn {
+      background: none; border: none; padding: 2px 0;
+      font-size: 12px; color: #64748b; cursor: pointer;
+      font-family: inherit; display: inline-flex; align-items: center; gap: 4px;
+      transition: color 100ms;
+    }
+    .psm-back-btn:hover { color: #0176d3; }
+    /* Producer toggle tabs */
+    #psm-prod-tabs {
+      display: flex; border-bottom: 1px solid #e2e8f0;
+      background: #f8fafc; flex-shrink: 0; padding: 0 16px;
+    }
+    .psm-tab {
+      display: flex; flex-direction: column; padding: 10px 16px;
+      border: none; background: none; border-bottom: 3px solid transparent;
+      cursor: pointer; text-align: left; font-family: inherit;
+      transition: border-color 120ms, background 120ms; color: #475569;
+    }
+    .psm-tab:hover { background: #f1f5f9; color: #1e293b; }
+    .psm-tab--active { border-bottom: 2px solid #1e293b; color: #1e293b; background: #fff; }
+    .psm-tab-name { font-size: 13px; font-weight: 600; }
+    .psm-tab-sub { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+    .psm-tab--active .psm-tab-sub { color: rgba(30,41,59,0.45); }
+    /* Task list */
+    #psm-task-list { flex: 1; overflow-y: auto; padding: 16px 20px; transition: opacity 120ms ease; }
+    #psm-task-list.psm-fade-out { opacity: 0; }
+    .psm-task-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 4px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;
+    }
+    .psm-task-count { font-size: 12px; font-weight: 600; color: #1e293b; }
+    .psm-task-progress { font-size: 11px; color: #64748b; }
+    .psm-task-section {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: #94a3b8; margin: 14px 0 6px 8px;
+    }
+    .psm-task-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 8px; border-radius: 4px; transition: background 80ms;
+    }
+    .psm-task-row:hover { background: #f8fafc; }
+    .psm-task-check { flex-shrink: 0; display: flex; color: #94a3b8; }
+    .psm-task-row--done .psm-task-check { color: #16a34a; }
+    .psm-task-name { flex: 1; font-size: 13px; color: #1e293b; }
+    .psm-task-row--done .psm-task-name { color: #94a3b8; text-decoration: line-through; }
+    .psm-task-cat {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 2px 7px; border-radius: 999px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .psm-cat--org               { background: #f1f5f9; color: #475569; }
+    .psm-cat--regulatory        { background: #dbeafe; color: #1d4ed8; }
+    .psm-cat--state-regulatory  { background: #ede9fe; color: #6d28d9; }
+    .psm-cat--document          { background: #fef3c7; color: #92400e; }
+    /* Left panel — muted state (after "Show" is clicked) */
+    .psm-left--muted { background: #f7f7f7; }
+    .psm-left--muted .psm-req-card {
+      background: #f0f0f0;
+      box-shadow: none;
+    }
+    .psm-left--muted .psm-req-card--reg { border-left-color: #8a95a0; }
+    .psm-left--muted .psm-req-card--org { border-left-color: #6bb8b2; }
+    .psm-left--muted .psm-req-card__icon--reg,
+    .psm-left--muted .psm-req-card__icon--org {
+      background: rgba(0,0,0,0.05);
+      color: rgba(0,0,0,0.3);
+    }
+    .psm-left--muted .psm-req-card__title,
+    .psm-left--muted .psm-req-card__stat { color: rgba(0,0,0,0.3); }
+    .psm-left--muted .psm-req-card__dot { background: rgba(0,0,0,0.15); }
+
+    /* Info icon on policy set table rows */
+    .ps-name-cell { display: inline-flex; align-items: center; }
+    .ps-info-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 17px; height: 17px; margin-left: 7px; flex-shrink: 0;
+      border: 1px solid #93c5fd; border-radius: 50%; background: #eff6ff;
+      color: #2563eb; font-size: 10px; font-style: italic; font-weight: 700;
+      cursor: pointer; transition: background 100ms, border-color 100ms;
+      line-height: 1; padding: 0; font-family: serif;
+    }
+    .ps-info-btn:hover { background: #dbeafe; border-color: #2563eb; }
+
+    body.context-agency #screen-m-account-record .btn-onboard-firm { display: none; }
+    body:not(.context-agency) .context-agency-only { display: none !important; }
+
   </style>
 </head>
 <body class="theme-manage">
@@ -490,26 +809,197 @@
   <div class="demo-nav-left">
     <span class="demo-wordmark">AgentSync Demo</span>
     <div class="demo-context-toggle">
-      <button class="demo-context-btn" id="btn-ctx-agency" onclick="setContext('agency')">Agency</button>
-      <button class="demo-context-btn active" id="btn-ctx-carrier" onclick="setContext('carrier')">Carrier</button>
-    </div>
-    <div class="demo-nav-divider"></div>
-    <!-- Level 2: Carrier mode toggle (hidden when agency active) -->
-    <div id="carrier-mode-toggle" class="demo-mode-toggle">
-      <button class="demo-mode-btn active" id="btn-mode-manage" onclick="setCarrierMode('manage')">Manage</button>
-      <button class="demo-mode-btn" id="btn-mode-external" onclick="setCarrierMode('external')">External</button>
+      <button class="demo-context-btn active" id="btn-ctx-agency" onclick="setContext('agency')">Agency</button>
+      <button class="demo-context-btn" id="btn-ctx-carrier" onclick="setContext('carrier')">Carrier</button>
     </div>
   </div>
   <div class="demo-right">
     <div class="demo-persona-wrap" id="persona-wrap">
-      <button id="persona-badge" class="demo-persona-badge persona-carrier-sysadmin" onclick="togglePersonaMenu(event)">
-        <span id="persona-label">System Admin</span>
+      <button id="persona-badge" class="demo-persona-badge persona-agency-psa" onclick="togglePersonaMenu(event)">
+        <span id="persona-label">Policy Admin</span>
         <svg class="demo-persona-caret" width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><path d="M2 3l3 4 3-4H2z"/></svg>
       </button>
       <div class="demo-persona-menu" id="persona-menu"></div>
     </div>
   </div>
 </nav>
+
+<!-- Manage Policy Sets Modal -->
+<div id="manage-ps-overlay"
+  onclick="if(event.target===this)closeManagePSModal()"
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  z-index:9000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:8px;width:100%;max-width:620px;
+    max-height:80vh;overflow-y:auto;
+    box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="padding:24px 28px;border-bottom:1px solid #eee;
+      position:sticky;top:0;background:#fff;z-index:1;">
+      <div style="font-size:18px;font-weight:700;color:#181818;
+        margin-bottom:4px;">Manage Policy Sets</div>
+      <div style="font-size:13px;color:#666;">
+        Select which policy sets apply to accounts in your network</div>
+    </div>
+
+    <div style="padding:24px 28px;">
+
+      <!-- Column headers -->
+      <div style="display:grid;grid-template-columns:1fr 100px 100px 100px;
+        gap:8px;margin-bottom:8px;padding-bottom:8px;
+        border-bottom:1px solid #eee;">
+        <div style="font-size:11px;font-weight:700;color:#888;
+          letter-spacing:0.05em;text-transform:uppercase;">Policy Set</div>
+        <div style="font-size:11px;font-weight:700;color:#888;
+          letter-spacing:0.05em;text-transform:uppercase;
+          text-align:center;">Apply</div>
+        <div style="font-size:11px;font-weight:700;color:#888;
+          letter-spacing:0.05em;text-transform:uppercase;
+          text-align:center;">Level</div>
+        <div style="font-size:11px;font-weight:700;color:#888;
+          letter-spacing:0.05em;text-transform:uppercase;
+          text-align:center;">Required</div>
+      </div>
+
+      <!-- Policy set rows — populated dynamically by openManagePSModal() -->
+      <div id="manage-ps-rows"></div><!-- end rows -->
+    </div>
+
+    <div style="padding:16px 28px;border-top:1px solid #eee;
+      display:flex;justify-content:flex-end;gap:10px;
+      position:sticky;bottom:0;background:#fff;">
+      <button onclick="closeManagePSModal()"
+        style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;
+        background:#fff;font-size:13px;font-weight:600;cursor:pointer;">
+        Cancel
+      </button>
+      <button onclick="closeManagePSModal()"
+        style="padding:8px 18px;border:none;border-radius:4px;
+        background:#0176d3;color:#fff;font-size:13px;
+        font-weight:600;cursor:pointer;">
+        Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Onboard as Producer Modal (Agency SFDC) -->
+<div id="onboard-producer-overlay"
+  onclick="if(event.target===this)closeOnboardProducerModal()"
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  z-index:9000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:8px;width:100%;max-width:680px;
+    max-height:90vh;display:flex;flex-direction:column;
+    box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+
+    <!-- Header -->
+    <div style="padding:24px 28px 16px;border-bottom:1px solid #eee;
+      display:flex;align-items:center;justify-content:space-between;
+      flex-shrink:0;">
+      <div style="font-size:18px;font-weight:700;color:#181818;">
+        Invite a Producer</div>
+      <button onclick="closeOnboardProducerModal()"
+        style="background:none;border:none;font-size:20px;cursor:pointer;
+        color:#666;line-height:1;">×</button>
+    </div>
+
+    <!-- Scrollable content -->
+    <div style="padding:24px 28px;overflow-y:auto;flex:1;">
+
+      <!-- Role -->
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:12px;font-weight:600;
+          color:#444;margin-bottom:6px;">Role
+          <span style="color:#e53e3e;">*</span></label>
+        <select style="width:100%;padding:8px 10px;border:1px solid #ddd;
+          border-radius:4px;font-size:14px;color:#181818;">
+          <option>-- Select role --</option>
+          <option>Producer</option>
+          <option>Principal Agent</option>
+        </select>
+        <div style="font-size:11px;color:#888;margin-top:4px;">
+          Determines onboarding requirements and policy set eligibility
+        </div>
+      </div>
+
+      <!-- Policy Set Assignment -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#666;
+          text-transform:uppercase;letter-spacing:0.05em;
+          margin-bottom:4px;">Policy Set Assignment</div>
+        <p style="font-size:12px;color:#888;margin-bottom:14px;">
+          Required policy sets are applied automatically.
+          Add optional sets as needed.</p>
+
+        <!-- Auto Applied -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px;font-weight:700;color:#999;
+            text-transform:uppercase;letter-spacing:0.06em;
+            margin-bottom:8px;">Auto Applied</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span style="display:inline-flex;align-items:center;
+              gap:4px;padding:4px 12px;background:#dbeafe;
+              color:#1d4ed8;border-radius:20px;font-size:12px;
+              font-weight:600;">Standard Agent Onboarding</span>
+          </div>
+        </div>
+
+        <!-- Optional -->
+        <div>
+          <div style="font-size:10px;font-weight:700;color:#999;
+            text-transform:uppercase;letter-spacing:0.06em;
+            margin-bottom:8px;">Optional</div>
+          <div style="padding:8px 0;border-bottom:1px solid #eee;
+            display:flex;align-items:center;gap:8px;font-size:13px;">
+            <input type="checkbox" id="agency-opt-principal"
+              style="width:13px;height:13px;">
+            <label for="agency-opt-principal" style="cursor:pointer;">
+              Principal Agent Onboarding</label>
+          </div>
+          <div style="padding:8px 0;border-bottom:1px solid #eee;
+            display:flex;align-items:center;gap:8px;font-size:13px;">
+            <input type="checkbox" id="agency-opt-carrier-a"
+              style="width:13px;height:13px;">
+            <label for="agency-opt-carrier-a"
+              style="cursor:pointer;display:flex;align-items:center;gap:6px;">
+              Carrier A — Producer Onboarding
+              <span style="font-size:10px;font-weight:700;color:#7c3aed;
+                background:#f5f3ff;border:1px solid #ddd6fe;
+                border-radius:4px;padding:1px 5px;">Contracting</span>
+            </label>
+          </div>
+          <div style="padding:8px 0;display:flex;align-items:center;
+            gap:8px;font-size:13px;">
+            <input type="checkbox" id="agency-opt-carrier-z"
+              style="width:13px;height:13px;">
+            <label for="agency-opt-carrier-z"
+              style="cursor:pointer;display:flex;align-items:center;gap:6px;">
+              Carrier Z — Producer Onboarding
+              <span style="font-size:10px;font-weight:700;color:#7c3aed;
+                background:#f5f3ff;border:1px solid #ddd6fe;
+                border-radius:4px;padding:1px 5px;">Contracting</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div style="padding:16px 28px;border-top:1px solid #eee;
+      display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;">
+      <button onclick="closeOnboardProducerModal()"
+        style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;
+        background:#fff;font-size:13px;font-weight:600;cursor:pointer;">
+        Cancel
+      </button>
+      <button onclick="closeOnboardProducerModal()"
+        style="padding:8px 18px;border:none;border-radius:4px;
+        background:#0176d3;color:#fff;font-size:13px;
+        font-weight:600;cursor:pointer;">
+        Send Invite
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- Toast -->
 <div id="toast"></div>
@@ -574,17 +1064,10 @@
     <!-- Policy Set Assignment -->
     <div>
       <div class="id-section-title">Policy Set Assignment</div>
-      <p style="font-size:var(--font-size-xs);color:var(--color-text-secondary);margin-bottom:12px;">Required policy sets are applied automatically. Add optional sets as needed.</p>
-      <div style="font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:var(--tracking-wide);margin-bottom:8px;">Auto Applied</div>
-      <div class="id-chips">
-        <span class="id-chip">Standard Agent Onboarding</span>
-        <span class="id-chip">E&amp;O Insurance Verification</span>
-      </div>
-      <div style="font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:var(--tracking-wide);margin-bottom:4px;">Optional</div>
       <div>
-        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> Background Check — Tier 1</label>
-        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> FINRA Registration</label>
-        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> Globe Life — Custom LOA Requirements</label>
+        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> Accident &amp; Health — Producer Onboarding</label>
+        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> Health &amp; Life — Producer Onboarding</label>
+        <label class="id-opt-row"><input type="checkbox" style="flex-shrink:0"> Life — Producer Onboarding</label>
       </div>
     </div>
 
@@ -659,6 +1142,68 @@
   </div>
 </div>
 
+<!-- Manage Policy Sets modal (Agency > Accounts table) -->
+<div id="manage-ps-modal" onclick="if(event.target===this)hideManagePSModal()">
+  <div class="perm-set-modal__dialog">
+    <div class="perm-set-modal__header">
+      <span class="perm-set-modal__title">Policy Sets — Summit Financial Partners</span>
+      <button class="perm-set-modal__close" onclick="hideManagePSModal()">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
+      </button>
+    </div>
+    <div class="perm-set-modal__body">
+      <p class="perm-set-modal__intro">Policy Sets currently assigned to this account. Required policy sets apply to all producers. Optional policy sets can be added per producer.</p>
+      <div class="perm-set-list">
+
+        <div class="perm-set-row">
+          <div class="perm-set-row__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="perm-set-row__content">
+            <div class="perm-set-row__name">
+              Principal Agent Onboarding
+              <span class="perm-set-row__badge" style="background:#dcfce7;border-color:#16a34a;color:#14532d;">Required</span>
+            </div>
+            <div class="perm-set-row__desc">Onboarding requirements for principal agents managing sub-producers, including supervisory compliance and E&amp;O verification.</div>
+          </div>
+        </div>
+
+        <div class="perm-set-row">
+          <div class="perm-set-row__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </div>
+          <div class="perm-set-row__content">
+            <div class="perm-set-row__name">
+              Carrier A — Producer Onboarding
+              <span class="perm-set-row__badge" style="background:#f5f3ff;border-color:#ddd6fe;color:#7c3aed;">Contracting</span>
+              <span class="perm-set-row__badge" style="background:#fef9c3;border-color:#fde047;color:#713f12;">Optional</span>
+            </div>
+            <div class="perm-set-row__desc">Carrier A-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
+          </div>
+        </div>
+
+        <div class="perm-set-row">
+          <div class="perm-set-row__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </div>
+          <div class="perm-set-row__content">
+            <div class="perm-set-row__name">
+              Carrier Z — Producer Onboarding
+              <span class="perm-set-row__badge" style="background:#f5f3ff;border-color:#ddd6fe;color:#7c3aed;">Contracting</span>
+              <span class="perm-set-row__badge" style="background:#fef9c3;border-color:#fde047;color:#713f12;">Optional</span>
+            </div>
+            <div class="perm-set-row__desc">Carrier Z-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="perm-set-modal__footer">
+      <button class="slds-btn slds-btn--neutral" onclick="hideManagePSModal()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Producer: Add Policy Set drawer -->
 <div id="ps-add-overlay" onclick="prodHidePSModal()"></div>
 <div id="ps-add-drawer">
@@ -672,31 +1217,24 @@
     <p class="psd-sub">Select one or more optional policy sets to apply. Only policy sets marked Optional on this account are available here.</p>
     <div class="psd-list" id="ps-add-drawer-list">
       <label class="psd-option">
-        <input type="checkbox" value="background-check">
+        <input type="checkbox" value="life-producer-onboarding">
         <div>
-          <div class="psd-opt-name">Background Check — Tier 1</div>
-          <div class="psd-opt-desc">Criminal background screening through our compliance partner. Results returned within 3–5 business days.</div>
+          <div class="psd-opt-name">Life — Producer Onboarding</div>
+          <div class="psd-opt-desc">Onboarding requirements for producers selling life insurance products, including license verification and appointment workflows.</div>
         </div>
       </label>
       <label class="psd-option">
-        <input type="checkbox" value="eo-annual">
+        <input type="checkbox" value="health-life-producer-onboarding">
         <div>
-          <div class="psd-opt-name">E&amp;O Verification — Annual Renewal</div>
-          <div class="psd-opt-desc">Verify current E&amp;O coverage and collect updated certificate on the producer's renewal schedule.</div>
+          <div class="psd-opt-name">Health &amp; Life — Producer Onboarding</div>
+          <div class="psd-opt-desc">Combined health and life onboarding policy set covering dual-line producers with applicable state license and LOA requirements.</div>
         </div>
       </label>
       <label class="psd-option">
-        <input type="checkbox" value="state-compliance">
+        <input type="checkbox" value="accident-health-producer-onboarding">
         <div>
-          <div class="psd-opt-name">State Compliance Attestation</div>
-          <div class="psd-opt-desc">Producer self-attests to compliance with applicable state regulations and continuing education requirements.</div>
-        </div>
-      </label>
-      <label class="psd-option">
-        <input type="checkbox" value="finra">
-        <div>
-          <div class="psd-opt-name">FINRA Registration</div>
-          <div class="psd-opt-desc">Verify FINRA registration status and collect supporting documentation for securities-licensed producers.</div>
+          <div class="psd-opt-name">Accident &amp; Health — Producer Onboarding</div>
+          <div class="psd-opt-desc">Onboarding requirements for accident and health producers, including E&amp;O verification and state-specific compliance attestations.</div>
         </div>
       </label>
     </div>
@@ -715,7 +1253,11 @@
 <div id="screen-m-contacts"          class="screen"></div>
 <div id="screen-m-record-type-select" class="screen"></div>
 <div id="screen-m-new-account"       class="screen"></div>
-<div id="screen-m-account-record"    class="screen"></div>
+<div id="screen-m-account-record"          class="screen"></div>
+<div id="screen-m-contact-record"          class="screen"></div>
+<div id="screen-m-producer-details"        class="screen"></div>
+<div id="screen-m-producer-detail-record"  class="screen"></div>
+<div id="screen-m-onboarding-tasks"       class="screen"></div>
 <div id="screen-m-new-policy-set" class="screen"></div>
 <div id="screen-m-invite"     class="screen"></div>
 <div id="screen-m-policysets" class="screen"></div>
@@ -771,6 +1313,80 @@
 <div id="screen-m-role-mappings"  class="screen"></div>
 
 
+<!-- ============================================================
+     POLICY SET EXPLAINER MODAL
+     ============================================================ -->
+<div id="psm-overlay" onclick="if(event.target===this)closePolicySetModal()">
+  <div id="psm-dialog">
+    <div class="psm-header">
+      <div class="psm-header-left">
+        <div class="psm-header-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="psm-header-eyebrow">Policy Set</div>
+          <div id="psm-name">Standard Agent Onboarding</div>
+        </div>
+      </div>
+      <button class="psm-close" onclick="closePolicySetModal()">&#x2715;</button>
+    </div>
+    <div class="psm-body">
+      <!-- Left: requirement summary cards -->
+      <div class="psm-left">
+        <div class="psm-req-cards">
+          <div class="psm-req-card psm-req-card--reg">
+            <div class="psm-req-card__icon psm-req-card__icon--reg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div class="psm-req-card__body">
+              <div class="psm-req-card__title">Regulatory Requirements</div>
+              <div class="psm-req-card__stat">27 Gateway Business Rules</div>
+              <div class="psm-req-card__stat">
+                6 states
+                <span class="psm-req-card__dot"></span>
+                2 products
+              </div>
+            </div>
+          </div>
+          <div class="psm-req-card psm-req-card--org">
+            <div class="psm-req-card__icon psm-req-card__icon--org">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="psm-req-card__body">
+              <div class="psm-req-card__title">Organizational Requirements</div>
+              <div class="psm-req-card__stat">8 tasks configured</div>
+              <div class="psm-req-card__stat">
+                5 Producer
+                <span class="psm-req-card__dot"></span>
+                3 Operations
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: empty state → revealed task view -->
+      <div class="psm-right">
+        <div id="psm-empty" class="psm-empty">
+          <div class="psm-empty__wrap">
+            <button class="psm-empty__show" onclick="psmReveal()">Show</button>
+            <div class="psm-empty__hint">See how this applies to producers.</div>
+          </div>
+        </div>
+        <div id="psm-revealed" class="psm-revealed psm-revealed--hidden">
+          <div class="psm-back-row">
+            <button class="psm-back-btn" onclick="psmReset()">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="19 12 5 12"/><polyline points="11 18 5 12 11 6"/></svg>
+              Hide
+            </button>
+          </div>
+          <div id="psm-prod-tabs"></div>
+          <div id="psm-task-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="src/js/screen-data.js"></script>
 <script src="src/js/components.js"></script>
 <script src="js/router.js"></script>
@@ -783,8 +1399,84 @@
       _go(id);
       if (id === 'screen-p-email' && typeof loginShowStep === 'function') loginShowStep('p', 'email');
       if (id === 'screen-om-email' && typeof loginShowStep === 'function') loginShowStep('om', 'email');
+      if (id === 'screen-p-login' && typeof loginShowStep === 'function') loginShowStep('p', 'email');
+      if (id === 'screen-p-aot-tasks') applyProducerToAotTasks();
     };
   })();
+
+  // ── Manage Policy Sets modal ──────────────────────────────────
+
+  const _PS_SETS = {
+    agency: [
+      { key: 'standard',  name: 'Standard Agent Onboarding',      type: 'Individual', checked: true,  required: true,  contracting: false },
+      { key: 'principal', name: 'Principal Agent Onboarding',     type: 'Individual', checked: true,  required: true,  contracting: false },
+      { key: 'carrier-a', name: 'Carrier A Producer Onboarding',  type: 'Individual', checked: false, required: false, contracting: true  },
+      { key: 'carrier-z', name: 'Carrier Z Producer Onboarding',  type: 'Individual', checked: false, required: false, contracting: true  },
+    ],
+    carrier: [
+      { key: 'captive',   name: 'Captive Agent Onboarding',                       type: 'Individual', checked: false, required: false, contracting: false },
+      { key: 'partner',   name: 'Partner Onboarding',                              type: 'Firm',       checked: false, required: false, contracting: true  },
+      { key: 'ah',        name: 'Accident &amp; Health \u2014 Producer Onboarding', type: 'Individual', checked: true,  required: true,  contracting: false },
+      { key: 'hl',        name: 'Health &amp; Life \u2014 Producer Onboarding',    type: 'Individual', checked: true,  required: true,  contracting: false },
+      { key: 'life',      name: 'Life \u2014 Producer Onboarding',                 type: 'Individual', checked: false, required: false, contracting: false },
+    ],
+  };
+
+  function openManagePSModal() {
+    const sets = _PS_SETS[_currentCtx] || _PS_SETS.agency;
+    const sel = 'font-size:12px;padding:3px 6px;border:1px solid #ddd;border-radius:4px;color:#181818;width:90px;';
+    const badge = '<span style="display:inline-block;margin-left:6px;font-size:10px;font-weight:600;padding:1px 6px;border-radius:3px;background:#f5f3ff;border:1px solid #ddd6fe;color:#7c3aed;vertical-align:middle;">Contracting</span>';
+    document.getElementById('manage-ps-rows').innerHTML = sets.map((ps, i) => {
+      const border = i < sets.length - 1 ? 'border-bottom:1px solid #f5f5f5;' : '';
+      const dis = ps.checked ? '' : 'disabled';
+      const op  = ps.checked ? '1' : '0.5';
+      return `<div style="display:grid;grid-template-columns:1fr 100px 100px 100px;gap:8px;align-items:center;padding:10px 0;${border}" id="ps-row-${ps.key}">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#181818;">${ps.name}${ps.contracting ? badge : ''}</div>
+          <div style="font-size:11px;color:#888;">${ps.type}</div>
+        </div>
+        <div style="text-align:center;">
+          <input type="checkbox" id="ps-apply-${ps.key}" ${ps.checked ? 'checked' : ''} onchange="togglePSRow('${ps.key}')" style="width:15px;height:15px;cursor:pointer;">
+        </div>
+        <div style="text-align:center;opacity:${op}">
+          <select id="ps-level-${ps.key}" ${dis} style="${sel}">
+            <option>Firm</option><option selected>Producer</option>
+          </select>
+        </div>
+        <div style="text-align:center;opacity:${op}">
+          <select id="ps-req-${ps.key}" ${dis} style="${sel}">
+            <option ${ps.required ? '' : 'selected'}>Optional</option>
+            <option ${ps.required ? 'selected' : ''}>Required</option>
+          </select>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('manage-ps-overlay').style.display = 'flex';
+  }
+  function closeManagePSModal() {
+    const el = document.getElementById('manage-ps-overlay');
+    if (el) el.style.display = 'none';
+  }
+
+  function openOnboardProducerModal() {
+    const el = document.getElementById('onboard-producer-overlay');
+    if (el) el.style.display = 'flex';
+  }
+  function closeOnboardProducerModal() {
+    const el = document.getElementById('onboard-producer-overlay');
+    if (el) el.style.display = 'none';
+  }
+  function togglePSRow(key) {
+    const cb = document.getElementById('ps-apply-' + key);
+    const level = document.getElementById('ps-level-' + key);
+    const req = document.getElementById('ps-req-' + key);
+    const row = document.getElementById('ps-row-' + key);
+    if (!cb) return;
+    const on = cb.checked;
+    if (level) level.disabled = !on;
+    if (req) req.disabled = !on;
+    if (row) row.style.opacity = on ? '1' : '0.5';
+  }
 
   // ── Context-aware navigation helpers ─────────────────────────
 
@@ -792,41 +1484,46 @@
     go(_currentCtx === 'agency' ? 'screen-m-accounts-agency' : 'screen-m-accounts');
   }
 
+  function applyProducerToAotTasks() {
+    const root = document.getElementById('screen-p-aot-tasks');
+    if (!root) return;
+    root.querySelectorAll('.js-producer-name').forEach(el => el.textContent = 'Claire Sutton');
+    root.querySelectorAll('.js-producer-firstname').forEach(el => el.textContent = 'Claire');
+    root.querySelectorAll('.js-producer-npn').forEach(el => el.textContent = '18472910');
+    root.querySelectorAll('.pr-header__avatar, .p-avatar').forEach(el => el.textContent = 'CS');
+    root.querySelectorAll('input[data-producer-firstname]').forEach(el => el.value = 'Claire');
+    root.querySelectorAll('input[data-producer-npn]').forEach(el => el.value = '18472910');
+  }
+
   // ── Persona definitions ───────────────────────────────────────
 
   const _personaSets = {
-    carrier: {
-      manage: [
-        { key: 'sysadmin', label: 'System Admin', badgeCls: 'persona-carrier-sysadmin', theme: 'theme-manage',     screen: 'screen-m-sysadmin' },
-        { key: 'psa',      label: 'Policy Admin',  badgeCls: 'persona-carrier-psa',      theme: 'theme-manage',     screen: 'screen-m-policysets' },
-      ],
-      external: [
-        { key: 'ops',      label: 'Operations',    badgeCls: 'persona-carrier-ops',      theme: 'theme-onboarding', screen: 'screen-om-email' },
-        { key: 'producer', label: 'Producer',       badgeCls: 'persona-carrier-producer', theme: 'theme-onboarding', screen: 'screen-p-email' },
-      ],
-    },
     agency: [
-      { key: 'sysadmin', label: 'System Admin', badgeCls: 'persona-agency-sysadmin', theme: 'theme-manage',     screen: 'screen-m-sysadmin' },
-      { key: 'psa',      label: 'Policy Admin',  badgeCls: 'persona-agency-psa',      theme: 'theme-manage',     screen: 'screen-m-policysets' },
-      { key: 'ops',      label: 'Operations',    badgeCls: 'persona-agency-ops',      theme: 'theme-onboarding', screen: 'screen-om-aot-producers' },
-      { key: 'producer', label: 'Producer',       badgeCls: 'persona-agency-producer', theme: 'theme-onboarding', screen: 'screen-p-aot-tasks' },
+      { key: 'sysadmin', label: 'System Admin',         badgeCls: 'persona-agency-sysadmin',   theme: 'theme-manage',     screen: 'screen-m-policysets', sysadmin: true },
+      { key: 'psa',      label: 'Policy Admin',          badgeCls: 'persona-agency-psa',        theme: 'theme-manage',     screen: 'screen-m-policysets' },
+      { key: 'ops',      label: 'Operations',            badgeCls: 'persona-agency-ops',        theme: 'theme-manage',     screen: 'screen-m-contacts' },
+      { key: 'producer', label: 'Producer (external)',   badgeCls: 'persona-agency-producer',   theme: 'theme-onboarding', screen: 'screen-p-email' },
+    ],
+    carrier: [
+      { key: 'sysadmin', label: 'System Admin',          badgeCls: 'persona-carrier-sysadmin',  theme: 'theme-manage',     screen: 'screen-m-policysets', sysadmin: true },
+      { key: 'psa',      label: 'Policy Admin',          badgeCls: 'persona-carrier-psa',       theme: 'theme-manage',     screen: 'screen-m-policysets' },
+      { key: 'ops',      label: 'Operations (external)', badgeCls: 'persona-carrier-ops',       theme: 'theme-onboarding', screen: 'screen-om-email' },
+      { key: 'producer', label: 'Producer (external)',   badgeCls: 'persona-carrier-producer',  theme: 'theme-onboarding', screen: 'screen-p-email' },
     ],
   };
 
-  let _currentCtx  = 'carrier';
-  let _currentMode = 'manage';
+  let _currentCtx = 'agency';
 
   function _activePersonaSet() {
-    return _currentCtx === 'agency'
-      ? _personaSets.agency
-      : _personaSets.carrier[_currentMode];
+    return _personaSets[_currentCtx];
   }
 
   function selectPersona(key) {
     const p = _activePersonaSet().find(x => x.key === key);
     if (!p) return;
-    document.body.classList.remove('theme-manage', 'theme-onboarding');
+    document.body.classList.remove('theme-manage', 'theme-onboarding', 'role-sysadmin');
     document.body.classList.add(p.theme);
+    if (p.sysadmin) document.body.classList.add('role-sysadmin');
     document.getElementById('persona-label').textContent = p.label;
     const badge = document.getElementById('persona-badge');
     badge.className = 'demo-persona-badge ' + p.badgeCls;
@@ -850,33 +1547,82 @@
 
   document.addEventListener('click', closePersonaMenu);
 
-  // ── Carrier mode toggle ───────────────────────────────────────
-
-  function setCarrierMode(mode) {
-    _currentMode = mode;
-    const isManage = mode === 'manage';
-    const accent = isManage ? '#0176d3' : '#16a34a';
-    document.getElementById('demo-nav').style.borderBottom = '3px solid ' + accent;
-    document.getElementById('btn-mode-manage').classList.toggle('active', isManage);
-    document.getElementById('btn-mode-external').classList.toggle('active', !isManage);
-    document.getElementById('btn-mode-manage').style.background  = isManage ? accent : '';
-    document.getElementById('btn-mode-external').style.background = !isManage ? accent : '';
-    selectPersona(_activePersonaSet()[0].key);
-  }
-
-  // ── Agency / Carrier context toggle ──────────────────────────
+  // ── Context toggle (Agency / Carrier / Manage) ───────────────
 
   function setContext(ctx) {
     _currentCtx = ctx;
-    document.getElementById('btn-ctx-carrier').classList.toggle('active', ctx === 'carrier');
+    document.body.classList.remove('context-agency', 'context-carrier');
+    document.body.classList.add('context-' + ctx);
     document.getElementById('btn-ctx-agency').classList.toggle('active', ctx === 'agency');
-    document.getElementById('carrier-mode-toggle').style.display = ctx === 'carrier' ? '' : 'none';
-    if (ctx === 'carrier') {
-      _currentMode = 'manage';
-      setCarrierMode('manage');
+    document.getElementById('btn-ctx-carrier').classList.toggle('active', ctx === 'carrier');
+    selectPersona(_activePersonaSet()[1].key);
+    // Swap policy sets data based on context
+    const psKey = ctx === 'carrier' ? 'm-policysets-carrier' : 'm-policysets';
+    const psScreenEl = document.getElementById('screen-m-policysets');
+    if (psScreenEl && typeof SCREEN_DATA !== 'undefined' && SCREEN_DATA[psKey]) {
+      const psData = SCREEN_DATA[psKey];
+      psScreenEl.querySelectorAll('[data-component]').forEach(el => {
+        el.dataset.screen = psKey;
+        const component = el.dataset.component;
+        if (component === 'sf-chrome') el.innerHTML = renderSFChrome(psData.sfChrome || {});
+        if (component === 'sf-table' && psData.sfTable) el.innerHTML = renderSFTable(psData.sfTable);
+      });
+    }
+    // Swap contacts data based on context
+    const contactsKey = ctx === 'carrier' ? 'm-contacts-carrier' : 'm-contacts';
+    const contactsScreen = document.getElementById('screen-m-contacts');
+    if (contactsScreen && typeof SCREEN_DATA !== 'undefined' && SCREEN_DATA[contactsKey]) {
+      const contactsData = SCREEN_DATA[contactsKey];
+      contactsScreen.querySelectorAll('[data-component]').forEach(el => {
+        el.dataset.screen = contactsKey;
+        const component = el.dataset.component;
+        if (component === 'sf-chrome') el.innerHTML = renderSFChrome(contactsData.sfChrome || {});
+        if (component === 'sf-table' && contactsData.sfTable) el.innerHTML = renderSFTable(contactsData.sfTable);
+      });
+    }
+  }
+
+  function openOnboardModal() {
+    const el = document.getElementById('onboard-firm-overlay');
+    if (el) el.style.display = 'flex';
+  }
+  function closeOnboardModal() {
+    const el = document.getElementById('onboard-firm-overlay');
+    if (el) el.style.display = 'none';
+  }
+  function toggleProducerPolicySet() {
+    const cb = document.getElementById('also-producer-check');
+    const wrap = document.getElementById('producer-ps-wrap');
+    if (cb && wrap) wrap.style.display = cb.checked ? 'block' : 'none';
+  }
+
+  function openInvitePartnerModal() {
+    const el = document.getElementById('invite-partner-overlay');
+    if (el) el.style.display = 'flex';
+  }
+  function closeInvitePartnerModal() {
+    const el = document.getElementById('invite-partner-overlay');
+    if (el) el.style.display = 'none';
+  }
+  function toggleContactProducerPS() {
+    const cb = document.getElementById('contact-also-producer-check');
+    const wrap = document.getElementById('contact-producer-ps-wrap');
+    if (cb && wrap) wrap.style.display = cb.checked ? 'block' : 'none';
+  }
+  function toggleChipStyle(labelId) {
+    const label = document.getElementById(labelId);
+    if (!label) return;
+    const cb = label.querySelector('input[type="checkbox"]');
+    if (cb.checked) {
+      label.style.border = '2px solid #0176d3';
+      label.style.background = '#e8f4fd';
+      label.style.color = '#0176d3';
+      label.style.fontWeight = '600';
     } else {
-      document.getElementById('demo-nav').style.borderBottom = '';
-      selectPersona(_activePersonaSet()[0].key);
+      label.style.border = '1px solid #ddd';
+      label.style.background = '#fff';
+      label.style.color = '#444';
+      label.style.fontWeight = 'normal';
     }
   }
 
@@ -965,6 +1711,55 @@
     document.getElementById('ps-add-drawer-title').textContent =
       'Add Policy Set to ' + count + (count === 1 ? ' Producer' : ' Producers');
     document.querySelectorAll('#ps-add-drawer-list input').forEach(cb => cb.checked = false);
+    // Swap policy set list based on context
+    const list = document.getElementById('ps-add-drawer-list');
+    if (_currentCtx === 'agency') {
+      list.innerHTML = `
+        <label class="psd-option">
+          <input type="checkbox" value="principal-agent-onboarding">
+          <div>
+            <div class="psd-opt-name">Principal Agent Onboarding</div>
+            <div class="psd-opt-desc">Onboarding requirements for principal agents managing sub-producers, including supervisory compliance and E&O verification.</div>
+          </div>
+        </label>
+        <label class="psd-option">
+          <input type="checkbox" value="carrier-a-producer-onboarding">
+          <div>
+            <div class="psd-opt-name">Carrier A — Producer Onboarding <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;margin-left:4px;">Contracting</span></div>
+            <div class="psd-opt-desc">Carrier A-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
+          </div>
+        </label>
+        <label class="psd-option">
+          <input type="checkbox" value="carrier-z-producer-onboarding">
+          <div>
+            <div class="psd-opt-name">Carrier Z — Producer Onboarding <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;margin-left:4px;">Contracting</span></div>
+            <div class="psd-opt-desc">Carrier Z-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
+          </div>
+        </label>`;
+    } else {
+      list.innerHTML = `
+        <label class="psd-option">
+          <input type="checkbox" value="life-producer-onboarding">
+          <div>
+            <div class="psd-opt-name">Life — Producer Onboarding</div>
+            <div class="psd-opt-desc">Onboarding requirements for producers selling life insurance products, including license verification and appointment workflows.</div>
+          </div>
+        </label>
+        <label class="psd-option">
+          <input type="checkbox" value="health-life-producer-onboarding">
+          <div>
+            <div class="psd-opt-name">Health &amp; Life — Producer Onboarding</div>
+            <div class="psd-opt-desc">Combined health and life onboarding policy set covering dual-line producers with applicable state license and LOA requirements.</div>
+          </div>
+        </label>
+        <label class="psd-option">
+          <input type="checkbox" value="accident-health-producer-onboarding">
+          <div>
+            <div class="psd-opt-name">Accident &amp; Health — Producer Onboarding</div>
+            <div class="psd-opt-desc">Onboarding requirements for accident and health producers, including E&amp;O verification and state-specific compliance attestations.</div>
+          </div>
+        </label>`;
+    }
     document.getElementById('ps-add-overlay').classList.add('open');
     document.getElementById('ps-add-drawer').classList.add('open');
   }
@@ -974,6 +1769,13 @@
   }
   function hidePermSetModal() {
     document.getElementById('perm-set-modal').classList.remove('open');
+  }
+
+  function showManagePSModal() {
+    document.getElementById('manage-ps-modal').classList.add('open');
+  }
+  function hideManagePSModal() {
+    document.getElementById('manage-ps-modal').classList.remove('open');
   }
 
   function settingsShowPanel(panel) {
@@ -992,7 +1794,7 @@
       if (el) el.style.display = s === step ? '' : 'none';
     });
     if (step === 'loading') {
-      const dest = prefix === 'om' ? 'screen-om-welcome' : 'screen-p-intake';
+      const dest = prefix === 'om' ? 'screen-om-producers' : 'screen-p-welcome';
       document.body.classList.remove('theme-manage', 'theme-onboarding');
       document.body.classList.add('theme-onboarding');
       setTimeout(() => go(dest), 2200);
@@ -1174,6 +1976,41 @@
   function closeInviteDrawer() {
     document.getElementById('invite-drawer-overlay').classList.remove('open');
     document.getElementById('invite-drawer-panel').classList.remove('open');
+  }
+
+  // ── Task Detail drawer — single source of truth ──────────────
+  // Mirrors chip data from p-aot-tasks-embed.html task panels.
+  // ownerCls / reqCls / catCls map directly to aot-chip modifier classes.
+  var _PERSON_SVG = '<svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg>';
+  var _GROUP_SVG  = '<svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>';
+
+  window.AOT_TASK_DATA = {
+    1: { title: 'Contact Info',         producer: 'Claire Sutton', ownerCls: 'aot-chip--owner',     ownerSvg: _PERSON_SVG, ownerLabel: 'Claire Sutton', reqCls: 'aot-chip--req', reqLabel: 'Required', catCls: 'aot-chip--cat-org',  catLabel: 'Org',              assigned: 'Mar 3, 2026', owner: 'Producer',   desc: 'Provide personal contact information including legal name, date of birth, SSN, and NPN. Required for all producers.' },
+    2: { title: 'Contact Details',      producer: 'Claire Sutton', ownerCls: 'aot-chip--owner',     ownerSvg: _PERSON_SVG, ownerLabel: 'Claire Sutton', reqCls: 'aot-chip--req', reqLabel: 'Required', catCls: 'aot-chip--cat-org',  catLabel: 'Org',              assigned: 'Mar 3, 2026', owner: 'Producer',   desc: 'Provide address information including residence, business, and mailing addresses, plus phone numbers and email.' },
+    3: { title: 'ID Document',          producer: 'Claire Sutton', ownerCls: 'aot-chip--owner',     ownerSvg: _PERSON_SVG, ownerLabel: 'Claire Sutton', reqCls: 'aot-chip--opt', reqLabel: 'Optional', catCls: 'aot-chip--cat-reg',  catLabel: 'Regulatory',       assigned: 'Mar 3, 2026', owner: 'Producer',   desc: 'Upload a government-issued photo ID. Accepted documents include driver\'s license, passport, or state ID.' },
+    4: { title: 'Employment History',   producer: 'Claire Sutton', ownerCls: 'aot-chip--owner',     ownerSvg: _PERSON_SVG, ownerLabel: 'Claire Sutton', reqCls: 'aot-chip--req', reqLabel: 'Required', catCls: 'aot-chip--cat-reg',  catLabel: 'Regulatory',       assigned: 'Mar 3, 2026', owner: 'Producer',   desc: 'Provide employment history covering the last 5 years, including any gaps. Required for background check processing.' },
+    5: { title: 'Background Questions', producer: 'Claire Sutton', ownerCls: 'aot-chip--owner',     ownerSvg: _PERSON_SVG, ownerLabel: 'Claire Sutton', reqCls: 'aot-chip--req', reqLabel: 'Required', catCls: 'aot-chip--cat-reg',  catLabel: 'Regulatory',       assigned: 'Mar 3, 2026', owner: 'Producer',   desc: 'Answer standard background disclosure questions covering criminal history, regulatory actions, and financial disclosures.' },
+    6: { title: 'NIPR Attestation',     producer: 'Claire Sutton', ownerCls: 'aot-chip--owner-ops', ownerSvg: _GROUP_SVG,  ownerLabel: 'Operations',    reqCls: 'aot-chip--req', reqLabel: 'Required', catCls: 'aot-chip--cat-sreg', catLabel: 'State-Regulatory', assigned: 'Mar 3, 2026', owner: 'Operations', desc: 'Attest to the accuracy of licensing data verified through NIPR, including resident state license number and active LOAs.' },
+    7: { title: 'Direct Deposit',       producer: 'Claire Sutton', ownerCls: 'aot-chip--owner',     ownerSvg: _PERSON_SVG, ownerLabel: 'Claire Sutton', reqCls: 'aot-chip--req', reqLabel: 'Required', catCls: 'aot-chip--cat-org',  catLabel: 'Org',              assigned: 'Mar 3, 2026', owner: 'Producer',   desc: 'Provide banking information for commission direct deposit. Routing and account numbers are required.' },
+    8: { title: 'E-Signature',          producer: 'Claire Sutton', ownerCls: 'aot-chip--owner',     ownerSvg: _PERSON_SVG, ownerLabel: 'Claire Sutton', reqCls: 'aot-chip--req', reqLabel: 'Required', catCls: 'aot-chip--cat-org',  catLabel: 'Org',              assigned: 'Mar 3, 2026', owner: 'Producer',   desc: 'Review and sign the Producer Appointment Agreement and NIPR authorization form electronically.' },
+  };
+
+  function openTaskDrawer(taskNum) {
+    var d = window.AOT_TASK_DATA[taskNum];
+    if (!d) return;
+    document.getElementById('tdd-title').textContent    = d.title;
+    document.getElementById('tdd-producer').textContent = d.producer;
+    document.getElementById('tdd-chips').innerHTML =
+      '<span class="aot-chip ' + d.ownerCls + '">' + d.ownerSvg + ' ' + d.ownerLabel + '</span>' +
+      '<span class="aot-chip ' + d.reqCls   + '">' + d.reqLabel   + '</span>' +
+      '<span class="aot-chip ' + d.catCls   + '">' + d.catLabel   + '</span>' +
+      '<span class="aot-chip aot-chip--status">Open</span>';
+    document.getElementById('task-detail-overlay').classList.add('open');
+    document.getElementById('task-detail-drawer').classList.add('open');
+  }
+  function closeTaskDrawer() {
+    document.getElementById('task-detail-overlay').classList.remove('open');
+    document.getElementById('task-detail-drawer').classList.remove('open');
   }
 
   // ── Navigate to producer record with specific task open ────────
@@ -1801,6 +2638,165 @@
     if (input && preview) preview.textContent = input.value || 'Your name here';
   }
 
+  // ── Policy Set Explainer Modal ────────────────────────────────
+
+  // Tasks: 5 open Org + 10 completed Regulatory (licensed) / all open (non-licensed)
+  const _PSM_ORG_TASKS = [
+    { name: 'Upload E&O certificate',            category: 'Org' },
+    { name: 'Complete W-9',                      category: 'Org' },
+    { name: 'Set up direct deposit',             category: 'Org' },
+    { name: 'Acknowledge compliance training',   category: 'Org' },
+    { name: 'Sign producer agreement',           category: 'Org' },
+  ];
+  const _PSM_REG_TASKS = [
+    { name: 'Provide NPN',                                   category: 'Regulatory' },
+    { name: 'Consent to background check',                   category: 'Regulatory' },
+    { name: 'Criminal history questionnaire',                category: 'Regulatory' },
+    { name: 'Financial responsibility questionnaire',        category: 'Regulatory' },
+    { name: 'Regulatory action history disclosure',          category: 'Regulatory' },
+    { name: 'Submit state license \u2014 State 1',           category: 'Regulatory' },
+    { name: 'Submit state license \u2014 State 2',           category: 'Regulatory' },
+    { name: 'Verify pre-licensing education',                category: 'Regulatory' },
+    { name: 'Submit appointment application',                category: 'Regulatory' },
+    { name: 'Confirm CE compliance records',                 category: 'Regulatory' },
+  ];
+
+  // All policy sets share the same two producer profiles for demo purposes
+  const _PSM_PRODUCERS = [
+    {
+      id: 'A', name: 'Licensed Producer',
+      tasks: [
+        ..._PSM_ORG_TASKS.map(t => ({ ...t, done: false })),
+        ..._PSM_REG_TASKS.map(t => ({ ...t, done: true  })),
+      ],
+    },
+    {
+      id: 'B', name: 'Non-Licensed Producer',
+      tasks: [
+        ..._PSM_ORG_TASKS.map(t => ({ ...t, done: false })),
+        ..._PSM_REG_TASKS.map(t => ({ ...t, done: false })),
+      ],
+    },
+  ];
+
+  const POLICY_SET_DATA = {
+    // Agency policy sets
+    'Standard Agent Onboarding':                        { producers: _PSM_PRODUCERS },
+    'Principal Agent Onboarding':                       { producers: _PSM_PRODUCERS },
+    'Carrier A Producer Onboarding':                    { producers: _PSM_PRODUCERS },
+    'Carrier Z Producer Onboarding':                    { producers: _PSM_PRODUCERS },
+    'Background Check \u2014 Tier 1':                   { producers: _PSM_PRODUCERS },
+    'E&O Insurance Verification':                       { producers: _PSM_PRODUCERS },
+    'Globe Life \u2014 Custom LOA Requirements':        { producers: _PSM_PRODUCERS },
+    // Carrier policy sets
+    'Captive Agent Onboarding':                         { producers: _PSM_PRODUCERS },
+    'Partner Onboarding':                               { producers: _PSM_PRODUCERS },
+    'Accident & Health \u2014 Producer Onboarding':     { producers: _PSM_PRODUCERS },
+    'Health & Life \u2014 Producer Onboarding':         { producers: _PSM_PRODUCERS },
+    'Life \u2014 Producer Onboarding':                  { producers: _PSM_PRODUCERS },
+  };
+
+  let _psmActive  = null;
+  let _psmProdIdx = 0;
+
+  function showPolicySetModal(name) {
+    const data = POLICY_SET_DATA[name];
+    if (!data) return;
+    _psmActive  = data;
+    _psmProdIdx = 0;
+    document.getElementById('psm-name').textContent = name;
+    // Reset right panel to empty state
+    const empty    = document.getElementById('psm-empty');
+    const revealed = document.getElementById('psm-revealed');
+    empty.classList.remove('psm-empty--hiding');
+    empty.style.display = '';
+    revealed.classList.add('psm-revealed--hidden');
+    revealed.classList.remove('psm-revealed--visible');
+    // Open overlay
+    const overlay = document.getElementById('psm-overlay');
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('psm-open'));
+  }
+
+  function closePolicySetModal() {
+    const overlay = document.getElementById('psm-overlay');
+    overlay.classList.remove('psm-open');
+    setTimeout(() => { overlay.style.display = 'none'; }, 160);
+  }
+
+  function psmReveal() {
+    if (!_psmActive) return;
+    const empty    = document.getElementById('psm-empty');
+    const revealed = document.getElementById('psm-revealed');
+    // Render producer tabs + first producer's tasks
+    document.getElementById('psm-prod-tabs').innerHTML = _psmActive.producers.map((p, i) => `
+      <button class="psm-tab${i === 0 ? ' psm-tab--active' : ''}" onclick="psmSetProducer(${i})">
+        <span class="psm-tab-name">${p.name}</span>
+      </button>`).join('');
+    _psmRenderProducer(0);
+    // Animate out empty state, animate in revealed; mute left panel
+    document.querySelector('.psm-left').classList.add('psm-left--muted');
+    empty.classList.add('psm-empty--hiding');
+    setTimeout(() => {
+      empty.style.display = 'none';
+      revealed.classList.remove('psm-revealed--hidden');
+      requestAnimationFrame(() => revealed.classList.add('psm-revealed--visible'));
+    }, 180);
+  }
+
+  function psmReset() {
+    const empty    = document.getElementById('psm-empty');
+    const revealed = document.getElementById('psm-revealed');
+    document.querySelector('.psm-left').classList.remove('psm-left--muted');
+    revealed.classList.remove('psm-revealed--visible');
+    setTimeout(() => {
+      revealed.classList.add('psm-revealed--hidden');
+      empty.style.display = '';
+      requestAnimationFrame(() => empty.classList.remove('psm-empty--hiding'));
+    }, 160);
+  }
+
+  function psmSetProducer(idx) {
+    if (!_psmActive) return;
+    _psmProdIdx = idx;
+    document.querySelectorAll('#psm-prod-tabs .psm-tab').forEach((t, i) =>
+      t.classList.toggle('psm-tab--active', i === idx));
+    const taskList = document.getElementById('psm-task-list');
+    taskList.classList.add('psm-fade-out');
+    setTimeout(() => { _psmRenderProducer(idx); taskList.classList.remove('psm-fade-out'); }, 120);
+  }
+
+  function _psmRenderProducer(idx) {
+    const p = _psmActive && _psmActive.producers[idx];
+    if (!p) return;
+    const orgTasks = p.tasks.filter(t => t.category === 'Org');
+    const regTasks = p.tasks.filter(t => t.category === 'Regulatory');
+    const done     = p.tasks.filter(t => t.done).length;
+    const taskRow  = t => `
+      <div class="psm-task-row${t.done ? ' psm-task-row--done' : ''}">
+        <span class="psm-task-check">${t.done ? _psmCheckSvg() : _psmCircleSvg()}</span>
+        <span class="psm-task-name">${t.name}</span>
+      </div>`;
+    const orgDone = orgTasks.filter(t => t.done).length;
+    const regDone = regTasks.filter(t => t.done).length;
+    document.getElementById('psm-task-list').innerHTML = `
+      <div class="psm-task-header">
+        <span class="psm-task-count">${p.tasks.length} tasks</span>
+        <span class="psm-task-progress">${done} of ${p.tasks.length} complete</span>
+      </div>
+      <div class="psm-task-section">Org Requirements &mdash; ${orgTasks.length - orgDone} open</div>
+      ${orgTasks.map(taskRow).join('')}
+      <div class="psm-task-section">Regulatory &mdash; ${regDone === regTasks.length ? 'all complete' : regTasks.length - regDone + ' open'}</div>
+      ${regTasks.map(taskRow).join('')}`;
+  }
+
+  function _psmCheckSvg() {
+    return `<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="9"/><polyline points="6 10 9 13 14 7"/></svg>`;
+  }
+  function _psmCircleSvg() {
+    return `<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="9"/></svg>`;
+  }
+
   // ── Load all screen HTML files ────────────────────────────────
 
   const screens = [
@@ -1812,7 +2808,11 @@
     { id: 'screen-m-accounts-agency', src: 'screens/manage/m-accounts-agency.html' },
     { id: 'screen-m-contacts',        src: 'screens/manage/m-contacts.html' },
     { id: 'screen-m-new-account',     src: 'screens/manage/m-new-account.html' },
-    { id: 'screen-m-account-record',  src: 'screens/manage/m-account-record.html' },
+    { id: 'screen-m-account-record',         src: 'screens/manage/m-account-record.html' },
+    { id: 'screen-m-contact-record',         src: 'screens/manage/m-contact-record.html' },
+    { id: 'screen-m-producer-details',       src: 'screens/manage/m-producer-details.html' },
+    { id: 'screen-m-producer-detail-record', src: 'screens/manage/m-producer-detail-record.html' },
+    { id: 'screen-m-onboarding-tasks',       src: 'screens/manage/m-onboarding-tasks.html' },
     { id: 'screen-m-invite',          src: 'screens/manage/m-invite.html' },
     { id: 'screen-m-policysets',      src: 'screens/manage/m-policysets.html' },
     { id: 'screen-m-policysets-new',  src: 'screens/manage/m-policysets-new.html' },
@@ -1860,12 +2860,71 @@
     if (typeof initScreenComponents === 'function') initScreenComponents();
     // Init nav: boot into Carrier / Manage / System Admin
     if (typeof initDemoNav === 'function') initDemoNav();
-    setCarrierMode('manage');
+    setContext('agency');
     // Init role mappings table
     rmRender();
     // Init AOT employment list
     aotRenderEmp();
   });
 </script>
+
+<!-- Task Detail drawer (Onboarding Tasks tab) -->
+<div id="task-detail-overlay" onclick="closeTaskDrawer()"></div>
+<div id="task-detail-drawer">
+  <div class="tdd-head">
+    <div id="tdd-title" class="tdd-title"></div>
+    <a id="tdd-producer" class="tdd-producer"></a>
+    <div id="tdd-chips" class="aot-chips"></div>
+    <button class="tdd-close" onclick="closeTaskDrawer()">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
+    </button>
+  </div>
+  <div class="tdd-body">
+    <div class="tdd-section">
+      <div class="tdd-form-section-head">Identity</div>
+      <div class="tdd-field-grid-3">
+        <div class="tdd-field">
+          <div class="tdd-field__label">First Name *</div>
+          <div class="tdd-field__value">Claire</div>
+        </div>
+        <div class="tdd-field">
+          <div class="tdd-field__label">Middle Name</div>
+          <div class="tdd-field__value">Anne</div>
+        </div>
+        <div class="tdd-field">
+          <div class="tdd-field__label">Last Name *</div>
+          <div class="tdd-field__value">Sutton</div>
+        </div>
+      </div>
+      <div class="tdd-field-grid-2">
+        <div class="tdd-field">
+          <div class="tdd-field__label">Date of Birth *</div>
+          <div class="tdd-field__value">04/12/1981</div>
+        </div>
+        <div class="tdd-field tdd-field--ssn">
+          <div class="tdd-field__label">SSN *</div>
+          <div class="tdd-field__row">
+            <div class="tdd-field__value">••••••••</div>
+            <button class="tdd-field__show">Show</button>
+          </div>
+        </div>
+      </div>
+      <div class="tdd-field-row-npn">
+        <div class="tdd-field">
+          <div class="tdd-field__label">NPN</div>
+          <div class="tdd-field__value">18472910</div>
+        </div>
+        <div class="tdd-verified">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l3.5 3.5L13 4"/></svg>
+          Verified via NIPR
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tdd-footer">
+    <button class="tdd-btn tdd-btn--secondary" onclick="closeTaskDrawer()">Cancel</button>
+    <button class="tdd-btn tdd-btn--primary">Save</button>
+  </div>
+</div>
 </body>
 </html>

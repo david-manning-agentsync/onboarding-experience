@@ -388,8 +388,8 @@
   .pr-upload-area__link { color: var(--color-primary-600); font-weight: var(--font-weight-semibold); }
 
   /* ── Chrome visibility defaults ── */
-  #screen-om-producer-record .pr-chrome--coo { display: none; }
-  #screen-om-producer-record .pr-chrome--aot { display: block; }
+  #screen-om-producer-record .pr-chrome--coo { display: block; }
+  #screen-om-producer-record .pr-chrome--aot { display: none; }
 
   /* ── COO Onboarding topnav ── */
   #screen-om-producer-record .coo-topnav {
@@ -443,6 +443,218 @@
     background: var(--color-bg-nav);
     border-right: 1px solid var(--color-border-default);
     padding: var(--space-4) 0; overflow-y: auto;
+  }
+
+  /* ════════════════════════════════════════════════════
+     Figma Visual Alignment
+     ════════════════════════════════════════════════════ */
+
+  /* Topnav — HorizonTrust wordmark */
+  #screen-om-producer-record .coo-topnav__logo {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1c64b0;
+  }
+
+  /* Sidebar nav items */
+  #screen-om-producer-record .coo-sidebar .nav-item,
+  #screen-om-producer-record .coo-sidebar .coo-nav-item {
+    height: 44px;
+    border-radius: 6px;
+    padding: 0 9px;
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.6);
+  }
+  #screen-om-producer-record .coo-sidebar .nav-item.active,
+  #screen-om-producer-record .coo-sidebar .coo-nav-item.active {
+    background: #f5f5f5;
+    color: rgba(0,0,0,0.87);
+    font-weight: 700;
+  }
+
+  /* Breadcrumb — uppercase micro label style */
+  .pr-breadcrumb {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+  .pr-breadcrumb a { color: #586475; text-decoration: underline; }
+  .pr-breadcrumb span:last-of-type { color: #011431; }
+
+  /* Outer content container — transparent, no card chrome */
+  #screen-om-producer-record .om-main__inner {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: var(--space-6);
+  }
+
+  /* Entity header — floating card */
+  .pr-header {
+    background: var(--color-bg-surface);
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.15);
+    border-bottom: none;
+    overflow: hidden;
+    padding: var(--space-6);
+    min-height: 135px;
+    margin-bottom: var(--space-6);
+  }
+  .pr-header::before {
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border: 40px solid var(--color-primary-50);
+  }
+  .pr-header::after {
+    top: 20px; right: 40px;
+    width: 120px; height: 120px;
+    border: 28px solid var(--color-primary-100);
+  }
+
+  /* Producer name */
+  .pr-header__name {
+    font-size: 28px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.87);
+    margin-bottom: var(--space-3);
+  }
+
+  /* Meta fields — stacked label above value */
+  .pr-header__meta { gap: 40px; align-items: flex-start; }
+  .pr-meta-item { flex-direction: column; gap: 2px; align-items: flex-start; }
+  .pr-meta-item__sep { display: none; }
+  .pr-meta-item__label { font-size: 12px; color: rgba(0,0,0,0.6); font-weight: 400; }
+  .pr-meta-item__value { font-size: 13px; font-weight: 500; color: rgba(0,0,0,0.87); letter-spacing: 0.15px; }
+
+  /* Tab bar */
+  #screen-om-producer-record .tabs {
+    height: 50px;
+    align-items: stretch;
+    margin-bottom: var(--space-5);
+    border-bottom: 1px solid var(--color-border-default);
+    gap: 0;
+  }
+  #screen-om-producer-record .tab {
+    font-size: 14px;
+    font-weight: 500;
+    color: #a3a3a3;
+    letter-spacing: 0.4px;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-5);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  #screen-om-producer-record .tab.active {
+    color: #3166dc;
+    border-bottom-color: #3166dc;
+    font-weight: 600;
+  }
+
+  /* Task pane — panels side-by-side, shared outer border */
+  .pr-task-pane {
+    gap: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  /* Task list (left panel) */
+  .pr-task-list {
+    width: 378px;
+    background: #fafafa;
+    border-right: 1px solid #e0e0e0;
+    padding: var(--space-5) var(--space-6);
+  }
+
+  /* Progress bar */
+  .pr-progress-bar { height: 4px; border-radius: 4px; }
+  .pr-progress-bar__fill { background: #1976d2; border-radius: 4px; }
+  .pr-progress-pct { font-size: 14px; font-weight: 500; color: rgba(0,0,0,0.87); }
+  .pr-progress-label span:first-child { font-size: 12px; color: rgba(0,0,0,0.6); }
+
+  /* Task list items — divider style, no rounded corners */
+  .pr-task-item {
+    display: flex;
+    align-items: center;
+    height: 68px;
+    padding: 0 0 0 24px;
+    gap: 12px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 0;
+    background: transparent;
+  }
+  .pr-task-item:last-child { border-bottom: none; }
+  .pr-task-item:hover { background: #f5f5f5; }
+  .pr-task-item.active { background: #eeeeee; }
+  .pr-task-item__name { font-size: 15px; font-weight: 500; color: rgba(0,0,0,0.87); }
+  .pr-task-item.active .pr-task-item__name { font-weight: 600; }
+  .pr-task-item__sub { font-size: 12px; font-weight: 400; color: rgba(0,0,0,0.6); letter-spacing: 0.15px; }
+  .pr-task-item__sub--req { color: rgba(0,0,0,0.6); }
+
+  /* Task detail (right panel) — border comes from outer .pr-task-pane */
+  .pr-task-detail {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: var(--color-bg-surface);
+  }
+  .pr-detail-head {
+    background: var(--color-bg-surface);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .pr-detail-head__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.87);
+    margin-bottom: var(--space-2);
+  }
+  .pr-detail-body { padding: var(--space-5) var(--space-6); }
+
+  /* Accordion sections */
+  .pr-detail-section {
+    background: #fafafa;
+    border-radius: 4px;
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+  .pr-detail-section__head {
+    border-bottom: none;
+    padding: 0 0 var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+  .pr-detail-section__title { font-size: 16px; font-weight: 600; color: rgba(0,0,0,0.87); }
+
+  /* Field rows — horizontal label + value layout */
+  .pr-detail-field {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  .pr-detail-field__label {
+    width: 148px;
+    flex-shrink: 0;
+    font-size: var(--font-size-base);
+    color: rgba(0,0,0,0.6);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .pr-detail-field__value {
+    flex: 1;
+    font-size: var(--font-size-base);
+    color: rgba(0,0,0,0.87);
+    font-weight: 400;
   }
 
 </style>
@@ -583,242 +795,13 @@
 
         <!-- ── TASKS TAB ── -->
         <div id="tab-pr-tasks" class="tab-panel active">
-          <div class="pr-task-pane">
-
-            <!-- Left: Task List -->
-            <div class="pr-task-list">
-              <div class="pr-progress-wrap">
-                <div class="pr-progress-label">
-                  <span>2 of 5 required tasks complete</span>
-                  <span class="pr-progress-pct">40%</span>
-                </div>
-                <div class="pr-progress-bar">
-                  <div class="pr-progress-bar__fill" style="width:40%"></div>
-                </div>
-              </div>
-
-              <!-- Task 1 — Complete -->
-              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-license')">
-                <div class="pr-task-circle pr-task-circle--done">
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
-                </div>
-                <div class="pr-task-item__body">
-                  <div class="pr-task-item__name">License Verification</div>
-                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · Completed Mar 6</div>
-                </div>
-              </div>
-
-              <!-- Task 2 — Complete -->
-              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-eo')">
-                <div class="pr-task-circle pr-task-circle--done">
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 10l5 5 7-7"/></svg>
-                </div>
-                <div class="pr-task-item__body">
-                  <div class="pr-task-item__name">E&amp;O Insurance Upload</div>
-                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · Completed Mar 8</div>
-                </div>
-              </div>
-
-              <!-- Task 3 — In Progress (active/selected) -->
-              <div class="pr-task-item active" onclick="selectPrTask(this,'pr-td-loa')">
-                <div class="pr-task-circle pr-task-circle--progress">
-                  <svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="var(--color-warning-500)" stroke-width="2"><circle cx="10" cy="10" r="4"/></svg>
-                </div>
-                <div class="pr-task-item__body">
-                  <div class="pr-task-item__name">LOA Confirmation — P&amp;C</div>
-                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · In Progress</div>
-                </div>
-              </div>
-
-              <!-- Task 4 — Not Started -->
-              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-bgcheck')">
-                <div class="pr-task-circle pr-task-circle--empty">
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10l5 5 7-7"/></svg>
-                </div>
-                <div class="pr-task-item__body">
-                  <div class="pr-task-item__name">Background Check Consent</div>
-                  <div class="pr-task-item__sub">Optional · Not Started</div>
-                </div>
-              </div>
-
-              <!-- Task 5 — Not Started -->
-              <div class="pr-task-item" onclick="selectPrTask(this,'pr-td-agreement')">
-                <div class="pr-task-circle pr-task-circle--empty">
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10l5 5 7-7"/></svg>
-                </div>
-                <div class="pr-task-item__body">
-                  <div class="pr-task-item__name">Producer Agreement Signature</div>
-                  <div class="pr-task-item__sub pr-task-item__sub--req">Required · Not Started</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right: Task Detail Panels -->
-            <div class="pr-task-detail">
-
-              <!-- LOA Confirmation Detail (default active) -->
-              <div id="pr-td-loa" class="pr-task-detail-panel active">
-                <div class="pr-detail-head">
-                  <div class="pr-detail-head__title">LOA Confirmation — Property &amp; Casualty</div>
-                  <div class="pr-detail-head__meta">
-                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                    <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);font-size:11px;">In Progress</span>
-                    <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Started Mar 9, 2026</span>
-                  </div>
-                </div>
-                <div class="pr-detail-body">
-                  <div class="pr-detail-section">
-                    <div class="pr-detail-section__head">
-                      <div class="pr-detail-section__title">Task Information</div>
-                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
-                    </div>
-                    <div class="pr-detail-section__content">
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Description</div>
-                        <div class="pr-detail-field__value">Confirm producer holds active Property &amp; Casualty LOA in their resident state. AgentSync will verify against NIPR automatically.</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Assigned To</div>
-                        <div class="pr-detail-field__value">Claire Sutton</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Due Date</div>
-                        <div class="pr-detail-field__value">Mar 17, 2026</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="pr-detail-section">
-                    <div class="pr-detail-section__head">
-                      <div class="pr-detail-section__title">Policy Set Requirements</div>
-                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
-                    </div>
-                    <div class="pr-detail-section__content">
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Policy Set</div>
-                        <div class="pr-detail-field__value">Standard Agent Onboarding</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Rule</div>
-                        <div class="pr-detail-field__value">Active LOA required in resident state before appointment can be submitted</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="pr-detail-section">
-                    <div class="pr-detail-section__head">
-                      <div class="pr-detail-section__title">Activity</div>
-                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
-                    </div>
-                    <div class="pr-detail-section__content">
-                      <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);padding:var(--space-2) 0;">
-                        <span style="color:var(--color-text-secondary);font-weight:600;">Mar 9</span> — Producer acknowledged task and began LOA review
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- License Verification Detail -->
-              <div id="pr-td-license" class="pr-task-detail-panel">
-                <div class="pr-detail-head">
-                  <div class="pr-detail-head__title">License Verification</div>
-                  <div class="pr-detail-head__meta">
-                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                    <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:11px;">Complete</span>
-                    <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Completed Mar 6, 2026</span>
-                  </div>
-                </div>
-                <div class="pr-detail-body">
-                  <div class="pr-detail-section">
-                    <div class="pr-detail-section__head">
-                      <div class="pr-detail-section__title">Verification Result</div>
-                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
-                    </div>
-                    <div class="pr-detail-section__content">
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">License Number</div>
-                        <div class="pr-detail-field__value">CO-3847219</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Resident State</div>
-                        <div class="pr-detail-field__value">Colorado</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Expiration</div>
-                        <div class="pr-detail-field__value">Dec 31, 2027</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Source</div>
-                        <div class="pr-detail-field__value">NIPR (verified automatically)</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- E&O Upload Detail -->
-              <div id="pr-td-eo" class="pr-task-detail-panel">
-                <div class="pr-detail-head">
-                  <div class="pr-detail-head__title">E&amp;O Insurance Upload</div>
-                  <div class="pr-detail-head__meta">
-                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                    <span class="badge" style="background:var(--color-success-100);color:var(--color-success-600);font-size:11px;">Complete</span>
-                    <span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Completed Mar 8, 2026</span>
-                  </div>
-                </div>
-                <div class="pr-detail-body">
-                  <div class="pr-detail-section">
-                    <div class="pr-detail-section__head">
-                      <div class="pr-detail-section__title">Uploaded Document</div>
-                      <svg class="pr-detail-section__chevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
-                    </div>
-                    <div class="pr-detail-section__content">
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">File</div>
-                        <div class="pr-detail-field__value" style="color:var(--color-primary-600);cursor:pointer;">eo_certificate_sutton_2026.pdf</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Coverage Amount</div>
-                        <div class="pr-detail-field__value">$1,000,000 / $3,000,000</div>
-                      </div>
-                      <div class="pr-detail-field">
-                        <div class="pr-detail-field__label">Policy Expiration</div>
-                        <div class="pr-detail-field__value">Jan 15, 2027</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Background Check Detail -->
-              <div id="pr-td-bgcheck" class="pr-task-detail-panel">
-                <div class="pr-detail-head">
-                  <div class="pr-detail-head__title">Background Check Consent</div>
-                  <div class="pr-detail-head__meta">
-                    <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Optional</span>
-                    <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-                  </div>
-                </div>
-                <div class="pr-detail-body">
-                  <div class="pr-detail-empty">Producer has not yet completed this task.</div>
-                </div>
-              </div>
-
-              <!-- Agreement Detail -->
-              <div id="pr-td-agreement" class="pr-task-detail-panel">
-                <div class="pr-detail-head">
-                  <div class="pr-detail-head__title">Producer Agreement Signature</div>
-                  <div class="pr-detail-head__meta">
-                    <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:11px;">Required</span>
-                    <span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-500);font-size:11px;">Not Started</span>
-                  </div>
-                </div>
-                <div class="pr-detail-body">
-                  <div class="pr-detail-empty">Producer has not yet completed this task.</div>
-                </div>
-              </div>
-
-            </div><!-- end .pr-task-detail -->
-          </div><!-- end .pr-task-pane -->
+          <!-- AgentSync onboarding experience embed — single source of truth -->
+          <iframe
+            src="/onboarding-experience/screens/producer/p-aot-tasks-embed.html"
+            width="100%"
+            height="800"
+            style="border:none;display:block;">
+          </iframe>
         </div><!-- end #tab-pr-tasks -->
 
         <!-- ── DETAILS TAB ── -->

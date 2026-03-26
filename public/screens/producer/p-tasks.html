@@ -220,9 +220,11 @@
     font-weight: var(--font-weight-medium);
   }
   #screen-p-tasks .pr-detail-cta {
-    margin-top: var(--space-5); padding-top: var(--space-5);
+    padding: var(--space-5) var(--space-6);
     border-top: 1px solid var(--color-border-default);
+    width: 100%; display: flex; gap: var(--space-3);
   }
+  #screen-p-tasks .pr-detail-cta .btn { flex: 1; }
   #screen-p-tasks .pr-detail-empty {
     padding: var(--space-6); text-align: center;
     color: var(--color-text-muted); font-size: var(--font-size-sm);
@@ -417,9 +419,9 @@
                   <div class="pr-detail-field__value">Mar 17, 2026</div>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--primary" onclick="go('screen-p-task-detail-3')">Continue Task →</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--primary" onclick="go('screen-p-task-detail-3')">Continue Task →</button>
             </div>
           </div>
 
@@ -452,9 +454,9 @@
                   <div class="pr-detail-field__value">Dec 31, 2027</div>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--secondary" onclick="go('screen-p-task-detail-1')">View Details →</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--secondary" onclick="go('screen-p-task-detail-1')">View Details →</button>
             </div>
           </div>
 
@@ -487,9 +489,9 @@
                   <div class="pr-detail-field__value">Jan 15, 2027</div>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--secondary" onclick="go('screen-p-task-detail-2')">View Details →</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--secondary" onclick="go('screen-p-task-detail-2')">View Details →</button>
             </div>
           </div>
 
@@ -504,9 +506,9 @@
             </div>
             <div class="pr-detail-body">
               <div class="pr-detail-empty">You haven't started this task yet.</div>
-              <div class="pr-detail-cta" style="text-align:center;">
-                <button class="btn btn--primary" onclick="go('screen-p-task-detail-3')">Start Task →</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--primary" onclick="go('screen-p-task-detail-3')">Start Task →</button>
             </div>
           </div>
 

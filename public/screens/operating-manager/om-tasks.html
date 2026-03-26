@@ -1,321 +1,146 @@
-<!-- om-tasks.html — C.O.O. Task Table (Onboarding chrome + left nav + inline drawers) -->
+<!-- om-tasks.html — Task list (OB chrome + OB task table with inline drawers) -->
 <style>
-  #screen-om-tasks .coo-shell {
-    height: calc(100vh - 44px);
-    display: flex;
-    flex-direction: column;
+  /* ════════════════════════════════════════════════════
+     Figma Visual Alignment — om-tasks screen
+     ════════════════════════════════════════════════════ */
+
+  /* Topnav — HorizonTrust wordmark */
+  #screen-om-tasks .coo-topnav__logo-text {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1c64b0;
   }
 
-  /* ── Single-row Onboarding topnav ── */
-  #screen-om-tasks .coo-topnav {
-    flex-shrink: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    padding: 0 var(--space-6);
-    gap: var(--space-4);
-    background: var(--color-bg-surface);
-    border-bottom: 1px solid var(--color-border-default);
-    z-index: 100;
-  }
-  #screen-om-tasks .coo-topnav__logo {
-    display: flex; align-items: center; gap: var(--space-2);
-    font-size: var(--font-size-base); font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary); flex-shrink: 0; text-decoration: none;
-  }
-  #screen-om-tasks .coo-topnav__search {
-    flex: 1; max-width: 400px; margin: 0 auto;
-    height: 36px; display: flex; align-items: center;
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md);
-    padding: 0 var(--space-3); gap: var(--space-2);
-    background: var(--color-bg-surface);
-  }
-  #screen-om-tasks .coo-topnav__search input {
-    flex: 1; border: none; outline: none;
-    font-family: var(--font-family-base); font-size: var(--font-size-sm);
-    color: var(--color-text-primary); background: transparent;
-  }
-  #screen-om-tasks .coo-topnav__search input::placeholder { color: var(--color-text-muted); }
-  #screen-om-tasks .coo-topnav__actions { display: flex; align-items: center; gap: var(--space-1); margin-left: auto; flex-shrink: 0; }
-  #screen-om-tasks .coo-topnav__icon {
-    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-    border-radius: var(--radius-md); cursor: pointer; color: var(--color-gray-500);
-    transition: background var(--transition-fast); position: relative;
-  }
-  #screen-om-tasks .coo-topnav__icon:hover { background: var(--color-gray-100); }
-  #screen-om-tasks .coo-topnav__badge {
-    position: absolute; top: 5px; right: 5px; width: 14px; height: 14px;
-    background: var(--color-danger-base); color: #fff; font-size: 9px;
-    font-weight: var(--font-weight-bold); border-radius: var(--radius-full);
-    display: flex; align-items: center; justify-content: center;
-  }
-  #screen-om-tasks .coo-topnav__avatar {
-    width: 34px; height: 34px; border-radius: var(--radius-full);
-    background: var(--color-primary-600); color: #fff;
-    font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; margin-left: var(--space-1);
+  /* Sidebar section label */
+  #screen-om-tasks .coo-sidebar__label {
+    color: rgba(0,0,0,0.6);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
   }
 
-  /* ── Layout ── */
-  #screen-om-tasks .coo-layout { flex: 1; overflow: hidden; display: flex; }
-  #screen-om-tasks .coo-sidebar {
-    width: 220px; flex-shrink: 0;
-    background: var(--color-bg-nav);
-    border-right: 1px solid var(--color-border-default);
-    padding: var(--space-4) 0;
-    overflow-y: auto;
+  /* Sidebar nav items */
+  #screen-om-tasks .coo-nav-item {
+    height: 44px;
+    border-radius: 6px;
+    padding: 0 9px;
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.6);
   }
-  #screen-om-tasks .coo-main {
-    flex: 1; overflow-y: auto;
-    background: var(--color-bg-page);
-    padding: var(--space-8);
+  #screen-om-tasks .coo-nav-item.active {
+    background: #f5f5f5;
+    color: rgba(0,0,0,0.87);
+    font-weight: 700;
+  }
+  #screen-om-tasks .coo-nav-item:hover {
+    background: var(--color-gray-100);
+    color: rgba(0,0,0,0.87);
   }
 
-  /* ── Page header ── */
-  #screen-om-tasks .pt-header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: var(--space-5);
-  }
+  /* Page header */
   #screen-om-tasks .pt-header__title {
-    font-size: var(--font-size-xl); font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary); margin: 0 0 var(--space-1);
+    font-weight: var(--font-weight-semibold);
+    color: rgba(0,0,0,0.87);
   }
   #screen-om-tasks .pt-header__subtitle {
-    font-size: var(--font-size-sm); color: var(--color-text-muted); margin: 0;
+    font-size: 14px;
+    color: rgba(0,0,0,0.6);
+    font-weight: 400;
   }
 
-  /* ── Tabs ── */
-  #screen-om-tasks .pt-tabs {
+  /* ─── Hero toolbar ─── */
+  #screen-om-tasks .toolbar-default {
     display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
     border-bottom: 1px solid var(--color-border-default);
-    margin-bottom: var(--space-4);
   }
-  #screen-om-tasks .pt-tab {
-    height: 36px; padding: 0 var(--space-4); background: none; border: none;
-    border-bottom: 2px solid transparent; font-family: var(--font-family-base);
-    font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
-    color: var(--color-text-secondary); cursor: pointer; margin-bottom: -1px;
-    transition: color var(--transition-fast);
+  #screen-om-tasks .pt-search-wrap {
+    flex: 1;
+    max-width: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
   }
-  #screen-om-tasks .pt-tab.active {
-    color: var(--color-primary-600); border-bottom-color: var(--color-primary-600);
+  #screen-om-tasks .pt-search-wrap svg {
+    position: absolute;
+    left: 12px;
+    pointer-events: none;
   }
-  #screen-om-tasks .pt-tab:hover:not(.active) { color: var(--color-text-primary); }
+  #screen-om-tasks .pt-search {
+    flex: 1;
+    width: 100%;
+    height: 44px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: 0 12px 0 36px;
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    background: var(--color-bg-surface);
+    outline: none;
+  }
+  #screen-om-tasks .pt-search:focus {
+    box-shadow: 0 0 0 3px var(--color-primary-100);
+    border-color: var(--color-primary-400);
+  }
 
-  /* ── Toolbar ── */
-  #screen-om-tasks .pt-toolbar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: var(--space-3);
+  /* ─── Ghost secondary buttons ─── */
+  #screen-om-tasks .pt-ghost-btn {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-family-base);
+    white-space: nowrap;
   }
-  #screen-om-tasks .pt-count { font-size: var(--font-size-sm); color: var(--color-text-muted); }
-  #screen-om-tasks .pt-toolbar__right { display: flex; align-items: center; gap: var(--space-2); }
-  #screen-om-tasks .pt-icon-btn {
-    height: 34px; padding: 0 var(--space-3); display: flex; align-items: center;
-    gap: var(--space-1); border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-md); background: var(--color-bg-surface);
-    font-family: var(--font-family-base); font-size: var(--font-size-sm);
-    color: var(--color-text-secondary); cursor: pointer;
+  #screen-om-tasks .pt-ghost-btn:hover {
+    background: var(--color-gray-100);
+    border-color: var(--color-border-default);
   }
-  #screen-om-tasks .pt-icon-btn:hover { background: var(--color-gray-50); }
 
-  /* ── Table ── */
-  #screen-om-tasks .table-wrapper { border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; }
-  #screen-om-tasks table { width: 100%; border-collapse: collapse; background: var(--color-bg-surface); }
-  #screen-om-tasks thead th {
-    background: var(--color-gray-50);
-    padding: var(--space-3) var(--space-4); text-align: left;
-    font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary); white-space: nowrap;
-    border-bottom: 1px solid var(--color-border-default); user-select: none;
+  /* Table — MUI DataGrid proportions */
+  #screen-om-tasks .ob-table-wrap th {
+    height: 52px;
   }
-  #screen-om-tasks .task-row-clickable { border-bottom: 1px solid var(--color-border-default); transition: background var(--transition-fast); cursor: pointer; }
-  #screen-om-tasks .task-row-clickable:hover { background: var(--color-gray-50); }
-  #screen-om-tasks .task-row-clickable.selected { background: var(--color-primary-50); }
-  #screen-om-tasks td { padding: var(--space-3) var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-primary); vertical-align: middle; }
-  #screen-om-tasks .td-link { color: var(--color-primary-600); font-weight: var(--font-weight-medium); cursor: pointer; white-space: nowrap; }
-  #screen-om-tasks .td-link:hover { text-decoration: underline; }
+  #screen-om-tasks .ob-table-wrap td {
+    height: 56px;
+  }
 
-  /* ── Inline drawer ── */
-  #screen-om-tasks .task-drawer-row { display: none; background: var(--color-primary-50); border-bottom: 2px solid var(--color-primary-200); }
-  #screen-om-tasks .task-drawer-row.open { display: table-row; }
-  #screen-om-tasks .task-drawer-inner { padding: var(--space-5) var(--space-6); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
-  #screen-om-tasks .task-drawer-meta { flex: 1; }
-  #screen-om-tasks .task-drawer-title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-2); }
-  #screen-om-tasks .task-drawer-desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); }
+  /* Task drawer — override manage-chrome.css flex layout for detail panel */
+  #screen-om-tasks .task-drawer-inner {
+    display: block;
+    padding: 0;
+  }
+  /* Drawer rows should have no min-height constraint */
+  #screen-om-tasks .task-drawer-row td {
+    height: auto;
+    padding: 0;
+  }
 </style>
 
 <div class="coo-shell">
-
-  <!-- ── Onboarding topnav ── -->
-  <div class="coo-topnav">
-    <a class="coo-topnav__logo">
-      <img src="assets/agentsync-logo.png" width="32" height="32" alt="AgentSync" style="display:block">
-      Onboarding
-    </a>
-    <div class="coo-topnav__search">
-      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-text-muted);flex-shrink:0"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
-      <input type="text" placeholder="Search tasks...">
-    </div>
-    <div class="coo-topnav__actions">
-      <div class="coo-topnav__icon" title="Notifications">
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 016 6c0 3.5 1 5 1.5 6H2.5C3 13 4 11.5 4 8a6 6 0 016-6zm0 16a2 2 0 002-2H8a2 2 0 002 2z"/></svg>
-        <span class="coo-topnav__badge">4</span>
-      </div>
-      <div class="coo-topnav__icon" title="Help">
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M8 8a2 2 0 114 0c0 1.5-2 2-2 3.5M10 15.5v.5"/></svg>
-      </div>
-      <div class="coo-topnav__avatar">JT</div>
-    </div>
-  </div>
-
-  <!-- ── Layout ── -->
+  <div data-component="ob-topnav" data-screen="om-tasks"></div>
   <div class="coo-layout">
-
-    <!-- Sidebar -->
-    <div class="coo-sidebar">
-      <div class="sidebar__section-label">Navigation</div>
-      <div class="nav-item" onclick="go('screen-om-producers')">
-        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="7" r="3"/><path d="M2 17c0-3.3 2.7-6 6-6h0m4 5l2 2 4-4"/></svg>
-        Producers
-      </div>
-      <div class="nav-item active" onclick="go('screen-om-tasks')">
-        <svg class="nav-item__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10l2 2 4-4"/></svg>
-        Tasks
-      </div>
-    </div>
-
-    <!-- Main -->
+    <div data-component="ob-sidebar" data-screen="om-tasks"></div>
     <div class="coo-main">
-
       <div class="pt-header">
         <div class="pt-header__titles">
           <h1 class="pt-header__title">Tasks</h1>
           <p class="pt-header__subtitle">Summit Agency Group · Spring 2026 Onboarding</p>
         </div>
       </div>
-
-      <div class="pt-toolbar">
-        <span class="pt-count">18 tasks across 6 producers</span>
-        <div class="pt-toolbar__right">
-          <div class="search-input" style="width:260px">
-            <svg class="search-input__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10 10l3 3"/></svg>
-            <input type="text" placeholder="Search tasks by name or producer...">
-          </div>
-          <button class="pt-icon-btn">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            Filter
-          </button>
-          <button class="pt-icon-btn">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
-            Columns
-          </button>
-        </div>
-      </div>
-
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th class="td-cb"></th>
-              <th>Task</th>
-              <th>Producer</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Assigned</th>
-              <th>Owner</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="task-row-clickable" onclick="toggleTaskDrawer('coo-drawer-1', this)">
-              <td class="td-cb"></td>
-              <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-loa')">LOA Confirmation — P&amp;C</a></td>
-              <td><a onclick="event.stopPropagation();openProducerRecord('coo')" class="td-link">Claire Sutton</a></td>
-              <td>Compliance</td>
-              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">In Progress</span></td>
-              <td>Mar 3, 2026</td>
-              <td>Producer</td>
-            </tr>
-            <tr id="coo-drawer-1" class="task-drawer-row">
-              <td colspan="7">
-                <div class="task-drawer-inner">
-                  <div class="task-drawer-meta">
-                    <div class="task-drawer-title">LOA Confirmation — Property &amp; Casualty</div>
-                    <div class="task-drawer-desc">Confirm that Claire Sutton holds active LOAs for Property and Casualty in her resident state (CO) and required non-resident states (TX, FL). 1 of 3 components verified.</div>
-                  </div>
-                  <button class="btn btn--primary btn--sm" onclick="event.stopPropagation();openTaskDetail('coo')">View Task →</button>
-                </div>
-              </td>
-            </tr>
-
-            <tr class="task-row-clickable" onclick="toggleTaskDrawer('coo-drawer-2', this)">
-              <td class="td-cb"></td>
-              <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-license')">License Upload</a></td>
-              <td><a class="td-link">Marcus Webb</a></td>
-              <td>Document</td>
-              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">In Progress</span></td>
-              <td>Mar 5, 2026</td>
-              <td>Producer</td>
-            </tr>
-            <tr id="coo-drawer-2" class="task-drawer-row">
-              <td colspan="7">
-                <div class="task-drawer-inner">
-                  <div class="task-drawer-meta">
-                    <div class="task-drawer-title">License Upload</div>
-                    <div class="task-drawer-desc">Marcus Webb needs to upload a copy of his resident state license. Currently in progress — awaiting document submission.</div>
-                  </div>
-                  <button class="btn btn--primary btn--sm" onclick="event.stopPropagation();openTaskDetail('coo')">View Task →</button>
-                </div>
-              </td>
-            </tr>
-
-            <tr class="task-row-clickable" onclick="toggleTaskDrawer('coo-drawer-3', this)">
-              <td class="td-cb"></td>
-              <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-eo')">E&amp;O Insurance Upload</a></td>
-              <td><a onclick="event.stopPropagation();openProducerRecord('coo')" class="td-link">Claire Sutton</a></td>
-              <td>Document</td>
-              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Complete</span></td>
-              <td>Mar 8, 2026</td>
-              <td>Producer</td>
-            </tr>
-            <tr id="coo-drawer-3" class="task-drawer-row">
-              <td colspan="7">
-                <div class="task-drawer-inner">
-                  <div class="task-drawer-meta">
-                    <div class="task-drawer-title">E&amp;O Insurance Upload</div>
-                    <div class="task-drawer-desc">Claire Sutton has completed this task. E&O certificate uploaded and verified on Mar 8, 2026. Policy expiration: Apr 1, 2027.</div>
-                  </div>
-                  <button class="btn btn--secondary btn--sm" onclick="event.stopPropagation();openTaskDetail('coo')">View Task →</button>
-                </div>
-              </td>
-            </tr>
-
-            <tr class="task-row-clickable" onclick="toggleTaskDrawer('coo-drawer-4', this)">
-              <td class="td-cb"></td>
-              <td><a class="td-link" onclick="event.stopPropagation();goToProducerTask('pr-td-bgcheck')">Background Check Consent</a></td>
-              <td><a class="td-link">Diego Flores</a></td>
-              <td>Agreement</td>
-              <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Not Started</span></td>
-              <td>Mar 1, 2026</td>
-              <td>Producer</td>
-            </tr>
-            <tr id="coo-drawer-4" class="task-drawer-row">
-              <td colspan="7">
-                <div class="task-drawer-inner">
-                  <div class="task-drawer-meta">
-                    <div class="task-drawer-title">Background Check Consent</div>
-                    <div class="task-drawer-desc">Diego Flores has not yet started the background check consent form. Required by Globe Life's internal policy for all California-licensed producers.</div>
-                  </div>
-                  <button class="btn btn--primary btn--sm" onclick="event.stopPropagation();openTaskDetail('coo')">View Task →</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
+      <div data-component="ob-task-table" data-screen="om-tasks"></div>
     </div>
-
   </div>
 </div>

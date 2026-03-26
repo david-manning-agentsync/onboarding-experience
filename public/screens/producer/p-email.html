@@ -448,7 +448,7 @@
         </div>
 
         <!-- The rendered email letter -->
-        <div class="gm-letter">
+        <div class="gm-letter" onclick="go('screen-p-welcome')" style="cursor:pointer">
           <!-- AgentSync logo header -->
           <div class="gm-letter__header">
             <div class="gm-letter__logo">
@@ -510,3 +510,24 @@
     </div><!-- /gm-main -->
   </div><!-- /gm-body -->
 </div><!-- /gm-shell -->
+
+<!-- Demo banner -->
+<div style="position:fixed;bottom:44px;left:0;right:0;
+  background:#1a73e8;color:#fff;padding:12px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:9998;font-family:system-ui,sans-serif;font-size:14px;">
+  <span>📧 Claire Sutton has received her onboarding invite from Summit Financial Partners.</span>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <button onclick="go('screen-p-welcome')"
+      style="background:#fff;color:#1a73e8;border:none;
+      border-radius:4px;padding:8px 16px;font-weight:700;
+      font-size:13px;cursor:pointer;">
+      Open Email →
+    </button>
+    <span onclick="go('screen-p-welcome')"
+      style="color:rgba(255,255,255,0.8);font-size:12px;
+      cursor:pointer;text-decoration:underline;">
+      Skip to welcome screen
+    </span>
+  </div>
+</div>
