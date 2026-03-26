@@ -1,3 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="module">
+    import '/onboarding-experience/src/styles/tokens-onboarding.css';
+    import '/onboarding-experience/src/styles/tokens-manage.css';
+    import '/onboarding-experience/src/styles/components-onboarding.css';
+    import '/onboarding-experience/src/styles/base.css';
+  </script>
+  <script>
+    // Stub routing functions so onclick handlers don't throw when in iframe
+    function go(id) { window.parent && window.parent.go ? window.parent.go(id) : console.log('go:', id); }
+    function showToast(msg) { window.parent && window.parent.showToast ? window.parent.showToast(msg) : console.log('toast:', msg); }
+  </script>
+</head>
+<body class="theme-onboarding">
 <!-- p-aot-tasks.html — Agency Onboarding Tasks (8-task producer checklist) -->
 <style>
   /* ── Shell — flex layout for drawer/responsive compat ── */
@@ -169,7 +187,8 @@
   #screen-p-aot-tasks .bg-radio { display:flex; align-items:center; gap:var(--space-2); font-size:var(--font-size-sm); cursor:pointer; }
 
   /* ── CTA footer — full-bleed tray outside padded body content ── */
-  #screen-p-aot-tasks .pr-detail-cta { padding:var(--space-4) var(--space-6); background:var(--color-bg-page); border-top:2px solid var(--color-border-default); display:flex; align-items:center; justify-content:flex-end; gap:var(--space-3); }
+  #screen-p-aot-tasks .pr-detail-cta { width:100%; padding:var(--space-4) var(--space-6); background:var(--color-bg-page); border-top:2px solid var(--color-border-default); display:flex; align-items:center; justify-content:flex-end; gap:var(--space-3); }
+  #screen-p-aot-tasks .pr-detail-cta .btn { flex:1; }
   #screen-p-aot-tasks .pr-detail-cta__hint { margin-right:auto; font-size:var(--font-size-xs); color:var(--color-text-muted); }
   #screen-p-aot-tasks .pr-task-detail-panel--done .pr-detail-cta { display:none; }
 
@@ -208,7 +227,7 @@
     <div class="p-topnav__logo">AgentSync</div>
     <div class="p-topnav__right">
       <div class="p-avatar">JO</div>
-      <span>James O'Brien</span>
+      <span class="js-producer-name">James O'Brien</span>
     </div>
   </div>
 
@@ -219,9 +238,9 @@
         <div class="pr-header__row">
           <div class="pr-header__avatar">JO</div>
           <div class="pr-header__body">
-            <div class="pr-header__name">James O'Brien</div>
+            <div class="pr-header__name"><span class="js-producer-name">James O'Brien</span></div>
             <div class="pr-header__meta">
-              <div class="pr-meta-item"><span class="pr-meta-item__label">NPN</span><span class="pr-meta-item__sep">·</span><span class="pr-meta-item__value">19283746</span></div>
+              <div class="pr-meta-item"><span class="pr-meta-item__label">NPN</span><span class="pr-meta-item__sep">·</span><span class="pr-meta-item__value"><span class="js-producer-npn">19283746</span></span></div>
               <div class="pr-meta-item"><span class="pr-meta-item__label">Policy Set</span><span class="pr-meta-item__sep">·</span><span class="pr-meta-item__value">Agency Onboarding</span></div>
               <div class="pr-meta-item"><span class="pr-meta-item__label">Progress</span><span class="pr-meta-item__sep">·</span><span class="pr-meta-item__value" style="color:var(--color-primary-600)" id="aot-pct-label">0%</span></div>
               <span class="badge" style="background:var(--color-warning-100);color:var(--color-warning-600);" id="aot-status-badge">Open</span>
@@ -265,7 +284,7 @@
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Contact Info</div>
               <div class="aot-chips">
-                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> <span class="js-producer-name">James O'Brien</span></span>
                 <span class="aot-chip aot-chip--req">Required</span>
                 <span class="aot-chip aot-chip--cat-org">Org</span>
                 <span class="aot-chip aot-chip--status" id="aot-hstatus-1">Open</span>
@@ -281,7 +300,7 @@
                 <div class="pr-form-section">
                   <div class="pr-form-section__title">Identity</div>
                   <div class="pr-form-row pr-form-row--3">
-                    <div class="pr-float-field"><span class="pr-float-label">First Name *</span><input class="pr-float-value" type="text" value="James"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">First Name *</span><input class="pr-float-value" type="text" value="James" data-producer-firstname></div>
                     <div class="pr-float-field"><span class="pr-float-label">Middle Name</span><input class="pr-float-value" type="text" value="Patrick"></div>
                     <div class="pr-float-field"><span class="pr-float-label">Last Name *</span><input class="pr-float-value" type="text" value="O'Brien"></div>
                   </div>
@@ -290,7 +309,7 @@
                     <div class="pr-float-field"><span class="pr-float-label">SSN *</span><div class="pr-ssn-wrap"><input class="pr-float-value" type="password" value="987654321" id="aot-ssn" style="flex:1"><button class="pr-ssn-toggle" onclick="aotToggleSSN()">Show</button></div></div>
                   </div>
                   <div class="pr-form-row pr-form-row--2">
-                    <div class="pr-float-field"><span class="pr-float-label">NPN</span><input class="pr-float-value" type="text" value="19283746" readonly style="color:var(--color-text-muted)"></div>
+                    <div class="pr-float-field"><span class="pr-float-label">NPN</span><input class="pr-float-value" type="text" value="19283746" readonly style="color:var(--color-text-muted)" data-producer-npn></div>
                     <div style="display:flex;align-items:center;padding:var(--space-2) var(--space-3);background:var(--color-success-50);border:1px solid var(--color-success-200);border-radius:var(--radius-md);gap:var(--space-2);">
                       <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="var(--color-success-600)" stroke-width="2"><path d="M4 10l5 5 7-7"/></svg>
                       <span style="font-size:var(--font-size-xs);color:var(--color-success-700);">Verified via NIPR</span>
@@ -305,10 +324,10 @@
                   </div>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--secondary" onclick="aotNext(1,2)">Save &amp; Continue</button>
-                <button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--secondary" onclick="aotNext(1,2)">Save &amp; Continue</button>
+              <button class="btn btn--success" onclick="aotMarkDone(1,2)">Mark as Done</button>
             </div>
           </div>
 
@@ -317,7 +336,7 @@
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Contact Details</div>
               <div class="aot-chips">
-                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> <span class="js-producer-name">James O'Brien</span></span>
                 <span class="aot-chip aot-chip--req">Required</span>
                 <span class="aot-chip aot-chip--cat-org">Org</span>
                 <span class="aot-chip aot-chip--status" id="aot-hstatus-2">Open</span>
@@ -436,10 +455,10 @@
                   <button class="pr-add-btn" onclick="aotAddAddress()" style="margin-top:var(--space-1)">+ Add Additional Address</button>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--secondary" onclick="aotNext(2,3)">Save &amp; Continue</button>
-                <button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--secondary" onclick="aotNext(2,3)">Save &amp; Continue</button>
+              <button class="btn btn--success" onclick="aotMarkDone(2,3)">Mark as Done</button>
             </div>
           </div>
 
@@ -448,7 +467,7 @@
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">ID Document</div>
               <div class="aot-chips">
-                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> <span class="js-producer-name">James O'Brien</span></span>
                 <span class="aot-chip aot-chip--opt">Optional</span>
                 <span class="aot-chip aot-chip--cat-reg">Regulatory</span>
                 <span class="aot-chip aot-chip--status" id="aot-hstatus-3">Open</span>
@@ -471,11 +490,11 @@
                   <div class="pr-float-field"><span class="pr-float-label">Expiration Date *</span><input class="pr-float-value" type="text" value="04/12/2029"></div>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="aot-skip-btn" onclick="aotSkipTask(3,4)">Skip</button>
-                <button class="btn btn--secondary" onclick="aotNext(3,4)">Save &amp; Continue</button>
-                <button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="aot-skip-btn" onclick="aotSkipTask(3,4)">Skip</button>
+              <button class="btn btn--secondary" onclick="aotNext(3,4)">Save &amp; Continue</button>
+              <button class="btn btn--success" onclick="aotMarkDone(3,4)">Mark as Done</button>
             </div>
           </div>
 
@@ -484,7 +503,7 @@
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Employment History</div>
               <div class="aot-chips">
-                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> <span class="js-producer-name">James O'Brien</span></span>
                 <span class="aot-chip aot-chip--req">Required</span>
                 <span class="aot-chip aot-chip--cat-reg">Regulatory</span>
                 <span class="aot-chip aot-chip--status" id="aot-hstatus-4">Open</span>
@@ -504,10 +523,10 @@
                 <div id="aot-emp-list"><!-- rendered by aotRenderEmp() --></div>
                 <button class="pr-add-btn" onclick="aotAddEmployment()">+ Add Prior Employment</button>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--secondary" onclick="aotNext(4,5)">Save &amp; Continue</button>
-                <button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--secondary" onclick="aotNext(4,5)">Save &amp; Continue</button>
+              <button class="btn btn--success" onclick="aotMarkDone(4,5)">Mark as Done</button>
             </div>
           </div>
 
@@ -516,7 +535,7 @@
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Background Questions</div>
               <div class="aot-chips">
-                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> <span class="js-producer-name">James O'Brien</span></span>
                 <span class="aot-chip aot-chip--req">Required</span>
                 <span class="aot-chip aot-chip--cat-reg">Regulatory</span>
                 <span class="aot-chip aot-chip--status" id="aot-hstatus-5">Open</span>
@@ -535,10 +554,10 @@
                 <div class="bg-question"><div class="bg-question__text">3. Are you currently named as a defendant in any pending civil lawsuit related to your professional activities?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq3" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq3" value="yes"> Yes — please explain</label></div></div>
                 <div class="state-placeholder"><div style="color:var(--color-warning-500);flex-shrink:0;margin-top:1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div><div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-warning-700);">Colorado — State-Specific Disclosures</div><div style="font-size:var(--font-size-xs);color:var(--color-warning-600);line-height:1.5;margin-top:2px;">Additional questions required for Colorado-licensed producers will be presented during final review.</div></div></div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue</button>
-                <button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--secondary" onclick="aotNext(5,6)">Save &amp; Continue</button>
+              <button class="btn btn--success" onclick="aotMarkDone(5,6)">Mark as Done</button>
             </div>
           </div>
 
@@ -575,10 +594,10 @@
                   <span style="font-size:var(--font-size-sm);color:var(--color-text-primary);line-height:var(--line-height-relaxed);">I have read and agree to the NIPR Producer Attestation Agreement above.</span>
                 </label>
               </div>
-              <div class="pr-detail-cta">
-                <span class="pr-detail-cta__hint">Scroll to bottom &amp; check the box to enable</span>
-                <button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:.5;cursor:not-allowed">Submit Attestation</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <span class="pr-detail-cta__hint">Scroll to bottom &amp; check the box to enable</span>
+              <button class="btn btn--success" id="aot-attest-submit" onclick="aotMarkDone(6,7)" disabled style="opacity:.5;cursor:not-allowed">Submit Attestation</button>
             </div>
           </div>
 
@@ -587,7 +606,7 @@
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">Direct Deposit</div>
               <div class="aot-chips">
-                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> <span class="js-producer-name">James O'Brien</span></span>
                 <span class="aot-chip aot-chip--req">Required</span>
                 <span class="aot-chip aot-chip--cat-org">Org</span>
                 <span class="aot-chip aot-chip--status" id="aot-hstatus-7">Open</span>
@@ -627,10 +646,10 @@
                   </div>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--secondary" onclick="aotNext(7,8)">Save &amp; Continue</button>
-                <button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--secondary" onclick="aotNext(7,8)">Save &amp; Continue</button>
+              <button class="btn btn--success" onclick="aotMarkDone(7,8)">Mark as Done</button>
             </div>
           </div>
 
@@ -639,7 +658,7 @@
             <div class="pr-detail-head">
               <div class="pr-detail-head__title">E-Signature</div>
               <div class="aot-chips">
-                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> James O'Brien</span>
+                <span class="aot-chip aot-chip--owner"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg> <span class="js-producer-name">James O'Brien</span></span>
                 <span class="aot-chip aot-chip--req">Required</span>
                 <span class="aot-chip aot-chip--cat-org">Org</span>
                 <span class="aot-chip aot-chip--status" id="aot-hstatus-8">Open</span>
@@ -688,9 +707,9 @@
                   </div>
                 </div>
               </div>
-              <div class="pr-detail-cta">
-                <button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit &amp; Sign</button>
-              </div>
+            </div>
+            <div class="pr-detail-cta">
+              <button class="btn btn--success" onclick="aotMarkDone(8,null);showToast('Onboarding checklist submitted!')">Submit &amp; Sign</button>
             </div>
           </div>
 

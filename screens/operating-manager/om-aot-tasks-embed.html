@@ -1,0 +1,343 @@
+<!--
+  EMBED VERSION — for use in iframe contexts (e.g. SFDC Onboarding Tasks tab)
+  Strip all chrome. Styles live in shared CSS files under src/styles/
+  Full-page version: public/screens/operating-manager/om-aot-tasks.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/onboarding-experience/src/styles/tokens-onboarding.css">
+  <link rel="stylesheet" href="/onboarding-experience/src/styles/tokens-manage.css">
+  <link rel="stylesheet" href="/onboarding-experience/src/styles/components-onboarding.css">
+  <link rel="stylesheet" href="/onboarding-experience/src/styles/base.css">
+  <link rel="stylesheet" href="/onboarding-experience/src/styles/screens.css">
+  <style>
+    #screen-om-aot-tasks {
+      --lv-border: var(--color-gray-300);
+    }
+
+    /* ── Page header ── */
+    #screen-om-aot-tasks .pt-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: var(--space-5);
+    }
+    #screen-om-aot-tasks .pt-header__title {
+      font-size: var(--font-size-xl); font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary); margin: 0 0 var(--space-1);
+    }
+    #screen-om-aot-tasks .pt-header__subtitle {
+      font-size: var(--font-size-sm); color: var(--color-text-muted); margin: 0;
+    }
+
+    /* ── Toolbar ── */
+    #screen-om-aot-tasks .pt-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+    #screen-om-aot-tasks .pt-count { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+    #screen-om-aot-tasks .pt-toolbar__right { display: flex; align-items: center; gap: var(--space-2); }
+    #screen-om-aot-tasks .pt-icon-btn {
+      height: 34px; padding: 0 var(--space-3); display: flex; align-items: center;
+      gap: var(--space-1); border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md); background: var(--color-bg-surface);
+      font-family: var(--font-family-base); font-size: var(--font-size-sm);
+      color: var(--color-text-secondary); cursor: pointer;
+    }
+    #screen-om-aot-tasks .pt-icon-btn:hover { background: var(--color-gray-50); }
+
+    /* ── Table ── */
+    #screen-om-aot-tasks .table-wrapper { border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; }
+    #screen-om-aot-tasks table { width: 100%; border-collapse: collapse; background: var(--color-bg-surface); }
+    #screen-om-aot-tasks thead th {
+      background: var(--color-gray-50);
+      padding: var(--space-3) var(--space-4); text-align: left;
+      font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
+      color: var(--color-text-secondary); white-space: nowrap;
+      border-bottom: 1px solid var(--color-border-default); user-select: none;
+    }
+    #screen-om-aot-tasks .task-row-clickable { border-bottom: 1px solid var(--color-border-default); transition: background var(--transition-fast); cursor: pointer; }
+    #screen-om-aot-tasks .task-row-clickable:hover { background: var(--color-gray-50); }
+    #screen-om-aot-tasks .task-row-clickable.selected { background: var(--color-primary-50); }
+    #screen-om-aot-tasks td { padding: var(--space-3) var(--space-4); font-size: var(--font-size-sm); color: var(--color-text-primary); vertical-align: middle; }
+    #screen-om-aot-tasks .td-link { color: var(--color-primary-600); font-weight: var(--font-weight-medium); cursor: pointer; white-space: nowrap; }
+    #screen-om-aot-tasks .td-link:hover { text-decoration: underline; }
+    #screen-om-aot-tasks td:first-child { white-space: nowrap; }
+    #screen-om-aot-tasks td:nth-child(2) { white-space: nowrap; }
+
+    /* ── Inline drawer ── */
+    #screen-om-aot-tasks .task-drawer-row { display: none; background: var(--color-primary-50); border-bottom: 2px solid var(--color-primary-200); }
+    #screen-om-aot-tasks .task-drawer-row.open { display: table-row; }
+    #screen-om-aot-tasks .task-drawer-inner { padding: var(--space-5) var(--space-6); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
+    #screen-om-aot-tasks .task-drawer-meta { flex: 1; }
+    #screen-om-aot-tasks .task-drawer-title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-2); }
+    #screen-om-aot-tasks .task-drawer-desc { font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); }
+  </style>
+</head>
+<body class="theme-onboarding" style="margin:0;overflow-y:auto;background:var(--color-gray-100);">
+
+<div id="screen-om-aot-tasks">
+  <div class="ms-body" style="padding:var(--space-8);background:var(--color-bg-page);">
+
+    <div class="pt-header">
+      <div class="pt-header__titles">
+        <h1 class="pt-header__title">Tasks</h1>
+        <p class="pt-header__subtitle">Summit Agency Group · Spring 2026 Onboarding</p>
+      </div>
+    </div>
+
+    <div class="pt-toolbar">
+      <span class="pt-count">8 tasks · 3 producers</span>
+      <div class="pt-toolbar__right">
+        <div class="search-input" style="width:260px">
+          <svg class="search-input__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10 10l3 3"/></svg>
+          <input type="text" placeholder="Search tasks by name or producer...">
+        </div>
+        <button class="pt-icon-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filter
+        </button>
+        <button class="pt-icon-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+          Columns
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th class="td-cb"></th>
+            <th>Task</th>
+            <th>Producer</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Assigned</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Task 1: Contact Info -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-1', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(1)}catch(e){}">Contact Info</a></td>
+            <td><a class="td-link producer-link">Claire Sutton</a></td>
+            <td>Form</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-1" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">Contact Info</div>
+                  <div class="task-drawer-desc">Claire Sutton needs to provide personal contact information including legal name, date of birth, SSN, and NPN. Required for all producers.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Task 2: Contact Details -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-2', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(2)}catch(e){}">Contact Details</a></td>
+            <td><a class="td-link producer-link">Claire Sutton</a></td>
+            <td>Form</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-2" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">Contact Details</div>
+                  <div class="task-drawer-desc">Claire Sutton needs to provide address information including residence, business, and mailing addresses, plus phone numbers and email.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Task 3: ID Document -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-3', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(3)}catch(e){}">ID Document</a></td>
+            <td><a class="td-link producer-link">Claire Sutton</a></td>
+            <td>Document</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-3" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">ID Document</div>
+                  <div class="task-drawer-desc">Claire Sutton needs to upload a government-issued photo ID. Accepted documents include driver's license, passport, or state ID.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Task 4: Employment History -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-4', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(4)}catch(e){}">Employment History</a></td>
+            <td><a class="td-link producer-link">Marcus Webb</a></td>
+            <td>Form</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-4" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">Employment History</div>
+                  <div class="task-drawer-desc">Claire Sutton needs to provide employment history covering the last 5 years, including any gaps in employment. Required for background check processing.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Task 5: Background Questions -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-5', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(5)}catch(e){}">Background Questions</a></td>
+            <td><a class="td-link producer-link">Marcus Webb</a></td>
+            <td>Form</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-5" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">Background Questions</div>
+                  <div class="task-drawer-desc">Claire Sutton needs to answer standard background disclosure questions covering criminal history, regulatory actions, and financial disclosures.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Task 6: NIPR Attestation -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-6', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(6)}catch(e){}">NIPR Attestation</a></td>
+            <td><a class="td-link producer-link">Jordan Rivera</a></td>
+            <td>Attestation</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-6" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">NIPR Attestation</div>
+                  <div class="task-drawer-desc">Claire Sutton must attest to the accuracy of licensing data verified through NIPR, including resident state license number and active LOAs.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Task 7: Direct Deposit -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-7', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(7)}catch(e){}">Direct Deposit</a></td>
+            <td><a class="td-link producer-link">Jordan Rivera</a></td>
+            <td>Form</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-7" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">Direct Deposit</div>
+                  <div class="task-drawer-desc">Claire Sutton needs to provide banking information for commission direct deposit. Routing and account numbers are required.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Task 8: E-Signature -->
+          <tr class="task-row-clickable" onclick="toggleTaskDrawer('aot-drawer-8', this)">
+            <td class="td-cb"></td>
+            <td><a class="td-link" onclick="event.stopPropagation();try{window.top.openTaskDrawer(8)}catch(e){}">E-Signature</a></td>
+            <td><a class="td-link producer-link">Jordan Rivera</a></td>
+            <td>Signature</td>
+            <td><span class="badge" style="background:var(--color-gray-100);color:var(--color-gray-600);">Open</span></td>
+            <td>Mar 3, 2026</td>
+            <td>Producer</td>
+          </tr>
+          <tr id="aot-drawer-8" class="task-drawer-row">
+            <td colspan="7">
+              <div class="task-drawer-inner">
+                <div class="task-drawer-meta">
+                  <div class="task-drawer-title">E-Signature</div>
+                  <div class="task-drawer-desc">Claire Sutton needs to review and sign the Producer Appointment Agreement and NIPR authorization form electronically.</div>
+                </div>
+                <button class="btn btn--primary btn--sm">View Task →</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Route producer name clicks based on parent context
+  document.querySelectorAll('.producer-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.stopPropagation();
+      try {
+        var top = window.top;
+        if (top && top._currentCtx === 'carrier') {
+          // Carrier: Onboarding chrome producer record
+          top.openProducerRecord('aot');
+        } else {
+          // Agency: SFDC chrome producer detail record
+          top.go('screen-m-producer-detail-record');
+        }
+      } catch(err) {
+        console.log('producer-link navigation error:', err);
+      }
+    });
+  });
+
+  // toggleTaskDrawer for iframe context — use parent if available
+  function toggleTaskDrawer(drawerId, rowEl) {
+    var drawer = document.getElementById(drawerId);
+    if (!drawer) return;
+    var isOpen = drawer.classList.contains('open');
+    document.querySelectorAll('.task-drawer-row').forEach(function(d) {
+      d.classList.remove('open');
+    });
+    document.querySelectorAll('.task-row-clickable').forEach(function(r) {
+      r.classList.remove('selected');
+    });
+    if (!isOpen) {
+      drawer.classList.add('open');
+      rowEl.classList.add('selected');
+    }
+  }
+</script>
+
+</body>
+</html>

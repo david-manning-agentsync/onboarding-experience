@@ -1,0 +1,560 @@
+<!-- m-contact-record.html — Contact Detail Record (Manage / custom layout) -->
+<style>
+  /* ── Custom properties ── */
+  #screen-m-contact-record { --rec-border: var(--color-gray-300); }
+
+  /* ── Record header card ── */
+  #screen-m-contact-record .rec-header-card {
+    background: var(--color-bg-surface);
+    border-bottom: 1px solid var(--rec-border);
+    margin-bottom: var(--space-medium);
+    flex-shrink: 0;
+  }
+  #screen-m-contact-record .rec-header-top {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  }
+  #screen-m-contact-record .rec-header-icon {
+    width: 40px; height: 40px; border-radius: 4px;
+    background: #7c3aed; color: #fff;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  #screen-m-contact-record .rec-header-identity {
+    flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;
+  }
+  #screen-m-contact-record .rec-header-label {
+    font-size: var(--font-size-xs); color: var(--color-text-secondary);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps);
+  }
+  #screen-m-contact-record .rec-header-name {
+    font-size: 18px; font-weight: var(--font-weight-bold); color: var(--color-text-primary);
+  }
+  #screen-m-contact-record .rec-header-actions {
+    display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+  }
+  #screen-m-contact-record .rec-header-meta {
+    display: flex; overflow-x: auto; border-top: 1px solid var(--rec-border); padding: 0 16px;
+  }
+  #screen-m-contact-record .rec-meta-block {
+    min-width: 120px; padding: 8px 16px; border-right: 1px solid var(--rec-border); flex-shrink: 0;
+  }
+  #screen-m-contact-record .rec-meta-block:first-child { padding-left: 0; }
+  #screen-m-contact-record .rec-meta-label {
+    font-size: 10px; color: var(--color-text-secondary);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps); line-height: 1; margin-bottom: 4px;
+  }
+  #screen-m-contact-record .rec-meta-value {
+    font-size: var(--font-size-sm); color: var(--color-text-primary);
+  }
+  #screen-m-contact-record .rec-meta-value a {
+    color: var(--color-brand-500); text-decoration: none;
+  }
+  #screen-m-contact-record .rec-meta-value a:hover { text-decoration: underline; }
+
+  /* ── Content layout ── */
+  #screen-m-contact-record .rec-content { display: flex; gap: 12px; }
+  #screen-m-contact-record .rec-main {
+    flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px;
+  }
+  #screen-m-contact-record .rec-sidebar {
+    width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px;
+  }
+
+  /* ── Cards ── */
+  #screen-m-contact-record .rec-card {
+    background: var(--color-bg-surface); border: 1px solid var(--rec-border);
+    border-radius: 4px; overflow: hidden;
+  }
+  #screen-m-contact-record .rec-card__header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px; border-bottom: 1px solid var(--rec-border);
+  }
+  #screen-m-contact-record .rec-card__title {
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
+    display: flex; align-items: center; gap: 6px;
+  }
+  #screen-m-contact-record .rec-card__link {
+    font-size: var(--font-size-sm); color: var(--color-brand-500); cursor: pointer; text-decoration: none;
+  }
+  #screen-m-contact-record .rec-card__link:hover { text-decoration: underline; }
+
+  /* ── Field rows ── */
+  #screen-m-contact-record .rec-field-row {
+    display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--rec-border);
+  }
+  #screen-m-contact-record .rec-field-row:last-of-type { border-bottom: none; }
+  #screen-m-contact-record .rec-field { position: relative; padding: 8px 16px; }
+  #screen-m-contact-record .rec-field + .rec-field { border-left: 1px solid var(--rec-border); }
+  #screen-m-contact-record .rec-field__label {
+    font-size: 10px; color: var(--color-text-secondary);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps); line-height: 1; margin-bottom: 2px;
+  }
+  #screen-m-contact-record .rec-field__value {
+    font-size: var(--font-size-base); color: var(--color-text-primary);
+    line-height: 1.3; display: flex; align-items: center; gap: 4px;
+  }
+  #screen-m-contact-record .rec-field__value a { color: var(--color-brand-500); text-decoration: none; }
+  #screen-m-contact-record .rec-field__value a:hover { text-decoration: underline; }
+  #screen-m-contact-record .rec-field__edit {
+    position: absolute; top: 8px; right: 10px; color: var(--color-text-muted);
+    opacity: 0; cursor: pointer; transition: opacity var(--transition-fast); font-size: 12px;
+  }
+  #screen-m-contact-record .rec-field:hover .rec-field__edit { opacity: 1; }
+
+  /* ── Buttons ── */
+  #screen-m-contact-record .rec-btn {
+    height: 28px; padding: 0 10px; border-radius: 4px;
+    font-size: var(--font-size-sm); font-family: var(--font-family-base); cursor: pointer;
+    background: var(--color-bg-surface); border: 1px solid var(--rec-border);
+    color: var(--color-text-primary); transition: background var(--transition-fast); white-space: nowrap;
+  }
+  #screen-m-contact-record .rec-btn:hover { background: var(--color-gray-100); }
+  #screen-m-contact-record .rec-btn--icon-only { padding: 0; width: 28px; }
+  #screen-m-contact-record .lv-btn {
+    height: 28px; padding: 0 10px; border-radius: 4px;
+    font-size: var(--font-size-sm); font-family: var(--font-family-base); cursor: pointer;
+    transition: background var(--transition-fast); white-space: nowrap;
+  }
+  #screen-m-contact-record .lv-btn--outline {
+    background: var(--color-bg-surface); border: 1px solid var(--rec-border); color: var(--color-brand-500);
+  }
+  #screen-m-contact-record .lv-btn--outline:hover { background: var(--color-brand-50); }
+
+  /* ── AgentSync Data Sync ── */
+  #screen-m-contact-record .sync-row {
+    display: flex; align-items: center; gap: var(--space-x-small); padding: 12px 16px;
+  }
+  #screen-m-contact-record .sync-col { flex: 1; min-width: 0; }
+  #screen-m-contact-record .sync-label {
+    font-size: 10px; color: var(--color-text-secondary);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps); margin-bottom: 2px;
+  }
+  #screen-m-contact-record .sync-value {
+    font-size: var(--font-size-sm); color: var(--color-text-primary);
+    display: flex; align-items: center; gap: 5px;
+  }
+  #screen-m-contact-record .sync-nipr-name {
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-brand-500);
+    display: flex; align-items: center; gap: 4px;
+  }
+  #screen-m-contact-record .sync-npn { font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+  #screen-m-contact-record .sync-dot {
+    width: 7px; height: 7px; border-radius: var(--radius-full);
+    background: var(--color-success-base); display: inline-block; flex-shrink: 0;
+  }
+  #screen-m-contact-record .sync-toggle {
+    width: 32px; height: 18px; border-radius: 9px;
+    background: var(--color-brand-500); position: relative; flex-shrink: 0;
+  }
+  #screen-m-contact-record .sync-toggle::after {
+    content: ''; position: absolute; top: 2px; right: 2px; width: 14px; height: 14px;
+    border-radius: var(--radius-full); background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  }
+
+  /* ── Audit log ── */
+  #screen-m-contact-record .audit-entry {
+    padding: 10px 16px; border-bottom: 1px solid var(--rec-border);
+  }
+  #screen-m-contact-record .audit-entry:last-child { border-bottom: none; }
+  #screen-m-contact-record .audit-entry__meta {
+    font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px;
+  }
+  #screen-m-contact-record .audit-entry__desc {
+    font-size: var(--font-size-sm); color: var(--color-text-primary);
+  }
+</style>
+
+<div class="ms-shell">
+
+  <!-- ── NAV ── -->
+  <div class="ms-nav">
+    <div class="ms-nav__utility">
+      <a class="ms-logo">
+        <img src="assets/agentsync-logo.png" width="32" height="32" alt="AgentSync" style="display:block">
+      </a>
+      <div class="ms-nav__search">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-text-muted);flex-shrink:0"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+        <input type="text" placeholder="Search...">
+      </div>
+      <div class="ms-nav__icons">
+        <div class="ms-nav__icon--combo" title="Favorites">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.8l-4.9 2.4.9-5.5L2 7.8l5.6-.8z"/></svg>
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><path d="M2 3l3 4 3-4H2z"/></svg>
+        </div>
+        <div class="ms-nav__icon" title="New">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4v12M4 10h12"/></svg>
+        </div>
+        <div class="ms-nav__icon" title="Notifications" style="position:relative">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 016 6c0 3.5 1 5 1.5 6H2.5C3 13 4 11.5 4 8a6 6 0 016-6zm0 16a2 2 0 002-2H8a2 2 0 002 2z"/></svg>
+          <span class="ms-nav__badge">1</span>
+        </div>
+        <div class="ms-nav__icon" title="Help">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M8 8a2 2 0 114 0c0 1.5-2 2-2 3.5M10 15.5v.5"/></svg>
+        </div>
+        <div class="ms-nav__icon" title="Setup" onclick="go('screen-m-settings')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="ms-nav__avatar">JD</div>
+      </div>
+    </div>
+    <div class="ms-nav__app">
+      <div class="ms-nav__waffle">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="15" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/><rect x="15" y="8" width="5" height="5" rx="1"/><rect x="1" y="15" width="5" height="5" rx="1"/><rect x="8" y="15" width="5" height="5" rx="1"/><rect x="15" y="15" width="5" height="5" rx="1"/></svg>
+      </div>
+      <span class="ms-nav__appname">AgentSync</span>
+      <div class="ms-nav__tabs">
+        <div class="ms-nav__tab ms-nav__tab--dim">Companies <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab active" onclick="go('screen-m-contacts')">Contacts <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab" onclick="goAccountsCtx()">Accounts <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">People <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab" onclick="go('screen-m-producer-details')">Producer Details <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab context-agency-only" onclick="go('screen-m-onboarding-tasks')">Onboarding Tasks</div>
+        <div class="ms-nav__tab ms-nav__tab--dim">Producer Assignments <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">Producer Compliance... <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab" onclick="go('screen-m-policysets')">Policy Sets <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab ms-nav__tab--dim">More <span class="ms-nav__caret">▾</span></div>
+      </div>
+      <div class="ms-nav__edit" title="Edit tabs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </div>
+    </div>
+  </div><!-- /ms-nav -->
+
+  <!-- ── BODY ── -->
+  <div class="ms-body">
+
+    <!-- Record Header Card -->
+    <div class="rec-header-card">
+      <div class="rec-header-top">
+        <div class="rec-header-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div class="rec-header-identity">
+          <span class="rec-header-label">Contact</span>
+          <span class="rec-header-name">Sarah Chen</span>
+        </div>
+        <div class="rec-header-actions">
+          <button class="rec-btn rec-btn--icon-only" title="View hierarchy">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="2" width="6" height="4" rx="1"/><rect x="2" y="18" width="6" height="4" rx="1"/><rect x="16" y="18" width="6" height="4" rx="1"/><path d="M12 6v4M5 18v-4h14v4"/></svg>
+          </button>
+          <button class="rec-btn">+ Follow</button>
+          <button class="rec-btn" onclick="openInvitePartnerModal()">Invite to Partner Portal</button>
+          <button class="rec-btn">Edit</button>
+          <button class="rec-btn">▾</button>
+        </div>
+      </div>
+      <div class="rec-header-meta">
+        <div class="rec-meta-block">
+          <div class="rec-meta-label">Account</div>
+          <div class="rec-meta-value"><a onclick="go('screen-m-account-record')">Nationwide Brokers Group</a></div>
+        </div>
+        <div class="rec-meta-block">
+          <div class="rec-meta-label">Title</div>
+          <div class="rec-meta-value">Account Executive</div>
+        </div>
+        <div class="rec-meta-block">
+          <div class="rec-meta-label">Phone</div>
+          <div class="rec-meta-value">(303) 555-0191</div>
+        </div>
+        <div class="rec-meta-block">
+          <div class="rec-meta-label">Email</div>
+          <div class="rec-meta-value"><a href="#">sarah.chen@nwbrokers.com</a></div>
+        </div>
+        <div class="rec-meta-block">
+          <div class="rec-meta-label">Contact Owner</div>
+          <div class="rec-meta-value">JD</div>
+        </div>
+      </div>
+    </div><!-- /rec-header-card -->
+
+    <!-- Content area -->
+    <div class="rec-content">
+
+      <!-- Main left column -->
+      <div class="rec-main">
+
+        <!-- Contact Information -->
+        <div class="rec-card">
+          <div class="rec-card__header">
+            <span class="rec-card__title">Contact Information</span>
+          </div>
+
+          <div class="rec-field-row">
+            <div class="rec-field">
+              <span class="rec-field__label">First Name</span>
+              <span class="rec-field__value">Sarah</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+            <div class="rec-field">
+              <span class="rec-field__label">Last Name</span>
+              <span class="rec-field__value">Chen</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+          </div>
+
+          <div class="rec-field-row">
+            <div class="rec-field">
+              <span class="rec-field__label">Title</span>
+              <span class="rec-field__value">Account Executive</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+            <div class="rec-field">
+              <span class="rec-field__label">Department</span>
+              <span class="rec-field__value">Sales</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+          </div>
+
+          <div class="rec-field-row">
+            <div class="rec-field">
+              <span class="rec-field__label">Account</span>
+              <span class="rec-field__value"><a onclick="go('screen-m-account-record')">Nationwide Brokers Group</a></span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+            <div class="rec-field">
+              <span class="rec-field__label">Reports To</span>
+              <span class="rec-field__value" style="color:var(--color-text-muted)">—</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+          </div>
+
+          <div class="rec-field-row">
+            <div class="rec-field">
+              <span class="rec-field__label">Phone</span>
+              <span class="rec-field__value">(303) 555-0191</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+            <div class="rec-field">
+              <span class="rec-field__label">Mobile</span>
+              <span class="rec-field__value">(303) 555-0201</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+          </div>
+
+          <div class="rec-field-row">
+            <div class="rec-field">
+              <span class="rec-field__label">Email</span>
+              <span class="rec-field__value"><a href="#">sarah.chen@nwbrokers.com</a></span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+            <div class="rec-field">
+              <span class="rec-field__label">Lead Source</span>
+              <span class="rec-field__value">Direct</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+          </div>
+
+          <div class="rec-field-row">
+            <div class="rec-field">
+              <span class="rec-field__label">Contact Owner</span>
+              <span class="rec-field__value">JD</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+            <div class="rec-field">
+              <span class="rec-field__label">Created Date</span>
+              <span class="rec-field__value">Jan 10, 2025</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+          </div>
+
+          <div class="rec-field-row">
+            <div class="rec-field">
+              <span class="rec-field__label">Last Modified</span>
+              <span class="rec-field__value">Mar 5, 2026</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+            <div class="rec-field">
+              <span class="rec-field__label">Description</span>
+              <span class="rec-field__value" style="color:var(--color-text-muted)">—</span>
+              <span class="rec-field__edit">✎</span>
+            </div>
+          </div>
+        </div><!-- /Contact Information -->
+
+      </div><!-- /rec-main -->
+
+      <!-- Right sidebar -->
+      <div class="rec-sidebar">
+
+        <!-- AgentSync Data Sync -->
+        <div class="rec-card">
+          <div class="rec-card__header">
+            <span class="rec-card__title">AgentSync Data Sync</span>
+            <a class="rec-card__link">Download Producer Detail Report</a>
+          </div>
+          <div class="sync-row">
+            <div class="sync-col">
+              <div class="sync-nipr-name">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                NIPR
+              </div>
+              <div class="sync-npn">NPN: —</div>
+            </div>
+            <div class="sync-col">
+              <div class="sync-label">NIPR Status</div>
+              <div class="sync-value">
+                <span class="sync-dot"></span>
+                Linked
+              </div>
+              <div style="height:6px"></div>
+              <div class="sync-label">NIPR Tracking</div>
+              <div class="sync-value">
+                <div class="sync-toggle"></div>
+                Active
+              </div>
+            </div>
+            <div>
+              <button class="lv-btn lv-btn--outline" style="height:26px;font-size:var(--font-size-xs)">Refresh</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Logs -->
+        <div class="rec-card">
+          <div class="rec-card__header">
+            <span class="rec-card__title">Audit Logs</span>
+            <a class="rec-card__link">View All</a>
+          </div>
+          <div class="audit-entry">
+            <div class="audit-entry__meta">Mar 5, 2026 · JD</div>
+            <div class="audit-entry__desc">Contact record updated — title changed to Account Executive</div>
+          </div>
+          <div class="audit-entry">
+            <div class="audit-entry__meta">Feb 14, 2026 · System</div>
+            <div class="audit-entry__desc">AgentSync data sync completed — account linkage verified</div>
+          </div>
+          <div class="audit-entry">
+            <div class="audit-entry__meta">Jan 22, 2026 · JD</div>
+            <div class="audit-entry__desc">Email address updated</div>
+          </div>
+          <div class="audit-entry">
+            <div class="audit-entry__meta">Jan 10, 2025 · System</div>
+            <div class="audit-entry__desc">Contact record created via account import</div>
+          </div>
+        </div>
+
+      </div><!-- /rec-sidebar -->
+
+    </div><!-- /rec-content -->
+
+  </div><!-- /ms-body -->
+
+  <!-- Invite to Partner Portal Modal -->
+  <div id="invite-partner-overlay"
+    onclick="if(event.target===this)closeInvitePartnerModal()"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
+    z-index:9000;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:8px;width:100%;max-width:480px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.18);overflow:hidden;">
+      <div style="padding:24px 28px 0;">
+        <div style="font-size:18px;font-weight:700;color:#181818;
+          margin-bottom:4px;">Invite to Partner Portal</div>
+        <div style="font-size:13px;color:#666;margin-bottom:20px;">
+          Globe Life Insurance</div>
+
+        <!-- Role -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:12px;font-weight:600;
+            color:#444;margin-bottom:6px;">Role</label>
+          <select style="width:100%;padding:8px 10px;border:1px solid #ddd;
+            border-radius:4px;font-size:14px;color:#181818;">
+            <option>-- Select role --</option>
+            <option>Operations Manager</option>
+            <option>Producer</option>
+            <option>Compliance Officer</option>
+          </select>
+          <div style="font-size:11px;color:#888;margin-top:4px;">
+            Determines what this person can see and do in Onboarding</div>
+        </div>
+
+        <!-- Firm Policy Set -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:12px;font-weight:600;
+            color:#444;margin-bottom:8px;">Firm Policy Set</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <label style="display:flex;align-items:center;gap:6px;
+              padding:6px 12px;border:2px solid #0176d3;border-radius:20px;
+              background:#e8f4fd;cursor:pointer;font-size:13px;font-weight:600;
+              color:#0176d3;">
+              <input type="checkbox" checked disabled
+                style="accent-color:#0176d3;width:13px;height:13px;">
+              Partner Onboarding
+              <span style="font-size:10px;background:#0176d3;color:#fff;
+                border-radius:4px;padding:1px 5px;margin-left:2px;">Required</span>
+            </label>
+          </div>
+          <div style="font-size:11px;color:#888;margin-top:6px;">
+            Policy sets applied to this firm's onboarding</div>
+        </div>
+
+        <!-- Also a producer checkbox -->
+        <div style="margin-bottom:8px;">
+          <label style="display:flex;align-items:center;gap:8px;
+            cursor:pointer;font-size:13px;font-weight:600;color:#181818;">
+            <input type="checkbox" id="contact-also-producer-check"
+              onchange="toggleContactProducerPS()"
+              style="width:15px;height:15px;cursor:pointer;">
+            This person is also a producer
+          </label>
+        </div>
+
+        <!-- Producer policy set -->
+        <div id="contact-producer-ps-wrap" style="display:none;
+          margin-bottom:16px;">
+          <div style="padding:12px;background:#f8f9fa;border-radius:6px;
+            border:1px solid #e9ecef;">
+            <label style="display:block;font-size:12px;font-weight:600;
+              color:#444;margin-bottom:8px;">Producer Policy Set
+              <span style="font-weight:400;color:#888;margin-left:4px;">
+                (select all that apply)</span>
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="contact-prod-ah-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('contact-prod-ah-label')"
+                  style="width:13px;height:13px;">
+                Accident &amp; Health — Producer Onboarding
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="contact-prod-hl-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('contact-prod-hl-label')"
+                  style="width:13px;height:13px;">
+                Health &amp; Life — Producer Onboarding
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="contact-prod-life-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('contact-prod-life-label')"
+                  style="width:13px;height:13px;">
+                Life — Producer Onboarding
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="padding:16px 28px;border-top:1px solid #eee;
+        display:flex;justify-content:flex-end;gap:10px;">
+        <button onclick="closeInvitePartnerModal()"
+          style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;
+          background:#fff;font-size:13px;font-weight:600;cursor:pointer;">
+          Cancel
+        </button>
+        <button onclick="closeInvitePartnerModal()"
+          style="padding:8px 18px;border:none;border-radius:4px;
+          background:#0176d3;color:#fff;font-size:13px;
+          font-weight:600;cursor:pointer;">
+          Send Invite
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /ms-shell -->

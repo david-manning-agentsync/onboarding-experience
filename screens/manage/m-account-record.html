@@ -712,7 +712,8 @@
         <div class="ms-nav__tab ms-nav__tab--dim">Contacts <span class="ms-nav__caret">▾</span></div>
         <div class="ms-nav__tab active" onclick="go('screen-m-accounts')">Accounts <span class="ms-nav__caret">▾</span></div>
         <div class="ms-nav__tab ms-nav__tab--dim">People <span class="ms-nav__caret">▾</span></div>
-        <div class="ms-nav__tab ms-nav__tab--dim">Producer Details <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab" onclick="go('screen-m-producer-detail-record')">Producer Details <span class="ms-nav__caret">▾</span></div>
+        <div class="ms-nav__tab context-agency-only" onclick="go('screen-m-onboarding-tasks')">Onboarding Tasks</div>
         <div class="ms-nav__tab ms-nav__tab--dim">Producer Assignments <span class="ms-nav__caret">▾</span></div>
         <div class="ms-nav__tab ms-nav__tab--dim">Producer Compliance... <span class="ms-nav__caret">▾</span></div>
         <div class="ms-nav__tab" onclick="go('screen-m-policysets')">Policy Sets <span class="ms-nav__caret">▾</span></div>
@@ -745,7 +746,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="2" width="6" height="4" rx="1"/><rect x="2" y="18" width="6" height="4" rx="1"/><rect x="16" y="18" width="6" height="4" rx="1"/><path d="M12 6v4M5 18v-4h14v4"/></svg>
           </button>
           <button class="rec-btn">+ Follow</button>
-          <button class="rec-btn" onclick="go('screen-m-invite')">Onboard Firm</button>
+          <button class="rec-btn btn-onboard-firm" onclick="openOnboardModal()">Onboard Firm</button>
           <button class="rec-btn">Appoint</button>
           <button class="rec-btn">Terminate</button>
           <button class="rec-btn">
@@ -910,12 +911,13 @@
           <a class="rec-card__add-link">+ Add</a>
         </div><!-- /Account Detail card -->
 
-        <!-- Related list: Producers -->
+        <!-- Related list: Contacts -->
         <div class="rec-card rec-related">
           <div class="rec-related-header">
-            <span class="rec-card__title">Producers (142)</span>
+            <span class="rec-card__title">Contacts (6)</span>
             <div class="rec-related-header-right">
-              <button class="lv-btn lv-btn--outline" onclick="go('screen-m-invite')">New</button>
+              <button class="lv-btn lv-btn--outline"
+                onclick="openInvitePartnerModal()">Invite to Partner Portal</button>
               <a class="rec-card__link">View All</a>
             </div>
           </div>
@@ -925,10 +927,9 @@
                 <th class="th-num"></th>
                 <th class="th-chk"><input type="checkbox"></th>
                 <th style="min-width:200px"><div class="th-sort">Name <span class="sort-caret">▾</span></div></th>
-                <th style="width:110px"><div class="th-sort">NPN <span class="sort-caret">▾</span></div></th>
-                <th style="width:110px"><div class="th-sort">Status <span class="sort-caret">▾</span></div></th>
-                <th style="width:140px"><div class="th-sort">Readiness <span class="sort-caret">▾</span></div></th>
-                <th style="width:120px"><div class="th-sort">Invited <span class="sort-caret">▾</span></div></th>
+                <th style="min-width:200px"><div class="th-sort">Account <span class="sort-caret">▾</span></div></th>
+                <th style="width:190px"><div class="th-sort">Title <span class="sort-caret">▾</span></div></th>
+                <th style="width:140px"><div class="th-sort">Phone <span class="sort-caret">▾</span></div></th>
                 <th class="td-action"></th>
               </tr>
             </thead>
@@ -936,56 +937,60 @@
               <tr>
                 <td class="td-num">1</td>
                 <td class="td-chk"><input type="checkbox" onclick="event.stopPropagation()"></td>
-                <td><a class="td-link">Claire Sutton</a></td>
-                <td>18472910</td>
-                <td><span class="pill pill--active">Active</span></td>
-                <td><span class="pill pill--warning">Needs LOAs</span></td>
-                <td>Mar 3, 2026</td>
+                <td><a class="td-link" onclick="go('screen-m-contact-record')">Sarah Chen</a></td>
+                <td><a class="td-link">Nationwide Brokers Group</a></td>
+                <td>Account Executive</td>
+                <td>(303) 555-0191</td>
                 <td class="td-action"><button class="row-action-btn" onclick="event.stopPropagation()">▼</button></td>
               </tr>
               <tr>
                 <td class="td-num">2</td>
                 <td class="td-chk"><input type="checkbox" onclick="event.stopPropagation()"></td>
-                <td><a class="td-link">Marcus Webb</a></td>
-                <td>29183740</td>
-                <td><span class="pill pill--active">Active</span></td>
-                <td><span class="pill pill--active">Sell-Ready</span></td>
-                <td>Feb 15, 2026</td>
+                <td><a class="td-link" onclick="go('screen-m-contact-record')">Mike Torres</a></td>
+                <td><a class="td-link">Nationwide Brokers Group</a></td>
+                <td>Compliance Manager</td>
+                <td>(303) 555-0203</td>
                 <td class="td-action"><button class="row-action-btn" onclick="event.stopPropagation()">▼</button></td>
               </tr>
               <tr>
                 <td class="td-num">3</td>
                 <td class="td-chk"><input type="checkbox" onclick="event.stopPropagation()"></td>
-                <td><a class="td-link">Priya Nair</a></td>
-                <td>38291047</td>
-                <td><span class="pill pill--warning">In Progress</span></td>
-                <td><span class="pill pill--warning">Pending E&amp;O</span></td>
-                <td>Mar 1, 2026</td>
+                <td><a class="td-link">Lisa Park</a></td>
+                <td><a class="td-link">Nationwide Brokers Group</a></td>
+                <td>Operations Director</td>
+                <td>(303) 555-0247</td>
                 <td class="td-action"><button class="row-action-btn" onclick="event.stopPropagation()">▼</button></td>
               </tr>
               <tr>
                 <td class="td-num">4</td>
                 <td class="td-chk"><input type="checkbox" onclick="event.stopPropagation()"></td>
-                <td><a class="td-link">Derek Osei</a></td>
-                <td>47102938</td>
-                <td><span class="pill pill--active">Active</span></td>
-                <td><span class="pill pill--active">Sell-Ready</span></td>
-                <td>Jan 28, 2026</td>
+                <td><a class="td-link">James O'Brien</a></td>
+                <td><a class="td-link">Nationwide Brokers Group</a></td>
+                <td>Senior Broker</td>
+                <td>(303) 555-0288</td>
                 <td class="td-action"><button class="row-action-btn" onclick="event.stopPropagation()">▼</button></td>
               </tr>
               <tr>
                 <td class="td-num">5</td>
                 <td class="td-chk"><input type="checkbox" onclick="event.stopPropagation()"></td>
-                <td><a class="td-link">Tanya Brooks</a></td>
-                <td>56291830</td>
-                <td><span class="pill pill--inactive">Inactive</span></td>
-                <td><span class="pill pill--inactive">—</span></td>
-                <td>Dec 10, 2025</td>
+                <td><a class="td-link">Jennifer Walsh</a></td>
+                <td><a class="td-link">Summit Financial Partners</a></td>
+                <td>Operations Manager</td>
+                <td>(415) 555-0274</td>
+                <td class="td-action"><button class="row-action-btn" onclick="event.stopPropagation()">▼</button></td>
+              </tr>
+              <tr>
+                <td class="td-num">6</td>
+                <td class="td-chk"><input type="checkbox" onclick="event.stopPropagation()"></td>
+                <td><a class="td-link">Claire Sutton</a></td>
+                <td><a class="td-link">Summit Financial Partners</a></td>
+                <td>Senior Agent</td>
+                <td>(415) 555-0302</td>
                 <td class="td-action"><button class="row-action-btn" onclick="event.stopPropagation()">▼</button></td>
               </tr>
             </tbody>
           </table>
-        </div><!-- /Related producers -->
+        </div><!-- /Related contacts -->
 
       </div><!-- /rec-main -->
 
@@ -1035,27 +1040,27 @@
             <a class="rec-card__link" onclick="go('screen-m-policysets')">View All</a>
           </div>
 
-          <div class="ps-list-section">Producer</div>
-          <div class="ps-list-row">
-            <a class="ps-list-name" onclick="go('screen-m-policysets')">Standard Agent Onboarding</a>
-            <span class="ps-req-tag ps-req-tag--required">Required</span>
-            <span class="pill pill--active">Active</span>
-          </div>
-          <div class="ps-list-row">
-            <a class="ps-list-name" onclick="go('screen-m-policysets')">Background Check — Tier 1</a>
-            <span class="ps-req-tag">Optional</span>
-            <span class="pill pill--active">Active</span>
-          </div>
           <div class="ps-list-section">Firm</div>
           <div class="ps-list-row">
-            <a class="ps-list-name" onclick="go('screen-m-policysets')">E&amp;O Insurance Verification</a>
+            <a class="ps-list-name" onclick="go('screen-m-policysets')">Partner Onboarding</a>
             <span class="ps-req-tag ps-req-tag--required">Required</span>
             <span class="pill pill--active">Active</span>
           </div>
+          <div class="ps-list-section">Producer</div>
           <div class="ps-list-row">
-            <a class="ps-list-name" onclick="go('screen-m-policysets')">Globe Life — Custom LOA Requirements</a>
+            <a class="ps-list-name" onclick="go('screen-m-policysets')">Life — Producer Onboarding</a>
             <span class="ps-req-tag">Optional</span>
-            <span class="pill pill--draft">Draft</span>
+            <span class="pill pill--active">Active</span>
+          </div>
+          <div class="ps-list-row">
+            <a class="ps-list-name" onclick="go('screen-m-policysets')">Health &amp; Life — Producer Onboarding</a>
+            <span class="ps-req-tag">Optional</span>
+            <span class="pill pill--active">Active</span>
+          </div>
+          <div class="ps-list-row">
+            <a class="ps-list-name" onclick="go('screen-m-policysets')">Accident &amp; Health — Producer Onboarding</a>
+            <span class="ps-req-tag">Optional</span>
+            <span class="pill pill--active">Active</span>
           </div>
 
           <div class="ps-list-footer">
@@ -1068,5 +1073,277 @@
     </div><!-- /rec-content -->
 
   </div><!-- /ms-body -->
+
+  <!-- Invite to Partner Portal Modal -->
+  <div id="invite-partner-overlay"
+    onclick="if(event.target===this)closeInvitePartnerModal()"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
+    z-index:9000;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:8px;width:100%;max-width:540px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.18);overflow:hidden;
+      max-height:90vh;display:flex;flex-direction:column;">
+      <div style="padding:24px 28px 0;overflow-y:auto;flex:1;">
+        <div style="font-size:18px;font-weight:700;color:#181818;
+          margin-bottom:4px;">Invite to Partner Portal</div>
+        <div style="font-size:13px;color:#666;margin-bottom:20px;">
+          Nationwide Brokers Group</div>
+
+        <!-- Role -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:12px;font-weight:600;
+            color:#444;margin-bottom:6px;">Role
+            <span style="color:#e53e3e;">*</span></label>
+          <select style="width:100%;padding:8px 10px;border:1px solid #ddd;
+            border-radius:4px;font-size:14px;color:#181818;">
+            <option>-- Select role --</option>
+            <option>Operations Manager</option>
+            <option>Producer</option>
+            <option>Compliance Officer</option>
+          </select>
+          <div style="font-size:11px;color:#888;margin-top:4px;">
+            Determines what this person can see and do in Onboarding</div>
+        </div>
+
+        <!-- Also a producer checkbox -->
+        <div style="margin-bottom:16px;">
+          <label style="display:flex;align-items:center;gap:8px;
+            cursor:pointer;font-size:13px;font-weight:600;color:#181818;">
+            <input type="checkbox" id="contact-also-producer-check"
+              onchange="toggleContactProducerPS()"
+              style="width:15px;height:15px;cursor:pointer;">
+            This contact is also a producer
+          </label>
+        </div>
+
+        <!-- Producer policy set — hidden until checkbox checked -->
+        <div id="contact-producer-ps-wrap" style="display:none;margin-bottom:16px;">
+          <div style="padding:12px;background:#f8f9fa;border-radius:6px;
+            border:1px solid #e9ecef;">
+            <label style="display:block;font-size:12px;font-weight:600;
+              color:#444;margin-bottom:8px;">Producer Policy Set
+              <span style="font-weight:400;color:#888;margin-left:4px;">
+                (select all that apply)</span>
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="cp-ah-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('cp-ah-label')"
+                  style="width:13px;height:13px;">
+                Accident &amp; Health — Producer Onboarding
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="cp-hl-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('cp-hl-label')"
+                  style="width:13px;height:13px;">
+                Health &amp; Life — Producer Onboarding
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="cp-life-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('cp-life-label')"
+                  style="width:13px;height:13px;">
+                Life — Producer Onboarding
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="padding:16px 28px;border-top:1px solid #eee;
+        display:flex;justify-content:flex-end;gap:10px;">
+        <button onclick="closeInvitePartnerModal()"
+          style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;
+          background:#fff;font-size:13px;font-weight:600;cursor:pointer;">
+          Cancel
+        </button>
+        <button onclick="closeInvitePartnerModal()"
+          style="padding:8px 18px;border:none;border-radius:4px;
+          background:#0176d3;color:#fff;font-size:13px;
+          font-weight:600;cursor:pointer;">
+          Send Invite
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Onboard Firm Modal -->
+  <div id="onboard-firm-overlay"
+    onclick="if(event.target===this)closeOnboardModal()"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
+    z-index:9000;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:8px;width:100%;max-width:560px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.18);overflow:hidden;
+      max-height:90vh;display:flex;flex-direction:column;">
+      <div style="padding:24px 28px 0;overflow-y:auto;flex:1;">
+        <div style="font-size:18px;font-weight:700;color:#181818;
+          margin-bottom:4px;">Invite Onboarding Partner</div>
+        <div style="font-size:13px;color:#666;margin-bottom:20px;">
+          Globe Life Insurance</div>
+
+        <!-- Select contact -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:12px;font-weight:600;
+            color:#444;margin-bottom:6px;">Select Existing Contact</label>
+          <select style="width:100%;padding:8px 10px;border:1px solid #ddd;
+            border-radius:4px;font-size:14px;color:#181818;">
+            <option>-- Search contacts --</option>
+            <option>Claire Sutton</option>
+            <option>Marcus Webb</option>
+            <option>Priya Nair</option>
+            <option>Diego Flores</option>
+            <option>Lena Kim</option>
+            <option>James O'Brien</option>
+          </select>
+        </div>
+
+        <!-- OR divider -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="flex:1;height:1px;background:#eee;"></div>
+          <span style="font-size:11px;font-weight:700;color:#999;
+            letter-spacing:0.06em;">OR INVITE A NEW CONTACT</span>
+          <div style="flex:1;height:1px;background:#eee;"></div>
+        </div>
+
+        <!-- Name fields -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;
+          margin-bottom:16px;">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;
+              color:#444;margin-bottom:6px;">First Name</label>
+            <input type="text" placeholder="First name"
+              style="width:100%;padding:8px 10px;border:1px solid #ddd;
+              border-radius:4px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;
+              color:#444;margin-bottom:6px;">Last Name</label>
+            <input type="text" placeholder="Last name"
+              style="width:100%;padding:8px 10px;border:1px solid #ddd;
+              border-radius:4px;font-size:14px;box-sizing:border-box;">
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:12px;font-weight:600;
+            color:#444;margin-bottom:6px;">Email <span style="color:#e53e3e;">*</span></label>
+          <input type="email" placeholder="partner@example.com"
+            style="width:100%;padding:8px 10px;border:1px solid #ddd;
+            border-radius:4px;font-size:14px;box-sizing:border-box;">
+        </div>
+
+        <!-- Role -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:12px;font-weight:600;
+            color:#444;margin-bottom:6px;">Role</label>
+          <select style="width:100%;padding:8px 10px;border:1px solid #ddd;
+            border-radius:4px;font-size:14px;color:#181818;">
+            <option>-- Select role --</option>
+            <option>Agency Owner</option>
+            <option>Agency Admin</option>
+            <option>Principal</option>
+          </select>
+          <div style="font-size:11px;color:#888;margin-top:4px;">
+            Determines what this person can see and do in Onboarding</div>
+        </div>
+
+        <!-- Firm Policy Set -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:12px;font-weight:600;
+            color:#444;margin-bottom:8px;">Firm Policy Set</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <label style="display:flex;align-items:center;gap:6px;
+              padding:6px 12px;border:2px solid #0176d3;border-radius:20px;
+              background:#e8f4fd;cursor:pointer;font-size:13px;font-weight:600;
+              color:#0176d3;">
+              <input type="checkbox" checked disabled
+                style="accent-color:#0176d3;width:13px;height:13px;">
+              Partner Onboarding
+              <span style="font-size:10px;background:#0176d3;color:#fff;
+                border-radius:4px;padding:1px 5px;margin-left:2px;">Required</span>
+            </label>
+          </div>
+          <div style="font-size:11px;color:#888;margin-top:6px;">
+            Policy sets applied to this firm's onboarding</div>
+        </div>
+
+        <!-- Also a producer checkbox -->
+        <div style="margin-bottom:8px;">
+          <label style="display:flex;align-items:center;gap:8px;
+            cursor:pointer;font-size:13px;font-weight:600;color:#181818;">
+            <input type="checkbox" id="also-producer-check"
+              onchange="toggleProducerPolicySet()"
+              style="width:15px;height:15px;cursor:pointer;">
+            This person is also a producer
+          </label>
+        </div>
+
+        <!-- Producer policy set — hidden until checkbox checked -->
+        <div id="producer-ps-wrap" style="display:none;margin-bottom:16px;">
+          <div style="padding:12px;background:#f8f9fa;border-radius:6px;
+            border:1px solid #e9ecef;">
+            <label style="display:block;font-size:12px;font-weight:600;
+              color:#444;margin-bottom:8px;">Producer Policy Set
+              <span style="font-weight:400;color:#888;margin-left:4px;">
+                (select all that apply)</span>
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="prod-ah-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('prod-ah-label')"
+                  style="width:13px;height:13px;">
+                Accident &amp; Health — Producer Onboarding
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="prod-hl-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('prod-hl-label')"
+                  style="width:13px;height:13px;">
+                Health &amp; Life — Producer Onboarding
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;
+                padding:6px 12px;border:1px solid #ddd;border-radius:20px;
+                background:#fff;cursor:pointer;font-size:13px;color:#444;"
+                id="prod-life-label">
+                <input type="checkbox"
+                  onchange="toggleChipStyle('prod-life-label')"
+                  style="width:13px;height:13px;">
+                Life — Producer Onboarding
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="padding:16px 28px;border-top:1px solid #eee;
+        display:flex;justify-content:flex-end;gap:10px;">
+        <button onclick="closeOnboardModal()"
+          style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;
+          background:#fff;font-size:13px;font-weight:600;cursor:pointer;">
+          Cancel
+        </button>
+        <button onclick="closeOnboardModal()"
+          style="padding:8px 18px;border:none;border-radius:4px;
+          background:#0176d3;color:#fff;font-size:13px;
+          font-weight:600;cursor:pointer;">
+          Send Invite
+        </button>
+      </div>
+    </div>
+  </div>
+
 
 </div><!-- /ms-shell -->
