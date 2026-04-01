@@ -723,8 +723,7 @@
 (function() {
   function initSigCanvas() {
     const canvas = document.getElementById('sig-canvas');
-    if (!canvas || canvas.dataset.init) return;
-    canvas.dataset.init = '1';
+    if (!canvas) return;
 
     function resize() {
       const rect = canvas.getBoundingClientRect();
@@ -746,7 +745,11 @@
       ctx.fillText('Draw your signature here', rect.width / 2, rect.height / 2);
     }
 
-    resize();
+    resize(); // Always re-check dimensions (canvas may now be visible)
+
+    if (canvas.dataset.init) return; // Only attach listeners once
+    canvas.dataset.init = '1';
+
     window.addEventListener('resize', resize);
 
     let drawing = false;
@@ -814,6 +817,8 @@
     }
     drawPlaceholder(ctx, rect);
   };
+
+  window.initSigCanvas = initSigCanvas;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initSigCanvas);
