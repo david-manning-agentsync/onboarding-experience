@@ -881,123 +881,194 @@
   </div>
 </div>
 
-<!-- Onboard as Producer Modal (Agency SFDC) -->
+<!-- Onboard as Producer Drawer (Agency SFDC) -->
 <div id="onboard-producer-overlay"
   onclick="if(event.target===this)closeOnboardProducerModal()"
-  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
-  z-index:9000;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:8px;width:100%;max-width:680px;
-    max-height:90vh;display:flex;flex-direction:column;
-    box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9000;">
+</div>
+<div id="onboard-producer-drawer"
+  style="display:none;position:fixed;top:0;right:0;bottom:0;width:560px;
+  background:#fff;z-index:9001;flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,0.15);overflow:hidden;">
 
-    <!-- Header -->
-    <div style="padding:24px 28px 16px;border-bottom:1px solid #eee;
-      display:flex;align-items:center;justify-content:space-between;
-      flex-shrink:0;">
-      <div style="font-size:18px;font-weight:700;color:#181818;">
-        Invite a Producer</div>
-      <button onclick="closeOnboardProducerModal()"
-        style="background:none;border:none;font-size:20px;cursor:pointer;
-        color:#666;line-height:1;">×</button>
-    </div>
-
-    <!-- Scrollable content -->
-    <div style="padding:24px 28px;overflow-y:auto;flex:1;">
-
-      <!-- Role -->
-      <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:12px;font-weight:600;
-          color:#444;margin-bottom:6px;">Role
-          <span style="color:#e53e3e;">*</span></label>
-        <select style="width:100%;padding:8px 10px;border:1px solid #ddd;
-          border-radius:4px;font-size:14px;color:#181818;">
-          <option>-- Select role --</option>
-          <option>Producer</option>
-          <option>Principal Agent</option>
-        </select>
-        <div style="font-size:11px;color:#888;margin-top:4px;">
-          Determines onboarding requirements and policy set eligibility
-        </div>
-      </div>
-
-      <!-- Policy Set Assignment -->
+  <!-- Header -->
+  <div style="padding:20px 24px 16px;border-bottom:1px solid #e5e5e5;flex-shrink:0;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;">
       <div>
-        <div style="font-size:11px;font-weight:700;color:#666;
-          text-transform:uppercase;letter-spacing:0.05em;
-          margin-bottom:4px;">Policy Set Assignment</div>
-        <p style="font-size:12px;color:#888;margin-bottom:14px;">
-          Required policy sets are applied automatically.
-          Add optional sets as needed.</p>
+        <div style="font-size:17px;font-weight:700;color:#181818;">Onboard as Producer</div>
+        <div id="opd-contact-count" style="font-size:12px;color:#666;margin-top:2px;"></div>
+      </div>
+      <button onclick="closeOnboardProducerModal()"
+        style="background:none;border:none;cursor:pointer;color:#666;padding:2px;line-height:1;font-size:20px;margin-top:-2px;">×</button>
+    </div>
+  </div>
 
-        <!-- Auto Applied -->
-        <div style="margin-bottom:14px;">
-          <div style="font-size:10px;font-weight:700;color:#999;
-            text-transform:uppercase;letter-spacing:0.06em;
-            margin-bottom:8px;">Auto Applied</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <span style="display:inline-flex;align-items:center;
-              gap:4px;padding:4px 12px;background:#dbeafe;
-              color:#1d4ed8;border-radius:20px;font-size:12px;
-              font-weight:600;">Standard Agent Onboarding</span>
-          </div>
-        </div>
+  <!-- Scrollable body -->
+  <div style="flex:1;overflow-y:auto;padding:20px 24px;">
 
-        <!-- Optional -->
+    <!-- Section 1: Required Policy Set -->
+    <div style="margin-bottom:24px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#888;margin-bottom:8px;">Required</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f0f4ff;border:1px solid #c7d7ff;border-radius:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span style="font-size:13px;font-weight:600;color:#1d4ed8;flex:1;">NAIC &amp; Resident State Baseline</span>
+        <span style="font-size:10px;font-weight:600;color:#1d4ed8;background:#dbeafe;padding:2px 7px;border-radius:10px;">Always applied</span>
+      </div>
+      <div style="font-size:11px;color:#888;margin-top:6px;padding-left:2px;">Uniform background questions and resident state requirements. Always applied.</div>
+    </div>
+
+    <!-- Section 2: Producer Assignment Scope -->
+    <div style="margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid #eee;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#888;margin-bottom:8px;">Producer Assignment Scope</div>
+      <div style="font-size:12px;color:#666;margin-bottom:12px;">Apply the licensing scope already defined for each contact. Contacts without a producer assignment will only receive what's configured above.</div>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="opd-pa-checkbox" checked
+          style="width:14px;height:14px;margin-top:1px;flex-shrink:0;"
+          onchange="opdUpdatePASummary()">
         <div>
-          <div style="font-size:10px;font-weight:700;color:#999;
-            text-transform:uppercase;letter-spacing:0.06em;
-            margin-bottom:8px;">Optional</div>
-          <div style="padding:8px 0;border-bottom:1px solid #eee;
-            display:flex;align-items:center;gap:8px;font-size:13px;">
-            <input type="checkbox" id="agency-opt-principal"
-              style="width:13px;height:13px;">
-            <label for="agency-opt-principal" style="cursor:pointer;">
-              Principal Agent Onboarding</label>
-          </div>
-          <div style="padding:8px 0;border-bottom:1px solid #eee;
-            display:flex;align-items:center;gap:8px;font-size:13px;">
-            <input type="checkbox" id="agency-opt-carrier-a"
-              style="width:13px;height:13px;">
-            <label for="agency-opt-carrier-a"
-              style="cursor:pointer;display:flex;align-items:center;gap:6px;">
-              Carrier A — Producer Onboarding
-              <span style="font-size:10px;font-weight:700;color:#7c3aed;
-                background:#f5f3ff;border:1px solid #ddd6fe;
-                border-radius:4px;padding:1px 5px;">Contracting</span>
-            </label>
-          </div>
-          <div style="padding:8px 0;display:flex;align-items:center;
-            gap:8px;font-size:13px;">
-            <input type="checkbox" id="agency-opt-carrier-z"
-              style="width:13px;height:13px;">
-            <label for="agency-opt-carrier-z"
-              style="cursor:pointer;display:flex;align-items:center;gap:6px;">
-              Carrier Z — Producer Onboarding
-              <span style="font-size:10px;font-weight:700;color:#7c3aed;
-                background:#f5f3ff;border:1px solid #ddd6fe;
-                border-radius:4px;padding:1px 5px;">Contracting</span>
-            </label>
-          </div>
+          <div style="font-size:13px;font-weight:600;color:#181818;">Apply existing producer assignment scope</div>
+          <div id="opd-pa-summary" style="font-size:11px;color:#888;margin-top:3px;"></div>
+        </div>
+      </label>
+    </div>
+
+    <!-- Section 3: Additional Scope -->
+    <div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#888;margin-bottom:4px;">Additional Scope</div>
+      <div style="font-size:12px;color:#666;margin-bottom:14px;">Optional. Extend onboarding beyond the baseline and assignment scope.</div>
+
+      <!-- Tab toggle -->
+      <div style="display:flex;gap:0;border:1px solid #ddd;border-radius:6px;overflow:hidden;margin-bottom:16px;width:fit-content;">
+        <button id="opd-tab-defined" onclick="opdSwitchTab('defined')"
+          style="padding:6px 16px;font-size:12px;font-weight:600;border:none;cursor:pointer;
+          background:#0176d3;color:#fff;">Defined Policy Set</button>
+        <button id="opd-tab-adhoc" onclick="opdSwitchTab('adhoc')"
+          style="padding:6px 16px;font-size:12px;font-weight:600;border:none;cursor:pointer;
+          background:#fff;color:#444;border-left:1px solid #ddd;">Ad-hoc Scope</button>
+      </div>
+
+      <!-- Tab: Defined Policy Sets -->
+      <div id="opd-panel-defined">
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;font-size:13px;">
+            <input type="checkbox" style="width:13px;height:13px;">
+            Standard Agent Onboarding
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;font-size:13px;">
+            <input type="checkbox" style="width:13px;height:13px;">
+            Principal Agent Onboarding
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;font-size:13px;">
+            <input type="checkbox" style="width:13px;height:13px;">
+            <span style="flex:1;">Carrier A — Producer Onboarding</span>
+            <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;">Contracting</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer;font-size:13px;">
+            <input type="checkbox" style="width:13px;height:13px;">
+            <span style="flex:1;">Carrier Z — Producer Onboarding</span>
+            <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;">Contracting</span>
+          </label>
         </div>
       </div>
 
+      <!-- Tab: Ad-hoc Scope -->
+      <div id="opd-panel-adhoc" style="display:none;">
+        <div onclick="opdOpenAdhoc()"
+          style="display:flex;align-items:center;justify-content:space-between;
+          padding:11px 14px;border:1px solid #ddd;border-radius:6px;cursor:pointer;
+          background:#fafafa;">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#181818;">Configure scope</div>
+            <div id="opd-adhoc-summary" style="font-size:11px;color:#888;margin-top:2px;">No scope defined</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="padding:14px 24px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:#fff;">
+    <button onclick="closeOnboardProducerModal()"
+      style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#444;">
+      Cancel
+    </button>
+    <button onclick="closeOnboardProducerModal();showToast('Invites sent to producers')"
+      style="padding:8px 18px;border:none;border-radius:4px;background:#0176d3;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">
+      Send Invite
+    </button>
+  </div>
+</div>
+
+<!-- Ad-hoc Scope drill-down panel -->
+<div id="opd-adhoc-overlay"
+  style="display:none;position:fixed;inset:0;z-index:9002;">
+</div>
+<div id="opd-adhoc-panel"
+  style="display:none;position:fixed;top:0;right:0;bottom:0;width:560px;
+  background:#fff;z-index:9003;flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,0.18);overflow:hidden;">
+
+  <!-- Header -->
+  <div style="padding:20px 24px 16px;border-bottom:1px solid #e5e5e5;flex-shrink:0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button onclick="opdCloseAdhoc()"
+          style="background:none;border:none;cursor:pointer;padding:2px;color:#444;display:flex;align-items:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="19 12 5 12"/><polyline points="11 18 5 12 11 6"/></svg>
+        </button>
+        <div style="font-size:16px;font-weight:700;color:#181818;">Ad-hoc Scope</div>
+      </div>
+      <button onclick="opdCloseAdhoc()"
+        style="background:none;border:none;cursor:pointer;color:#666;font-size:20px;line-height:1;">×</button>
+    </div>
+    <div style="font-size:12px;color:#888;margin-top:4px;padding-left:26px;">Define a custom scope for this onboarding.</div>
+  </div>
+
+  <!-- Scrollable body -->
+  <div style="flex:1;overflow-y:auto;padding:20px 24px;">
+
+    <!-- License Types -->
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">License Types</div>
+      <div id="opd-lt-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:0;"></div>
+      <div id="opd-lt-list"
+        style="border:1px solid #eee;border-radius:4px;padding:4px 0;">
+      </div>
     </div>
 
-    <!-- Footer -->
-    <div style="padding:16px 28px;border-top:1px solid #eee;
-      display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;">
-      <button onclick="closeOnboardProducerModal()"
-        style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;
-        background:#fff;font-size:13px;font-weight:600;cursor:pointer;">
-        Cancel
-      </button>
-      <button onclick="closeOnboardProducerModal()"
-        style="padding:8px 18px;border:none;border-radius:4px;
-        background:#0176d3;color:#fff;font-size:13px;
-        font-weight:600;cursor:pointer;">
-        Send Invite
-      </button>
+    <!-- States -->
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">States</div>
+      <div id="opd-states-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:0;"></div>
+      <input type="text" placeholder="Filter states..." oninput="opdFilterList('states', this.value)"
+        style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:12px;margin-bottom:6px;box-sizing:border-box;">
+      <div id="opd-states-list"
+        style="max-height:160px;overflow-y:auto;border:1px solid #eee;border-radius:4px;padding:4px 0;"></div>
     </div>
+
+    <!-- LOA Categories -->
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">LOA Categories</div>
+      <div id="opd-loa-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:0;"></div>
+      <input type="text" placeholder="Filter LOA categories..." oninput="opdFilterList('loas', this.value)"
+        style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:12px;margin-bottom:6px;box-sizing:border-box;">
+      <div id="opd-loa-list"
+        style="max-height:160px;overflow-y:auto;border:1px solid #eee;border-radius:4px;padding:4px 0;"></div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="padding:14px 24px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:#fff;">
+    <button onclick="opdCloseAdhoc()"
+      style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#444;">
+      Cancel
+    </button>
+    <button onclick="opdApplyAdhoc()"
+      style="padding:8px 18px;border:none;border-radius:4px;background:#0176d3;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">
+      Apply
+    </button>
   </div>
 </div>
 
@@ -1208,40 +1279,126 @@
 <div id="ps-add-overlay" onclick="prodHidePSModal()"></div>
 <div id="ps-add-drawer">
   <div class="psd-header">
-    <span class="psd-title" id="ps-add-drawer-title">Add Policy Set</span>
+    <span class="psd-title" id="ps-add-drawer-title">Add Scope</span>
     <button class="psd-close" onclick="prodHidePSModal()">
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>
     </button>
   </div>
+
   <div class="psd-body">
-    <p class="psd-sub">Select one or more optional policy sets to apply. Only policy sets marked Optional on this account are available here.</p>
-    <div class="psd-list" id="ps-add-drawer-list">
-      <label class="psd-option">
-        <input type="checkbox" value="life-producer-onboarding">
+    <p class="psd-sub" id="ps-add-drawer-sub">Extend the producer's onboarding scope with a defined policy set or a custom ad-hoc scope.</p>
+
+    <!-- Tab toggle -->
+    <div style="display:flex;gap:0;border:1px solid #ddd;border-radius:6px;overflow:hidden;margin-bottom:20px;width:fit-content;">
+      <button id="psd-tab-defined" onclick="psdSwitchTab('defined')"
+        style="padding:6px 16px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:#0176d3;color:#fff;">Defined Policy Set</button>
+      <button id="psd-tab-adhoc" onclick="psdSwitchTab('adhoc')"
+        style="padding:6px 16px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:#fff;color:#444;border-left:1px solid #ddd;">Ad-hoc Scope</button>
+    </div>
+
+    <!-- Panel: Defined Policy Sets -->
+    <div id="psd-panel-defined">
+      <div class="psd-list" id="ps-add-drawer-list">
+        <label class="psd-option">
+          <input type="checkbox" value="principal-agent-onboarding">
+          <div>
+            <div class="psd-opt-name">Principal Agent Onboarding</div>
+            <div class="psd-opt-desc">Onboarding requirements for principal agents managing sub-producers, including supervisory compliance and E&amp;O verification.</div>
+          </div>
+        </label>
+        <label class="psd-option">
+          <input type="checkbox" value="carrier-a-producer-onboarding">
+          <div>
+            <div class="psd-opt-name">Carrier A — Producer Onboarding <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;margin-left:4px;">Contracting</span></div>
+            <div class="psd-opt-desc">Carrier A-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
+          </div>
+        </label>
+        <label class="psd-option">
+          <input type="checkbox" value="carrier-z-producer-onboarding">
+          <div>
+            <div class="psd-opt-name">Carrier Z — Producer Onboarding <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;margin-left:4px;">Contracting</span></div>
+            <div class="psd-opt-desc">Carrier Z-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Panel: Ad-hoc Scope -->
+    <div id="psd-panel-adhoc" style="display:none;">
+      <div onclick="psdOpenAdhoc()"
+        style="display:flex;align-items:center;justify-content:space-between;
+        padding:11px 14px;border:1px solid #ddd;border-radius:6px;cursor:pointer;background:#fafafa;">
         <div>
-          <div class="psd-opt-name">Life — Producer Onboarding</div>
-          <div class="psd-opt-desc">Onboarding requirements for producers selling life insurance products, including license verification and appointment workflows.</div>
+          <div style="font-size:13px;font-weight:600;color:#181818;">Configure scope</div>
+          <div id="psd-adhoc-summary" style="font-size:11px;color:#888;margin-top:2px;">No scope defined</div>
         </div>
-      </label>
-      <label class="psd-option">
-        <input type="checkbox" value="health-life-producer-onboarding">
-        <div>
-          <div class="psd-opt-name">Health &amp; Life — Producer Onboarding</div>
-          <div class="psd-opt-desc">Combined health and life onboarding policy set covering dual-line producers with applicable state license and LOA requirements.</div>
-        </div>
-      </label>
-      <label class="psd-option">
-        <input type="checkbox" value="accident-health-producer-onboarding">
-        <div>
-          <div class="psd-opt-name">Accident &amp; Health — Producer Onboarding</div>
-          <div class="psd-opt-desc">Onboarding requirements for accident and health producers, including E&amp;O verification and state-specific compliance attestations.</div>
-        </div>
-      </label>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
     </div>
   </div>
+
   <div class="psd-footer">
     <button class="psd-cancel" onclick="prodHidePSModal()">Cancel</button>
-    <button class="psd-confirm" onclick="prodConfirmPS()">Apply Policy Sets</button>
+    <button class="psd-confirm" onclick="prodConfirmPS()">Apply</button>
+  </div>
+</div>
+
+<!-- Ad-hoc Scope drill-down for ps-add-drawer -->
+<div id="psd-adhoc-overlay" style="display:none;position:fixed;inset:0;z-index:9004;"></div>
+<div id="psd-adhoc-panel"
+  style="display:none;position:fixed;top:0;right:0;bottom:0;width:560px;
+  background:#fff;z-index:9005;flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,0.18);overflow:hidden;">
+
+  <div style="padding:20px 24px 16px;border-bottom:1px solid #e5e5e5;flex-shrink:0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button onclick="psdCloseAdhoc()"
+          style="background:none;border:none;cursor:pointer;padding:2px;color:#444;display:flex;align-items:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="19 12 5 12"/><polyline points="11 18 5 12 11 6"/></svg>
+        </button>
+        <div style="font-size:16px;font-weight:700;color:#181818;">Ad-hoc Scope</div>
+      </div>
+      <button onclick="psdCloseAdhoc()"
+        style="background:none;border:none;cursor:pointer;color:#666;font-size:20px;line-height:1;">×</button>
+    </div>
+    <div style="font-size:12px;color:#888;margin-top:4px;padding-left:26px;">Define a custom scope for this producer.</div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:20px 24px;">
+
+    <!-- License Types -->
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">License Types</div>
+      <div id="psd-lt-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:0;"></div>
+      <div id="psd-lt-list" style="border:1px solid #eee;border-radius:4px;padding:4px 0;"></div>
+    </div>
+
+    <!-- States -->
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">States</div>
+      <div id="psd-states-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:0;"></div>
+      <input type="text" placeholder="Filter states..." oninput="psdFilterList('states', this.value)"
+        style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:12px;margin-bottom:6px;box-sizing:border-box;">
+      <div id="psd-states-list" style="max-height:160px;overflow-y:auto;border:1px solid #eee;border-radius:4px;padding:4px 0;"></div>
+    </div>
+
+    <!-- LOA Categories -->
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">LOA Categories</div>
+      <div id="psd-loa-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:0;"></div>
+      <input type="text" placeholder="Filter LOA categories..." oninput="psdFilterList('loas', this.value)"
+        style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:12px;margin-bottom:6px;box-sizing:border-box;">
+      <div id="psd-loa-list" style="max-height:160px;overflow-y:auto;border:1px solid #eee;border-radius:4px;padding:4px 0;"></div>
+    </div>
+
+  </div>
+
+  <div style="padding:14px 24px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:#fff;">
+    <button onclick="psdCloseAdhoc()"
+      style="padding:8px 18px;border:1px solid #ddd;border-radius:4px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#444;">Cancel</button>
+    <button onclick="psdApplyAdhoc()"
+      style="padding:8px 18px;border:none;border-radius:4px;background:#0176d3;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Apply</button>
   </div>
 </div>
 
@@ -1458,14 +1615,202 @@
     if (el) el.style.display = 'none';
   }
 
+  // Producer Assignment mock data
+  const PRODUCER_ASSIGNMENTS = {
+    'Sarah Chen':     { states: ['CO', 'TX', 'CA'],         licenseTypes: ['Producer'],              loas: ['Life', 'Health'] },
+    'Mike Torres':    { states: ['FL', 'NY'],               licenseTypes: ['Producer'],              loas: ['Property', 'Casualty'] },
+    'Lisa Park':      null,
+    "James O'Brien":  { states: ['OH', 'PA', 'MI'],         licenseTypes: ['Producer', 'Adjuster'],  loas: ['Casualty'] },
+    'David Reeves':   { states: ['CA'],                     licenseTypes: ['Producer'],              loas: ['Life', 'Variable Life', 'Annuity'] },
+    'Jennifer Walsh': null,
+    'Claire Sutton':  { states: ['CO', 'WY', 'NM'],         licenseTypes: ['Producer'],              loas: ['Health', 'Life'] },
+    'Angela Fischer': { states: ['CA', 'NV', 'AZ'],         licenseTypes: ['Producer'],              loas: ['Property', 'Casualty', 'Personal Lines'] },
+  };
+
+  const OPD_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
+    'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC',
+    'ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+
+  const OPD_LOAS = [
+    'Annuity','Auto Rental','Bail','Bonds','Casualty','Credit','Crop',
+    'Electronics','Fraternal','Health','Legal','Life','Personal Lines',
+    'Pet','Preneed','Property','Purchasing Group','Reinsurance',
+    'Self Service Storage','Stocks','Surety','Title','Variable Annuity',
+    'Variable Life','Viatical','Warranty'
+  ];
+
+  const OPD_LICENSE_TYPES = ['Producer','Adjuster','Surplus Lines','Travel'];
+
+  let _opdSelectedStates       = new Set();
+  let _opdSelectedLoas         = new Set();
+  let _opdSelectedLicenseTypes = new Set();
+  const _opdAllContacts  = ['Sarah Chen','Mike Torres','Lisa Park',"James O'Brien",'David Reeves','Jennifer Walsh','Claire Sutton','Angela Fischer'];
+
   function openOnboardProducerModal() {
-    const el = document.getElementById('onboard-producer-overlay');
-    if (el) el.style.display = 'flex';
+    const overlay = document.getElementById('onboard-producer-overlay');
+    const drawer  = document.getElementById('onboard-producer-drawer');
+    if (!overlay || !drawer) return;
+    overlay.style.display = 'block';
+    drawer.style.display  = 'flex';
+    // Reset state
+    _opdSelectedStates       = new Set();
+    _opdSelectedLoas         = new Set();
+    _opdSelectedLicenseTypes = new Set();
+    opdBuildList('states');
+    opdBuildList('loas');
+    opdSwitchTab('defined');
+    opdUpdatePASummary();
+    // Contact count — for demo always show all 8
+    const countEl = document.getElementById('opd-contact-count');
+    if (countEl) countEl.textContent = '8 contacts selected';
   }
+
   function closeOnboardProducerModal() {
-    const el = document.getElementById('onboard-producer-overlay');
-    if (el) el.style.display = 'none';
+    const overlay = document.getElementById('onboard-producer-overlay');
+    const drawer  = document.getElementById('onboard-producer-drawer');
+    if (overlay) overlay.style.display = 'none';
+    if (drawer)  drawer.style.display  = 'none';
   }
+
+  function opdSwitchTab(tab) {
+    const defBtn   = document.getElementById('opd-tab-defined');
+    const adhocBtn = document.getElementById('opd-tab-adhoc');
+    const defPanel = document.getElementById('opd-panel-defined');
+    const adhocPanel = document.getElementById('opd-panel-adhoc');
+    if (!defBtn) return;
+    const on  = 'background:#0176d3;color:#fff;';
+    const off = 'background:#fff;color:#444;';
+    if (tab === 'defined') {
+      defBtn.style.cssText   += on;  adhocBtn.style.cssText  += off;
+      defPanel.style.display  = 'block'; adhocPanel.style.display = 'none';
+    } else {
+      adhocBtn.style.cssText  += on;  defBtn.style.cssText   += off;
+      adhocPanel.style.display = 'block'; defPanel.style.display  = 'none';
+    }
+  }
+
+  function opdUpdatePASummary() {
+    const cb = document.getElementById('opd-pa-checkbox');
+    const el = document.getElementById('opd-pa-summary');
+    if (!cb || !el) return;
+    if (!cb.checked) { el.textContent = ''; return; }
+    const withPA = _opdAllContacts.filter(n => PRODUCER_ASSIGNMENTS[n] !== null && PRODUCER_ASSIGNMENTS[n] !== undefined).length;
+    el.textContent = `Scope found for ${withPA} of ${_opdAllContacts.length} selected contacts`;
+  }
+
+  function opdToggleChip(el) {
+    const active = el.style.background === 'rgb(219, 234, 254)' || el.dataset.active === '1';
+    if (active) {
+      el.style.background = '';
+      el.style.color = '';
+      el.style.borderColor = '#ddd';
+      el.dataset.active = '0';
+    } else {
+      el.style.background = '#dbeafe';
+      el.style.color = '#1d4ed8';
+      el.style.borderColor = '#93c5fd';
+      el.dataset.active = '1';
+    }
+  }
+
+  function opdBuildList(type) {
+    const items    = type === 'states' ? OPD_STATES : type === 'lt' ? OPD_LICENSE_TYPES : OPD_LOAS;
+    const selected = type === 'states' ? _opdSelectedStates : type === 'lt' ? _opdSelectedLicenseTypes : _opdSelectedLoas;
+    const listEl   = document.getElementById(`opd-${type}-list`);
+    if (!listEl) return;
+    listEl.innerHTML = items.map(item => {
+      const isSelected = selected.has(item);
+      return `<div onclick="opdToggleItem('${type}','${encodeURIComponent(item)}')"
+        style="padding:7px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:10px;
+        border-bottom:1px solid #f5f5f5;
+        ${isSelected ? 'background:#eff6ff;' : 'background:#fff;'}">
+        <div style="width:16px;height:16px;border-radius:3px;border:1.5px solid ${isSelected ? '#1d4ed8' : '#ccc'};
+          background:${isSelected ? '#1d4ed8' : '#fff'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          ${isSelected ? '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+        </div>
+        <span style="color:${isSelected ? '#1d4ed8' : '#333'};font-weight:${isSelected ? '600' : '400'};">${item}</span>
+      </div>`;
+    }).join('');
+    opdUpdateChips(type);
+  }
+
+  function opdToggleItem(type, encodedItem) {
+    const item     = decodeURIComponent(encodedItem);
+    const selected = type === 'states' ? _opdSelectedStates : type === 'lt' ? _opdSelectedLicenseTypes : _opdSelectedLoas;
+    if (selected.has(item)) { selected.delete(item); } else { selected.add(item); }
+    opdBuildList(type);
+  }
+
+  function opdUpdateChips(type) {
+    const selected = type === 'states' ? _opdSelectedStates : type === 'lt' ? _opdSelectedLicenseTypes : _opdSelectedLoas;
+    const chipsEl  = document.getElementById(`opd-${type}-chips`);
+    if (!chipsEl) return;
+    chipsEl.innerHTML = [...selected].map(item => `
+      <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;
+        background:#dbeafe;color:#1d4ed8;border-radius:12px;font-size:11px;font-weight:600;">
+        ${item}
+        <span onclick="opdToggleItem('${type}','${encodeURIComponent(item)}')"
+          style="cursor:pointer;opacity:0.7;font-size:13px;line-height:1;margin-left:1px;">×</span>
+      </span>`).join('');
+  }
+
+  function opdFilterList(type, query) {
+    const items    = type === 'states' ? OPD_STATES : type === 'lt' ? OPD_LICENSE_TYPES : OPD_LOAS;
+    const selected = type === 'states' ? _opdSelectedStates : type === 'lt' ? _opdSelectedLicenseTypes : _opdSelectedLoas;
+    const listEl   = document.getElementById(`opd-${type}-list`);
+    if (!listEl) return;
+    const filtered = items.filter(i => i.toLowerCase().includes(query.toLowerCase()));
+    listEl.innerHTML = filtered.map(item => {
+      const isSelected = selected.has(item);
+      return `<div onclick="opdToggleItem('${type}','${encodeURIComponent(item)}')"
+        style="padding:7px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:10px;
+        border-bottom:1px solid #f5f5f5;
+        ${isSelected ? 'background:#eff6ff;' : 'background:#fff;'}">
+        <div style="width:16px;height:16px;border-radius:3px;border:1.5px solid ${isSelected ? '#1d4ed8' : '#ccc'};
+          background:${isSelected ? '#1d4ed8' : '#fff'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          ${isSelected ? '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+        </div>
+        <span style="color:${isSelected ? '#1d4ed8' : '#333'};font-weight:${isSelected ? '600' : '400'};">${item}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function opdOpenAdhoc() {
+    console.log('OPD_LOAS:', typeof OPD_LOAS, OPD_LOAS);
+    console.log('OPD_STATES:', typeof OPD_STATES, OPD_STATES);
+    const loaEl = document.getElementById('opd-loa-list');
+    console.log('loa list el:', loaEl);
+    const overlay = document.getElementById('opd-adhoc-overlay');
+    const panel   = document.getElementById('opd-adhoc-panel');
+    if (overlay) overlay.style.display = 'block';
+    if (panel)   panel.style.display   = 'flex';
+    opdBuildList('lt');
+    opdBuildList('states');
+    opdBuildList('loas');
+  }
+
+  function opdCloseAdhoc() {
+    const overlay = document.getElementById('opd-adhoc-overlay');
+    const panel   = document.getElementById('opd-adhoc-panel');
+    if (overlay) overlay.style.display = 'none';
+    if (panel)   panel.style.display   = 'none';
+  }
+
+  function opdApplyAdhoc() {
+    opdCloseAdhoc();
+    opdUpdateAdhocSummary();
+  }
+
+  function opdUpdateAdhocSummary() {
+    const el = document.getElementById('opd-adhoc-summary');
+    if (!el) return;
+    const parts = [];
+    if (_opdSelectedLicenseTypes.size) parts.push(`${_opdSelectedLicenseTypes.size} license type${_opdSelectedLicenseTypes.size > 1 ? 's' : ''}`);
+    if (_opdSelectedStates.size)       parts.push(`${_opdSelectedStates.size} state${_opdSelectedStates.size > 1 ? 's' : ''}`);
+    if (_opdSelectedLoas.size)         parts.push(`${_opdSelectedLoas.size} LOA${_opdSelectedLoas.size > 1 ? 's' : ''}`);
+    el.textContent = parts.length ? parts.join(' · ') : 'No scope defined';
+  }
+
   function togglePSRow(key) {
     const cb = document.getElementById('ps-apply-' + key);
     const level = document.getElementById('ps-level-' + key);
@@ -1709,57 +2054,14 @@
     const wrap = barEl.closest(_WRAP_SEL);
     const count = wrap ? wrap.querySelectorAll('.prod-row-cb:checked').length : 0;
     document.getElementById('ps-add-drawer-title').textContent =
-      'Add Policy Set to ' + count + (count === 1 ? ' Producer' : ' Producers');
+      'Add Scope to ' + count + (count === 1 ? ' Producer' : ' Producers');
     document.querySelectorAll('#ps-add-drawer-list input').forEach(cb => cb.checked = false);
-    // Swap policy set list based on context
-    const list = document.getElementById('ps-add-drawer-list');
-    if (_currentCtx === 'agency') {
-      list.innerHTML = `
-        <label class="psd-option">
-          <input type="checkbox" value="principal-agent-onboarding">
-          <div>
-            <div class="psd-opt-name">Principal Agent Onboarding</div>
-            <div class="psd-opt-desc">Onboarding requirements for principal agents managing sub-producers, including supervisory compliance and E&O verification.</div>
-          </div>
-        </label>
-        <label class="psd-option">
-          <input type="checkbox" value="carrier-a-producer-onboarding">
-          <div>
-            <div class="psd-opt-name">Carrier A — Producer Onboarding <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;margin-left:4px;">Contracting</span></div>
-            <div class="psd-opt-desc">Carrier A-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
-          </div>
-        </label>
-        <label class="psd-option">
-          <input type="checkbox" value="carrier-z-producer-onboarding">
-          <div>
-            <div class="psd-opt-name">Carrier Z — Producer Onboarding <span style="font-size:10px;font-weight:700;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:4px;padding:1px 5px;margin-left:4px;">Contracting</span></div>
-            <div class="psd-opt-desc">Carrier Z-specific producer onboarding requirements including appointment, LOA, and contracting documentation.</div>
-          </div>
-        </label>`;
-    } else {
-      list.innerHTML = `
-        <label class="psd-option">
-          <input type="checkbox" value="life-producer-onboarding">
-          <div>
-            <div class="psd-opt-name">Life — Producer Onboarding</div>
-            <div class="psd-opt-desc">Onboarding requirements for producers selling life insurance products, including license verification and appointment workflows.</div>
-          </div>
-        </label>
-        <label class="psd-option">
-          <input type="checkbox" value="health-life-producer-onboarding">
-          <div>
-            <div class="psd-opt-name">Health &amp; Life — Producer Onboarding</div>
-            <div class="psd-opt-desc">Combined health and life onboarding policy set covering dual-line producers with applicable state license and LOA requirements.</div>
-          </div>
-        </label>
-        <label class="psd-option">
-          <input type="checkbox" value="accident-health-producer-onboarding">
-          <div>
-            <div class="psd-opt-name">Accident &amp; Health — Producer Onboarding</div>
-            <div class="psd-opt-desc">Onboarding requirements for accident and health producers, including E&amp;O verification and state-specific compliance attestations.</div>
-          </div>
-        </label>`;
-    }
+    _psdSelectedLicenseTypes = new Set();
+    _psdSelectedStates = new Set();
+    _psdSelectedLoas = new Set();
+    psdSwitchTab('defined');
+    const adhocSummary = document.getElementById('psd-adhoc-summary');
+    if (adhocSummary) adhocSummary.textContent = 'No scope defined';
     document.getElementById('ps-add-overlay').classList.add('open');
     document.getElementById('ps-add-drawer').classList.add('open');
   }
@@ -1821,13 +2123,123 @@
 
   function prodConfirmPS() {
     const checked = document.querySelectorAll('#ps-add-drawer-list input:checked');
-    if (checked.length === 0) return;
+    if (checked.length === 0 && _psdSelectedStates.size === 0 && _psdSelectedLicenseTypes.size === 0 && _psdSelectedLoas.size === 0) return;
     prodHidePSModal();
     if (window._prodActionBar) {
       prodClearSelection(window._prodActionBar);
       window._prodActionBar = null;
     }
-    showToast('Policy sets applied — producers notified');
+    showToast('Scope applied — producers notified');
+  }
+
+  // ── ps-add-drawer tab / ad-hoc functions ──────────────────────
+  let _psdSelectedLicenseTypes = new Set();
+  let _psdSelectedStates = new Set();
+  let _psdSelectedLoas = new Set();
+
+  function psdSwitchTab(tab) {
+    const defBtn     = document.getElementById('psd-tab-defined');
+    const adhocBtn   = document.getElementById('psd-tab-adhoc');
+    const defPanel   = document.getElementById('psd-panel-defined');
+    const adhocPanel = document.getElementById('psd-panel-adhoc');
+    if (!defBtn) return;
+    if (tab === 'defined') {
+      defBtn.style.background = '#0176d3'; defBtn.style.color = '#fff';
+      adhocBtn.style.background = '#fff';  adhocBtn.style.color = '#444';
+      defPanel.style.display = 'block';    adhocPanel.style.display = 'none';
+    } else {
+      adhocBtn.style.background = '#0176d3'; adhocBtn.style.color = '#fff';
+      defBtn.style.background = '#fff';      defBtn.style.color = '#444';
+      adhocPanel.style.display = 'block';    defPanel.style.display = 'none';
+    }
+  }
+
+  function psdOpenAdhoc() {
+    document.getElementById('psd-adhoc-overlay').style.display = 'block';
+    document.getElementById('psd-adhoc-panel').style.display = 'flex';
+    psdBuildList('lt');
+    psdBuildList('states');
+    psdBuildList('loas');
+  }
+
+  function psdCloseAdhoc() {
+    document.getElementById('psd-adhoc-overlay').style.display = 'none';
+    document.getElementById('psd-adhoc-panel').style.display = 'none';
+  }
+
+  function psdApplyAdhoc() {
+    psdCloseAdhoc();
+    psdUpdateAdhocSummary();
+  }
+
+  function psdUpdateAdhocSummary() {
+    const el = document.getElementById('psd-adhoc-summary');
+    if (!el) return;
+    const parts = [];
+    if (_psdSelectedLicenseTypes.size) parts.push(`${_psdSelectedLicenseTypes.size} license type${_psdSelectedLicenseTypes.size > 1 ? 's' : ''}`);
+    if (_psdSelectedStates.size)       parts.push(`${_psdSelectedStates.size} state${_psdSelectedStates.size > 1 ? 's' : ''}`);
+    if (_psdSelectedLoas.size)         parts.push(`${_psdSelectedLoas.size} LOA${_psdSelectedLoas.size > 1 ? 's' : ''}`);
+    el.textContent = parts.length ? parts.join(' · ') : 'No scope defined';
+  }
+
+  function psdBuildList(type) {
+    const items    = type === 'lt' ? OPD_LICENSE_TYPES : type === 'states' ? OPD_STATES : OPD_LOAS;
+    const selected = type === 'lt' ? _psdSelectedLicenseTypes : type === 'states' ? _psdSelectedStates : _psdSelectedLoas;
+    const listEl   = document.getElementById(`psd-${type}-list`);
+    if (!listEl) return;
+    listEl.innerHTML = items.map(item => {
+      const isSelected = selected.has(item);
+      return `<div onclick="psdToggleItem('${type}','${encodeURIComponent(item)}')"
+        style="padding:7px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:10px;
+        border-bottom:1px solid #f5f5f5;background:${isSelected ? '#eff6ff' : '#fff'};">
+        <div style="width:16px;height:16px;border-radius:3px;border:1.5px solid ${isSelected ? '#1d4ed8' : '#ccc'};
+          background:${isSelected ? '#1d4ed8' : '#fff'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          ${isSelected ? '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+        </div>
+        <span style="color:${isSelected ? '#1d4ed8' : '#333'};font-weight:${isSelected ? '600' : '400'};">${item}</span>
+      </div>`;
+    }).join('');
+    psdUpdateChips(type);
+  }
+
+  function psdToggleItem(type, encodedItem) {
+    const item     = decodeURIComponent(encodedItem);
+    const selected = type === 'lt' ? _psdSelectedLicenseTypes : type === 'states' ? _psdSelectedStates : _psdSelectedLoas;
+    if (selected.has(item)) { selected.delete(item); } else { selected.add(item); }
+    psdBuildList(type);
+  }
+
+  function psdUpdateChips(type) {
+    const selected = type === 'lt' ? _psdSelectedLicenseTypes : type === 'states' ? _psdSelectedStates : _psdSelectedLoas;
+    const chipsEl  = document.getElementById(`psd-${type}-chips`);
+    if (!chipsEl) return;
+    chipsEl.innerHTML = [...selected].map(item => `
+      <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;
+        background:#dbeafe;color:#1d4ed8;border-radius:12px;font-size:11px;font-weight:600;">
+        ${item}
+        <span onclick="psdToggleItem('${type}','${encodeURIComponent(item)}')"
+          style="cursor:pointer;opacity:0.7;font-size:13px;line-height:1;margin-left:1px;">×</span>
+      </span>`).join('');
+  }
+
+  function psdFilterList(type, query) {
+    const items    = type === 'lt' ? OPD_LICENSE_TYPES : type === 'states' ? OPD_STATES : OPD_LOAS;
+    const selected = type === 'lt' ? _psdSelectedLicenseTypes : type === 'states' ? _psdSelectedStates : _psdSelectedLoas;
+    const listEl   = document.getElementById(`psd-${type}-list`);
+    if (!listEl) return;
+    const filtered = items.filter(i => i.toLowerCase().includes(query.toLowerCase()));
+    listEl.innerHTML = filtered.map(item => {
+      const isSelected = selected.has(item);
+      return `<div onclick="psdToggleItem('${type}','${encodeURIComponent(item)}')"
+        style="padding:7px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:10px;
+        border-bottom:1px solid #f5f5f5;background:${isSelected ? '#eff6ff' : '#fff'};">
+        <div style="width:16px;height:16px;border-radius:3px;border:1.5px solid ${isSelected ? '#1d4ed8' : '#ccc'};
+          background:${isSelected ? '#1d4ed8' : '#fff'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          ${isSelected ? '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+        </div>
+        <span style="color:${isSelected ? '#1d4ed8' : '#333'};font-weight:${isSelected ? '600' : '400'};">${item}</span>
+      </div>`;
+    }).join('');
   }
 
   // ── Agency OM tab switching + task drawer ─────────────────────
