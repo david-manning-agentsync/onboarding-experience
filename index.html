@@ -792,6 +792,7 @@
 
     body.context-agency #screen-m-account-record .btn-onboard-firm { display: none; }
     body:not(.context-agency) .context-agency-only { display: none !important; }
+    body:not(.context-carrier) .context-carrier-only { display: none !important; }
 
   </style>
   <link rel="stylesheet" crossorigin href="/onboarding-experience/assets/index.css">
@@ -1919,7 +1920,25 @@
         if (component === 'sf-table' && contactsData.sfTable) el.innerHTML = renderSFTable(contactsData.sfTable);
       });
     }
+    // Update AOT progress label to reflect carrier task count
+    const progLabel = document.getElementById('aot-progress-label');
+    if (progLabel) {
+      const total = ctx === 'carrier' ? 4 : 7;
+      progLabel.textContent = '0 of ' + total + ' required tasks complete';
+    }
+    // Broadcast context change to all embedded iframes
+    document.querySelectorAll('iframe').forEach(function(iframe) {
+      try { iframe.contentWindow.postMessage({ type: 'setContext', context: ctx }, '*'); } catch(e) {}
+    });
   }
+
+  // Respond to iframes requesting the current context
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'getContext') {
+      const ctx = document.body.classList.contains('context-carrier') ? 'carrier' : 'agency';
+      try { e.source.postMessage({ type: 'setContext', context: ctx }, '*'); } catch(e2) {}
+    }
+  });
 
   function openOnboardModal() {
     const el = document.getElementById('onboard-firm-overlay');
@@ -2617,7 +2636,7 @@
       }
     }
     // Progress bar
-    const required = [1,2,4,5,6,7,8];
+    const required = document.body.classList.contains('context-carrier') ? [1,2,7,8] : [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
     const fill = document.getElementById('aot-progress-fill');
@@ -2656,7 +2675,7 @@
       }
     }
     // Recount progress
-    const required = [1,2,4,5,6,7,8];
+    const required = document.body.classList.contains('context-carrier') ? [1,2,7,8] : [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
     const fill = document.getElementById('aot-progress-fill');
@@ -2675,6 +2694,13 @@
 
   function aotNext(fromNum, toNum) {
     if (!toNum) return;
+    // Skip hidden tasks (agency-only tasks hidden in carrier mode)
+    while (toNum <= 8) {
+      const candidate = document.getElementById('aot-item-' + toNum);
+      if (!candidate || candidate.offsetParent !== null) break;
+      toNum++;
+    }
+    if (toNum > 8) return;
     const fromItem  = document.getElementById('aot-item-' + fromNum);
     const toItem    = document.getElementById('aot-item-' + toNum);
     const fromPanel = document.getElementById('aot-td-' + fromNum);

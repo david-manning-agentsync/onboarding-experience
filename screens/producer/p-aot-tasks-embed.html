@@ -224,6 +224,8 @@
     #p-aot-embed .pr-form-row--3,
     #p-aot-embed .pr-form-row--2 { grid-template-columns: 1fr; }
   }
+  /* ── Carrier mode: hide agency-only tasks ── */
+  body.carrier-mode .context-agency-only { display: none !important; }
 </style>
 
 <div id="p-aot-embed">
@@ -259,9 +261,9 @@
       <div class="pr-task-item active" id="aot-item-1" onclick="aotSelectTask(this,'aot-td-1')"><div class="pr-task-circle" id="aot-circle-1"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Contact Info</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
       <div class="pr-task-item" id="aot-item-2" onclick="aotSelectTask(this,'aot-td-2')"><div class="pr-task-circle" id="aot-circle-2"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Contact Details</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
       <div class="pr-task-item" id="aot-item-3" onclick="aotSelectTask(this,'aot-td-3')"><div class="pr-task-circle" id="aot-circle-3"></div><div class="pr-task-item__body"><div class="pr-task-item__name">ID Document</div><div class="pr-task-item__sub pr-task-item__sub--opt">Optional · Open</div></div></div>
-      <div class="pr-task-item" id="aot-item-4" onclick="aotSelectTask(this,'aot-td-4')"><div class="pr-task-circle" id="aot-circle-4"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Employment History</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
-      <div class="pr-task-item" id="aot-item-5" onclick="aotSelectTask(this,'aot-td-5')"><div class="pr-task-circle" id="aot-circle-5"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Background Questions</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
-      <div class="pr-task-item" id="aot-item-6" onclick="aotSelectTask(this,'aot-td-6')"><div class="pr-task-circle" id="aot-circle-6"></div><div class="pr-task-item__body"><div class="pr-task-item__name">NIPR Attestation</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
+      <div class="pr-task-item context-agency-only" id="aot-item-4" onclick="aotSelectTask(this,'aot-td-4')"><div class="pr-task-circle" id="aot-circle-4"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Employment History</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
+      <div class="pr-task-item context-agency-only" id="aot-item-5" onclick="aotSelectTask(this,'aot-td-5')"><div class="pr-task-circle" id="aot-circle-5"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Background Questions</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
+      <div class="pr-task-item context-agency-only" id="aot-item-6" onclick="aotSelectTask(this,'aot-td-6')"><div class="pr-task-circle" id="aot-circle-6"></div><div class="pr-task-item__body"><div class="pr-task-item__name">NIPR Attestation</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
       <div class="pr-task-item" id="aot-item-7" onclick="aotSelectTask(this,'aot-td-7')"><div class="pr-task-circle" id="aot-circle-7"></div><div class="pr-task-item__body"><div class="pr-task-item__name">Direct Deposit</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
       <div class="pr-task-item" id="aot-item-8" onclick="aotSelectTask(this,'aot-td-8')"><div class="pr-task-circle" id="aot-circle-8"></div><div class="pr-task-item__body"><div class="pr-task-item__name">E-Signature</div><div class="pr-task-item__sub pr-task-item__sub--req">Required · Open</div></div></div>
     </div>
@@ -487,7 +489,7 @@
       </div>
 
       <!-- ── Task 4: Employment History ── -->
-      <div id="aot-td-4" class="pr-task-detail-panel">
+      <div id="aot-td-4" class="pr-task-detail-panel context-agency-only">
         <div class="pr-detail-head">
           <div class="pr-detail-head__title">Employment History</div>
           <div class="aot-chips">
@@ -519,7 +521,7 @@
       </div>
 
       <!-- ── Task 5: Background Questions ── -->
-      <div id="aot-td-5" class="pr-task-detail-panel">
+      <div id="aot-td-5" class="pr-task-detail-panel context-agency-only">
         <div class="pr-detail-head">
           <div class="pr-detail-head__title">Background Questions</div>
           <div class="aot-chips">
@@ -549,7 +551,7 @@
       </div>
 
       <!-- ── Task 6: NIPR Attestation (Operations) ── -->
-      <div id="aot-td-6" class="pr-task-detail-panel">
+      <div id="aot-td-6" class="pr-task-detail-panel context-agency-only">
         <div class="pr-detail-head">
           <div class="pr-detail-head__title">NIPR Attestation</div>
           <div class="aot-chips">
@@ -757,7 +759,7 @@
         statusChip.className = 'aot-chip aot-chip--done-status';
       }
     }
-    const required = [1,2,4,5,6,7,8];
+    const required = document.body.classList.contains('carrier-mode') ? [1,2,7,8] : [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
     const fill = document.getElementById('aot-progress-fill');
@@ -793,7 +795,7 @@
         sub.className = 'pr-task-item__sub ' + (isOpt ? 'pr-task-item__sub--opt' : 'pr-task-item__sub--req');
       }
     }
-    const required = [1,2,4,5,6,7,8];
+    const required = document.body.classList.contains('carrier-mode') ? [1,2,7,8] : [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
     const fill = document.getElementById('aot-progress-fill');
@@ -812,6 +814,13 @@
 
   function aotNext(fromNum, toNum) {
     if (!toNum) return;
+    // Skip hidden tasks (agency-only tasks hidden in carrier mode)
+    while (toNum <= 8) {
+      const candidate = document.getElementById('aot-item-' + toNum);
+      if (!candidate || candidate.offsetParent !== null) break;
+      toNum++;
+    }
+    if (toNum > 8) return;
     const fromItem  = document.getElementById('aot-item-' + fromNum);
     const toItem    = document.getElementById('aot-item-' + toNum);
     const fromPanel = document.getElementById('aot-td-' + fromNum);
@@ -1284,6 +1293,17 @@
     };
   }
 })();
+
+// ── Carrier mode bridge — receive context from parent page ──
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'setContext') {
+    document.body.classList.toggle('carrier-mode', e.data.context === 'carrier');
+  }
+});
+// Request the current context from the parent on load
+if (window.parent !== window) {
+  window.parent.postMessage({ type: 'getContext' }, '*');
+}
 </script>
 </body>
 </html>
