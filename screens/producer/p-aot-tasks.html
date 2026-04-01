@@ -175,7 +175,7 @@
   #screen-p-aot-tasks .sig-tab.active { color:var(--color-primary-600); border-bottom-color:var(--color-primary-600); font-weight:var(--font-weight-semibold); }
   #screen-p-aot-tasks .sig-panel { display:none; }
   #screen-p-aot-tasks .sig-panel.active { display:block; }
-  #screen-p-aot-tasks .sig-canvas { width:100%; height:110px; border:1px solid var(--color-border-default); border-radius:var(--radius-md); background:var(--color-bg-surface); display:flex; align-items:center; justify-content:center; color:var(--color-text-muted); font-size:var(--font-size-xs); cursor:crosshair; margin-bottom:var(--space-3); }
+  #screen-p-aot-tasks .sig-canvas { width:100%; height:110px; border:1px solid var(--color-border-default); border-radius:var(--radius-md); background:var(--color-bg-surface); cursor:crosshair; margin-bottom:var(--space-3); display:block; }
   #screen-p-aot-tasks .sig-type-preview { height:72px; border:1px solid var(--color-border-default); border-radius:var(--radius-md); background:var(--color-bg-surface); display:flex; align-items:center; justify-content:center; font-size:26px; font-style:italic; color:var(--color-text-primary); margin-bottom:var(--space-3); font-family:Georgia,serif; }
   #screen-p-aot-tasks .sig-upload-area { border:2px dashed var(--color-border-default); border-radius:var(--radius-md); padding:var(--space-5); text-align:center; cursor:pointer; background:var(--color-bg-page); margin-bottom:var(--space-3); }
   #screen-p-aot-tasks .sig-upload-area:hover { border-color:var(--color-primary-400); background:var(--color-primary-50); }
@@ -552,7 +552,6 @@
                 <div class="bg-question"><div class="bg-question__text">1. Have you ever been convicted of a felony, misdemeanor, or crime involving dishonesty or breach of trust?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq1" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq1" value="yes"> Yes — please explain</label></div></div>
                 <div class="bg-question"><div class="bg-question__text">2. Have you ever had an insurance license or financial services registration denied, suspended, or revoked?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq2" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq2" value="yes"> Yes — please explain</label></div></div>
                 <div class="bg-question"><div class="bg-question__text">3. Are you currently named as a defendant in any pending civil lawsuit related to your professional activities?</div><div class="bg-question__options"><label class="bg-radio"><input type="radio" name="bgq3" value="no" checked> No</label><label class="bg-radio"><input type="radio" name="bgq3" value="yes"> Yes — please explain</label></div></div>
-                <div class="state-placeholder"><div style="color:var(--color-warning-500);flex-shrink:0;margin-top:1px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div><div style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-warning-700);">Colorado — State-Specific Disclosures</div><div style="font-size:var(--font-size-xs);color:var(--color-warning-600);line-height:1.5;margin-top:2px;">Additional questions required for Colorado-licensed producers will be presented during final review.</div></div></div>
               </div>
             </div>
             <div class="pr-detail-cta">
@@ -679,21 +678,22 @@
                     <strong>1. Appointment.</strong> Agency hereby appoints Producer to solicit and sell insurance products on behalf of Agency's appointed carriers, subject to the terms of this Agreement and applicable state regulations.<br><br>
                     <strong>2. Compliance.</strong> Producer agrees to maintain all required licenses and comply with all applicable regulations. Producer shall notify Agency within 10 business days of any change in license status or regulatory action.<br><br>
                     <strong>3. Compensation.</strong> Producer shall be compensated per the applicable commission schedule, which may be amended with 30 days written notice. Nothing in this Agreement creates an employment relationship.<br><br>
+                    <strong>4. Background Check Authorization.</strong> By signing below, you authorize carrier and its designated agents to obtain a consumer report and/or investigative consumer report for screening purposes, including but not limited to your credit history, criminal record, driving record, and prior employment verification. This background check is conducted in compliance with the Fair Credit Reporting Act (FCRA) and applicable state laws. You have the right to request a copy of the report and dispute any inaccurate information with the reporting agency. Your consent is voluntary; however, refusal to consent may disqualify you from consideration for this appointment.<br><br>
                     <em>By signing below, both parties agree to the terms of this Agreement.</em>
                   </div>
                 </div>
                 <div class="pr-form-section">
                   <div class="pr-form-section__title">Your Signature</div>
                   <div class="sig-tabs">
-                    <div class="sig-tab active" onclick="aotSigTab(this,'sig-draw')">Draw</div>
-                    <div class="sig-tab" onclick="aotSigTab(this,'sig-type')">Type</div>
+                    <div class="sig-tab" onclick="aotSigTab(this,'sig-draw')">Draw</div>
+                    <div class="sig-tab active" onclick="aotSigTab(this,'sig-type')">Type</div>
                     <div class="sig-tab" onclick="aotSigTab(this,'sig-upload')">Upload</div>
                   </div>
-                  <div id="sig-draw" class="sig-panel active">
-                    <div class="sig-canvas">Draw your signature here</div>
-                    <button class="pr-add-btn">Clear</button>
+                  <div id="sig-draw" class="sig-panel">
+                    <canvas id="sig-canvas" class="sig-canvas"></canvas>
+                    <button class="pr-add-btn" onclick="clearSigCanvas()">Clear</button>
                   </div>
-                  <div id="sig-type" class="sig-panel">
+                  <div id="sig-type" class="sig-panel active">
                     <div class="pr-form-row pr-form-row--1" style="margin-bottom:var(--space-3)"><div class="pr-float-field"><span class="pr-float-label">Type your full name</span><input class="pr-float-value" type="text" id="aot-sig-text" oninput="aotSigPreview()" value="James P. O'Brien"></div></div>
                     <div class="sig-type-preview" id="aot-sig-preview">James P. O'Brien</div>
                     <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);">This cursive representation constitutes your legal electronic signature.</p>
@@ -718,3 +718,114 @@
     </div>
   </div>
 </div>
+
+<script>
+(function() {
+  function initSigCanvas() {
+    const canvas = document.getElementById('sig-canvas');
+    if (!canvas || canvas.dataset.init) return;
+    canvas.dataset.init = '1';
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0) return;
+      const img = canvas.toDataURL();
+      canvas.width  = rect.width  * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      if (canvas.dataset.signed !== '1') drawPlaceholder(ctx, rect);
+      else { const i = new Image(); i.onload = () => ctx.drawImage(i, 0, 0); i.src = img; }
+    }
+
+    function drawPlaceholder(ctx, rect) {
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.fillStyle = '#aaa';
+      ctx.font = '13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Draw your signature here', rect.width / 2, rect.height / 2);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    let drawing = false;
+    let lastX = 0, lastY = 0;
+
+    function getPos(e) {
+      if (e.touches) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+      }
+      return { x: e.offsetX, y: e.offsetY };
+    }
+
+    function startDraw(e) {
+      e.preventDefault();
+      if (canvas.dataset.signed !== '1') {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.dataset.signed = '1';
+      }
+      drawing = true;
+      const pos = getPos(e);
+      lastX = pos.x; lastY = pos.y;
+    }
+
+    function draw(e) {
+      e.preventDefault();
+      if (!drawing) return;
+      const ctx = canvas.getContext('2d');
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.strokeStyle = '#111';
+      ctx.lineWidth   = 2;
+      ctx.lineCap     = 'round';
+      ctx.lineJoin    = 'round';
+      ctx.stroke();
+      lastX = pos.x; lastY = pos.y;
+    }
+
+    function endDraw(e) { drawing = false; }
+
+    canvas.addEventListener('mousedown',  startDraw);
+    canvas.addEventListener('mousemove',  draw);
+    canvas.addEventListener('mouseup',    endDraw);
+    canvas.addEventListener('mouseleave', endDraw);
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove',  draw,      { passive: false });
+    canvas.addEventListener('touchend',   endDraw);
+  }
+
+  window.clearSigCanvas = function() {
+    const canvas = document.getElementById('sig-canvas');
+    if (!canvas) return;
+    canvas.dataset.signed = '0';
+    const ctx  = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function drawPlaceholder(c, r) {
+      c.fillStyle = '#aaa';
+      c.font = '13px sans-serif';
+      c.textAlign = 'center';
+      c.fillText('Draw your signature here', r.width / 2, r.height / 2);
+    }
+    drawPlaceholder(ctx, rect);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSigCanvas);
+  } else {
+    initSigCanvas();
+  }
+  const _origGo = window.go;
+  if (typeof _origGo === 'function') {
+    window.go = function(id) {
+      _origGo(id);
+      if (id && id.includes('aot')) setTimeout(initSigCanvas, 50);
+    };
+  }
+})();
+</script>

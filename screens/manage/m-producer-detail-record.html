@@ -178,6 +178,51 @@
   #screen-m-producer-detail-record .audit-entry__desc {
     font-size: var(--font-size-sm); color: var(--color-text-primary);
   }
+
+  /* ── Record tabs ── */
+  #screen-m-producer-detail-record .rec-tabs {
+    display: flex; align-items: flex-end;
+    border-bottom: 1px solid var(--rec-border);
+    background: var(--color-bg-surface);
+    padding: 0 16px;
+    margin-bottom: var(--space-medium);
+    flex-shrink: 0;
+    gap: 0;
+  }
+  #screen-m-producer-detail-record .rec-tab {
+    padding: 10px 16px; cursor: pointer;
+    font-size: var(--font-size-sm); color: var(--color-text-secondary);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    white-space: nowrap; transition: color var(--transition-fast);
+    user-select: none;
+  }
+  #screen-m-producer-detail-record .rec-tab:hover { color: var(--color-text-primary); }
+  #screen-m-producer-detail-record .rec-tab.active {
+    color: var(--color-brand-500);
+    border-bottom-color: var(--color-brand-500);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* ── Tab panels ── */
+  #screen-m-producer-detail-record .rec-tab-panel { display: none; }
+  #screen-m-producer-detail-record .rec-tab-panel.active { display: block; }
+
+  /* ── Placeholder panel ── */
+  #screen-m-producer-detail-record .rec-tab-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 64px 24px; text-align: center;
+    background: var(--color-bg-surface); border: 1px solid var(--rec-border); border-radius: 4px;
+  }
+  #screen-m-producer-detail-record .rec-tab-placeholder__icon {
+    color: var(--color-text-muted); margin-bottom: 12px;
+  }
+  #screen-m-producer-detail-record .rec-tab-placeholder__label {
+    font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary); margin-bottom: 4px;
+  }
+  #screen-m-producer-detail-record .rec-tab-placeholder__sub {
+    font-size: var(--font-size-sm); color: var(--color-text-secondary);
+  }
 </style>
 
 <div class="ms-shell">
@@ -282,276 +327,343 @@
       </div>
     </div><!-- /rec-header-card -->
 
-    <!-- AgentSync onboarding experience embed -->
-    <div style="height:800px;width:100%;overflow:hidden;margin-bottom:12px;">
-      <iframe src="/onboarding-experience/screens/producer/p-aot-tasks-embed.html" width="100%" height="100%" style="border:none;display:block;"></iframe>
+    <!-- Record Tabs -->
+    <div class="rec-tabs">
+      <div class="rec-tab active" onclick="switchRecTab(this,'rec-panel-tasks')">Tasks</div>
+      <div class="rec-tab" onclick="switchRecTab(this,'rec-panel-details')">Details</div>
+      <div class="rec-tab" onclick="switchRecTab(this,'rec-panel-licenses')">Licenses</div>
+      <div class="rec-tab" onclick="switchRecTab(this,'rec-panel-appointments')">Appointments</div>
+      <div class="rec-tab" onclick="switchRecTab(this,'rec-panel-regulatory')">Regulatory Actions</div>
     </div>
 
-    <!-- Content area -->
-    <div class="rec-content">
+    <!-- ── Tab: Tasks ── -->
+    <div id="rec-panel-tasks" class="rec-tab-panel active">
 
-      <!-- Main left column -->
-      <div class="rec-main">
+      <!-- AgentSync onboarding experience embed -->
+      <div style="height:800px;width:100%;overflow:hidden;margin-bottom:12px;">
+        <iframe src="/onboarding-experience/screens/producer/p-aot-tasks-embed.html" width="100%" height="100%" style="border:none;display:block;"></iframe>
+      </div>
 
-        <!-- Producer Information -->
-        <div class="rec-card">
-          <div class="rec-card__header">
-            <span class="rec-card__title">Producer Information</span>
-          </div>
+      <!-- Content area -->
+      <div class="rec-content">
 
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">First Name</span>
-              <span class="rec-field__value">Claire</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Last Name</span>
-              <span class="rec-field__value">Sutton</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
+        <!-- Main left column -->
+        <div class="rec-main">
 
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">Legal Name</span>
-              <span class="rec-field__value">Claire Anne Sutton</span>
-              <span class="rec-field__edit">✎</span>
+          <!-- Producer Information -->
+          <div class="rec-card">
+            <div class="rec-card__header">
+              <span class="rec-card__title">Producer Information</span>
             </div>
-            <div class="rec-field">
-              <span class="rec-field__label">NPN</span>
-              <span class="rec-field__value">18472910</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
 
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">SSN</span>
-              <span class="rec-field__value">***-**-6247</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Date of Birth</span>
-              <span class="rec-field__value">**/**/****</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">Resident State</span>
-              <span class="rec-field__value">Colorado (CO)</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">NPN Type</span>
-              <span class="rec-field__value">Individual</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">Email</span>
-              <span class="rec-field__value"><a href="#">claire.sutton@summitfin.com</a></span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Phone</span>
-              <span class="rec-field__value">(415) 555-0302</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">Business Entity?</span>
-              <span class="rec-field__value">No</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Related Producer</span>
-              <span class="rec-field__value"><a onclick="go('screen-m-account-record')">Claire Sutton</a></span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">Owner</span>
-              <span class="rec-field__value">JD</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Created Date</span>
-              <span class="rec-field__value">Jan 5, 2025</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">Last Modified</span>
-              <span class="rec-field__value">Mar 10, 2026</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Account</span>
-              <span class="rec-field__value"><a onclick="go('screen-m-account-record')">Summit Financial Partners</a></span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-        </div><!-- /Producer Information -->
-
-        <!-- NIPR & Compliance Status -->
-        <div class="rec-card">
-          <div class="rec-card__header">
-            <span class="rec-card__title">NIPR &amp; Compliance Status</span>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">License Status</span>
-              <span class="rec-field__value">
-                <span class="rec-field__flag-dot"></span>
-                Active
-              </span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">License Number</span>
-              <span class="rec-field__value">CO-A18472910</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">LOA Status</span>
-              <span class="rec-field__value">P&amp;C, Life</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Appointment Status</span>
-              <span class="rec-field__value">Active</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">E&amp;O Status</span>
-              <span class="rec-field__value">Verified</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Background Check</span>
-              <span class="rec-field__value">Passed</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">Resident License Expiry</span>
-              <span class="rec-field__value">Apr 15, 2027</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">Non-Resident States</span>
-              <span class="rec-field__value">TX, FL, AZ</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-
-          <div class="rec-field-row">
-            <div class="rec-field">
-              <span class="rec-field__label">NIPR Status</span>
-              <span class="rec-field__value">
-                <span class="rec-field__flag-dot"></span>
-                Success
-              </span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-            <div class="rec-field">
-              <span class="rec-field__label">NIPR Tracking</span>
-              <span class="rec-field__value">Active</span>
-              <span class="rec-field__edit">✎</span>
-            </div>
-          </div>
-        </div><!-- /NIPR & Compliance -->
-
-      </div><!-- /rec-main -->
-
-      <!-- Right sidebar -->
-      <div class="rec-sidebar">
-
-        <!-- AgentSync Data Sync -->
-        <div class="rec-card">
-          <div class="rec-card__header">
-            <span class="rec-card__title">AgentSync Data Sync</span>
-            <a class="rec-card__link">Download Producer Detail Report</a>
-          </div>
-          <div class="sync-row">
-            <div class="sync-col">
-              <div class="sync-nipr-name">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                NIPR
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">First Name</span>
+                <span class="rec-field__value">Claire</span>
+                <span class="rec-field__edit">✎</span>
               </div>
-              <div class="sync-npn">NPN: 18472910</div>
-            </div>
-            <div class="sync-col">
-              <div class="sync-label">NIPR Status</div>
-              <div class="sync-value">
-                <span class="sync-dot"></span>
-                Success
-              </div>
-              <div style="height:6px"></div>
-              <div class="sync-label">NIPR Tracking</div>
-              <div class="sync-value">
-                <div class="sync-toggle"></div>
-                Active
+              <div class="rec-field">
+                <span class="rec-field__label">Last Name</span>
+                <span class="rec-field__value">Sutton</span>
+                <span class="rec-field__edit">✎</span>
               </div>
             </div>
-            <div>
-              <button class="lv-btn lv-btn--outline" style="height:26px;font-size:var(--font-size-xs)">Refresh</button>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">Legal Name</span>
+                <span class="rec-field__value">Claire Anne Sutton</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">NPN</span>
+                <span class="rec-field__value">18472910</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">SSN</span>
+                <span class="rec-field__value">***-**-6247</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Date of Birth</span>
+                <span class="rec-field__value">**/**/****</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">Resident State</span>
+                <span class="rec-field__value">Colorado (CO)</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">NPN Type</span>
+                <span class="rec-field__value">Individual</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">Email</span>
+                <span class="rec-field__value"><a href="#">claire.sutton@summitfin.com</a></span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Phone</span>
+                <span class="rec-field__value">(415) 555-0302</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">Business Entity?</span>
+                <span class="rec-field__value">No</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Related Producer</span>
+                <span class="rec-field__value"><a onclick="go('screen-m-account-record')">Claire Sutton</a></span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">Owner</span>
+                <span class="rec-field__value">JD</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Created Date</span>
+                <span class="rec-field__value">Jan 5, 2025</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">Last Modified</span>
+                <span class="rec-field__value">Mar 10, 2026</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Account</span>
+                <span class="rec-field__value"><a onclick="go('screen-m-account-record')">Summit Financial Partners</a></span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+          </div><!-- /Producer Information -->
+
+          <!-- NIPR & Compliance Status -->
+          <div class="rec-card">
+            <div class="rec-card__header">
+              <span class="rec-card__title">NIPR &amp; Compliance Status</span>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">License Status</span>
+                <span class="rec-field__value">
+                  <span class="rec-field__flag-dot"></span>
+                  Active
+                </span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">License Number</span>
+                <span class="rec-field__value">CO-A18472910</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">LOA Status</span>
+                <span class="rec-field__value">P&amp;C, Life</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Appointment Status</span>
+                <span class="rec-field__value">Active</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">E&amp;O Status</span>
+                <span class="rec-field__value">Verified</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Background Check</span>
+                <span class="rec-field__value">Passed</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">Resident License Expiry</span>
+                <span class="rec-field__value">Apr 15, 2027</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">Non-Resident States</span>
+                <span class="rec-field__value">TX, FL, AZ</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+
+            <div class="rec-field-row">
+              <div class="rec-field">
+                <span class="rec-field__label">NIPR Status</span>
+                <span class="rec-field__value">
+                  <span class="rec-field__flag-dot"></span>
+                  Success
+                </span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+              <div class="rec-field">
+                <span class="rec-field__label">NIPR Tracking</span>
+                <span class="rec-field__value">Active</span>
+                <span class="rec-field__edit">✎</span>
+              </div>
+            </div>
+          </div><!-- /NIPR & Compliance -->
+
+        </div><!-- /rec-main -->
+
+        <!-- Right sidebar -->
+        <div class="rec-sidebar">
+
+          <!-- AgentSync Data Sync -->
+          <div class="rec-card">
+            <div class="rec-card__header">
+              <span class="rec-card__title">AgentSync Data Sync</span>
+              <a class="rec-card__link">Download Producer Detail Report</a>
+            </div>
+            <div class="sync-row">
+              <div class="sync-col">
+                <div class="sync-nipr-name">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                  NIPR
+                </div>
+                <div class="sync-npn">NPN: 18472910</div>
+              </div>
+              <div class="sync-col">
+                <div class="sync-label">NIPR Status</div>
+                <div class="sync-value">
+                  <span class="sync-dot"></span>
+                  Success
+                </div>
+                <div style="height:6px"></div>
+                <div class="sync-label">NIPR Tracking</div>
+                <div class="sync-value">
+                  <div class="sync-toggle"></div>
+                  Active
+                </div>
+              </div>
+              <div>
+                <button class="lv-btn lv-btn--outline" style="height:26px;font-size:var(--font-size-xs)">Refresh</button>
+              </div>
             </div>
           </div>
+
+          <!-- Audit Logs -->
+          <div class="rec-card">
+            <div class="rec-card__header">
+              <span class="rec-card__title">Audit Logs</span>
+              <a class="rec-card__link">View All</a>
+            </div>
+            <div class="audit-entry">
+              <div class="audit-entry__meta">Mar 10, 2026 · System</div>
+              <div class="audit-entry__desc">NIPR data synced — license status confirmed Active</div>
+            </div>
+            <div class="audit-entry">
+              <div class="audit-entry__meta">Mar 8, 2026 · System</div>
+              <div class="audit-entry__desc">E&amp;O certificate uploaded and verified — expiry Apr 1, 2027</div>
+            </div>
+            <div class="audit-entry">
+              <div class="audit-entry__meta">Mar 3, 2026 · JD</div>
+              <div class="audit-entry__desc">LOA Confirmation task initiated for CO, TX, FL</div>
+            </div>
+            <div class="audit-entry">
+              <div class="audit-entry__meta">Feb 20, 2026 · System</div>
+              <div class="audit-entry__desc">Producer record created via bulk import</div>
+            </div>
+            <div class="audit-entry">
+              <div class="audit-entry__meta">Jan 5, 2025 · JD</div>
+              <div class="audit-entry__desc">Background check consent signed and submitted</div>
+            </div>
+          </div>
+
+        </div><!-- /rec-sidebar -->
+
+      </div><!-- /rec-content -->
+    </div><!-- /rec-panel-tasks -->
+
+    <!-- ── Tab: Details ── -->
+    <div id="rec-panel-details" class="rec-tab-panel">
+      <div class="rec-tab-placeholder">
+        <div class="rec-tab-placeholder__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
         </div>
+        <div class="rec-tab-placeholder__label">Details</div>
+        <div class="rec-tab-placeholder__sub">Producer profile fields and custom attributes will appear here.</div>
+      </div>
+    </div>
 
-        <!-- Audit Logs -->
-        <div class="rec-card">
-          <div class="rec-card__header">
-            <span class="rec-card__title">Audit Logs</span>
-            <a class="rec-card__link">View All</a>
-          </div>
-          <div class="audit-entry">
-            <div class="audit-entry__meta">Mar 10, 2026 · System</div>
-            <div class="audit-entry__desc">NIPR data synced — license status confirmed Active</div>
-          </div>
-          <div class="audit-entry">
-            <div class="audit-entry__meta">Mar 8, 2026 · System</div>
-            <div class="audit-entry__desc">E&amp;O certificate uploaded and verified — expiry Apr 1, 2027</div>
-          </div>
-          <div class="audit-entry">
-            <div class="audit-entry__meta">Mar 3, 2026 · JD</div>
-            <div class="audit-entry__desc">LOA Confirmation task initiated for CO, TX, FL</div>
-          </div>
-          <div class="audit-entry">
-            <div class="audit-entry__meta">Feb 20, 2026 · System</div>
-            <div class="audit-entry__desc">Producer record created via bulk import</div>
-          </div>
-          <div class="audit-entry">
-            <div class="audit-entry__meta">Jan 5, 2025 · JD</div>
-            <div class="audit-entry__desc">Background check consent signed and submitted</div>
-          </div>
+    <!-- ── Tab: Licenses ── -->
+    <div id="rec-panel-licenses" class="rec-tab-panel">
+      <div class="rec-tab-placeholder">
+        <div class="rec-tab-placeholder__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/><circle cx="8" cy="13" r="1.5"/><path d="M11 13h6"/></svg>
         </div>
+        <div class="rec-tab-placeholder__label">Licenses</div>
+        <div class="rec-tab-placeholder__sub">Resident and non-resident license records across all states will appear here.</div>
+      </div>
+    </div>
 
-      </div><!-- /rec-sidebar -->
+    <!-- ── Tab: Appointments ── -->
+    <div id="rec-panel-appointments" class="rec-tab-panel">
+      <div class="rec-tab-placeholder">
+        <div class="rec-tab-placeholder__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+        </div>
+        <div class="rec-tab-placeholder__label">Appointments</div>
+        <div class="rec-tab-placeholder__sub">Carrier appointments and their status across lines of authority will appear here.</div>
+      </div>
+    </div>
 
-    </div><!-- /rec-content -->
+    <!-- ── Tab: Regulatory Actions ── -->
+    <div id="rec-panel-regulatory" class="rec-tab-panel">
+      <div class="rec-tab-placeholder">
+        <div class="rec-tab-placeholder__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 3 2-7L2 9h7z"/></svg>
+        </div>
+        <div class="rec-tab-placeholder__label">Regulatory Actions</div>
+        <div class="rec-tab-placeholder__sub">State enforcement actions, complaints, and compliance flags will appear here.</div>
+      </div>
+    </div>
 
   </div><!-- /ms-body -->
 
 </div><!-- /ms-shell -->
+
+<script>
+  function switchRecTab(tab, panelId) {
+    var screen = document.getElementById('screen-m-producer-detail-record');
+    screen.querySelectorAll('.rec-tab').forEach(function(t) { t.classList.remove('active'); });
+    screen.querySelectorAll('.rec-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+</script>
