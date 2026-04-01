@@ -1923,7 +1923,7 @@
     // Update AOT progress label to reflect carrier task count
     const progLabel = document.getElementById('aot-progress-label');
     if (progLabel) {
-      const total = ctx === 'carrier' ? 4 : 7;
+      const total = ctx === 'carrier' ? 5 : 7;
       progLabel.textContent = '0 of ' + total + ' required tasks complete';
     }
     // Broadcast context change to all embedded iframes
@@ -2636,7 +2636,7 @@
       }
     }
     // Progress bar
-    const required = document.body.classList.contains('context-carrier') ? [1,2,7,8] : [1,2,4,5,6,7,8];
+    const required = document.body.classList.contains('context-carrier') ? [1,2,5,7,8] : [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
     const fill = document.getElementById('aot-progress-fill');
@@ -2675,7 +2675,7 @@
       }
     }
     // Recount progress
-    const required = document.body.classList.contains('context-carrier') ? [1,2,7,8] : [1,2,4,5,6,7,8];
+    const required = document.body.classList.contains('context-carrier') ? [1,2,5,7,8] : [1,2,4,5,6,7,8];
     const doneCt = required.filter(n => _aotDone.has(n)).length;
     const pct = Math.round(doneCt / required.length * 100);
     const fill = document.getElementById('aot-progress-fill');
