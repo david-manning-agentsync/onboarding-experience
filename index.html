@@ -2115,7 +2115,7 @@
       if (el) el.style.display = s === step ? '' : 'none';
     });
     if (step === 'loading') {
-      const dest = prefix === 'om' ? 'screen-om-producers' : 'screen-p-welcome';
+      const dest = prefix === 'om' ? 'screen-om-producers' : 'screen-p-aot-tasks';
       document.body.classList.remove('theme-manage', 'theme-onboarding');
       document.body.classList.add('theme-onboarding');
       setTimeout(() => go(dest), 2200);
@@ -3279,7 +3279,7 @@
     { id: 'screen-p-login',           src: 'screens/producer/p-login.html' },
     { id: 'screen-p-transition',      src: 'screens/producer/p-transition.html' },
     { id: 'screen-p-intake',          src: 'screens/producer/p-intake.html' },
-    { id: 'screen-p-welcome',         src: 'screens/producer/p-welcome.html' },
+    { id: 'screen-p-aot-tasks',         src: 'screens/producer/p-welcome.html' },
     { id: 'screen-p-tasks',           src: 'screens/producer/p-tasks.html' },
     { id: 'screen-p-task-detail-1',   src: 'screens/producer/p-task-detail-1.html' },
     { id: 'screen-p-task-detail-2',   src: 'screens/producer/p-task-detail-2.html' },
