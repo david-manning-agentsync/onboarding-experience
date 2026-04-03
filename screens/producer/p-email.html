@@ -448,7 +448,7 @@
         </div>
 
         <!-- The rendered email letter -->
-        <div class="gm-letter" onclick="go('screen-p-aot-tasks')" style="cursor:pointer">
+        <div class="gm-letter" style="cursor:default">
           <!-- AgentSync logo header -->
           <div class="gm-letter__header">
             <div class="gm-letter__logo">
@@ -467,14 +467,14 @@
           </div>
 
           <div class="gm-letter__cta-wrap">
-            <button class="gm-letter__cta" onclick="go('screen-p-login')">ACTIVATE AGENTSYNC ACCOUNT</button>
+            <button class="gm-letter__cta" onclick="go('screen-p-welcome')">ACTIVATE AGENTSYNC ACCOUNT</button>
           </div>
 
           <div class="gm-letter__expiry">
             Please note, this activation link expires in 7 days. If you need to request a new<br>
             activation email, please contact <a href="#">contractingsupport@agentsync.io</a>.
             <br><br>
-            <a style="color:#1a73e8;cursor:pointer;font-size:11px;font-weight:600;text-decoration:none;opacity:0.7;" onclick="go('screen-p-intake')" title="Demo shortcut — skip login flow">Skip login flow →</a>
+            <a style="color:#1a73e8;cursor:pointer;font-size:11px;font-weight:600;text-decoration:none;opacity:0.7;" onclick="go('screen-p-welcome')" title="Demo shortcut — skip to welcome">Skip login flow →</a>
           </div>
 
           <div class="gm-letter__footer">
@@ -511,23 +511,3 @@
   </div><!-- /gm-body -->
 </div><!-- /gm-shell -->
 
-<!-- Demo banner -->
-<div style="position:fixed;bottom:44px;left:0;right:0;
-  background:#1a73e8;color:#fff;padding:12px 24px;
-  display:flex;align-items:center;justify-content:space-between;
-  z-index:9998;font-family:system-ui,sans-serif;font-size:14px;">
-  <span>📧 Claire Sutton has received her onboarding invite from Summit Financial Partners.</span>
-  <div style="display:flex;gap:12px;align-items:center;">
-    <button onclick="go('screen-p-aot-tasks')"
-      style="background:#fff;color:#1a73e8;border:none;
-      border-radius:4px;padding:8px 16px;font-weight:700;
-      font-size:13px;cursor:pointer;">
-      Open Email →
-    </button>
-    <span onclick="go('screen-p-aot-tasks')"
-      style="color:rgba(255,255,255,0.8);font-size:12px;
-      cursor:pointer;text-decoration:underline;">
-      Skip to welcome screen
-    </span>
-  </div>
-</div>

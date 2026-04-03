@@ -1,62 +1,270 @@
-<!-- p-welcome.html — Producer welcome screen (Onboarding theme, no sidebar) -->
+<!-- p-welcome.html — Producer onboarding welcome (styled per onboarding-welcome.html reference) -->
 <style>
-  #screen-p-welcome .welcome-outer { min-height: calc(100vh - 44px); background: var(--color-bg-page); display: flex; align-items: center; justify-content: center; padding: var(--space-8); }
-  #screen-p-welcome .welcome-inner { max-width: 520px; text-align: center; background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-8) var(--space-10); }
-  #screen-p-welcome .welcome-logo { font-size: var(--font-size-base); font-weight: var(--font-weight-extrabold); color: var(--color-primary-600); margin-bottom: var(--space-8); letter-spacing: var(--tracking-tight); }
-  #screen-p-welcome .welcome-icon { font-size: 56px; margin-bottom: var(--space-6); }
-  #screen-p-welcome .welcome-title { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); line-height: var(--line-height-tight); margin-bottom: var(--space-4); }
-  #screen-p-welcome .welcome-sub { font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-8); }
-  #screen-p-welcome .welcome-checklist { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-8); text-align: left; box-shadow: var(--shadow-xs); }
-  #screen-p-welcome .checklist-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) 0; font-size: var(--font-size-sm); color: var(--color-text-primary); }
-  #screen-p-welcome .checklist-item + .checklist-item { border-top: 1px solid var(--color-border-default); }
-  #screen-p-welcome .checklist-item__num { width: 24px; height: 24px; border-radius: var(--radius-full); background: var(--color-primary-100); color: var(--color-primary-600); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  /* ── Shell ── */
+  #screen-p-welcome .pw-shell {
+    min-height: calc(100vh - 44px);
+    background: var(--color-bg-page);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 48px 40px;
+    gap: 64px;
+    align-items: center;
+  }
+
+  /* ── Left: Welcome panel ── */
+  #screen-p-welcome .pw-welcome {
+    padding: 24px 0;
+    animation: pw-fadeUp 0.5s ease both;
+  }
+
+  #screen-p-welcome .pw-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary-600);
+    background: var(--color-primary-50);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  #screen-p-welcome .pw-badge svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  #screen-p-welcome .pw-heading {
+    font-size: 42px;
+    line-height: 1.15;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-text-primary);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  #screen-p-welcome .pw-heading .pw-org {
+    color: var(--color-primary-600);
+  }
+
+  #screen-p-welcome .pw-desc {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    max-width: 420px;
+  }
+
+  /* ── Right: Task card ── */
+  #screen-p-welcome .pw-card {
+    background: var(--color-bg-surface);
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+    border: 1px solid var(--color-border-subtle);
+    overflow: hidden;
+    animation: pw-fadeUp 0.5s ease 0.15s both;
+    counter-reset: task-num;
+  }
+
+  #screen-p-welcome .pw-card-header {
+    padding: 32px 32px 24px;
+    border-bottom: 1px solid var(--color-border-default);
+  }
+
+  #screen-p-welcome .pw-card-title {
+    font-size: 22px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  #screen-p-welcome .pw-card-sub {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ── Task list ── */
+  #screen-p-welcome .pw-task-list {
+    padding: 8px 32px 16px;
+  }
+
+  #screen-p-welcome .pw-task-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    counter-increment: task-num;
+  }
+
+  #screen-p-welcome .pw-task-item:last-child {
+    border-bottom: none;
+  }
+
+  #screen-p-welcome .pw-task-num {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--color-border-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  #screen-p-welcome .pw-task-num::before {
+    content: counter(task-num);
+  }
+
+  #screen-p-welcome .pw-task-name {
+    font-size: 15px;
+    color: var(--color-text-primary);
+  }
+
+  /* ── Progress bar ── */
+  #screen-p-welcome .pw-progress {
+    padding: 20px 32px;
+    border-top: 1px solid var(--color-border-default);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  #screen-p-welcome .pw-progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--color-bg-page);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  #screen-p-welcome .pw-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--color-primary-600);
+    border-radius: var(--radius-full);
+  }
+
+  #screen-p-welcome .pw-progress-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+  }
+
+  /* ── CTA ── */
+  #screen-p-welcome .pw-card-footer {
+    padding: 0 32px 28px;
+  }
+
+  #screen-p-welcome .pw-cta {
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--color-primary-600);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: background var(--transition-fast);
+  }
+
+  #screen-p-welcome .pw-cta:hover { background: var(--color-primary-700); }
+
+  /* ── Animation ── */
+  @keyframes pw-fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 </style>
 
-<div class="welcome-outer">
-  <div class="welcome-inner">
-    <div class="welcome-logo">AgentSync</div>
-    <div class="welcome-icon">👋</div>
-    <h1 class="welcome-title">Welcome, Claire!</h1>
-    <p class="welcome-sub">You've been invited to complete onboarding for <strong>Summit Financial Partners</strong>. You have 7 tasks to complete. Most producers finish in under 30 minutes.</p>
+<div class="pw-shell">
 
-    <div class="welcome-checklist">
-      <div class="checklist-item">
-        <span class="checklist-item__num">1</span>
-        <span>Contact Info</span>
-        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
-      </div>
-      <div class="checklist-item">
-        <span class="checklist-item__num">2</span>
-        <span>Contact Details</span>
-        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
-      </div>
-      <div class="checklist-item">
-        <span class="checklist-item__num">3</span>
-        <span>Employment History</span>
-        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
-      </div>
-      <div class="checklist-item">
-        <span class="checklist-item__num">4</span>
-        <span>Background Questions</span>
-        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
-      </div>
-      <div class="checklist-item">
-        <span class="checklist-item__num">5</span>
-        <span>NIPR Attestation</span>
-        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
-      </div>
-      <div class="checklist-item">
-        <span class="checklist-item__num">6</span>
-        <span>Direct Deposit</span>
-        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
-      </div>
-      <div class="checklist-item">
-        <span class="checklist-item__num">7</span>
-        <span>E-Signature</span>
-        <span class="badge" style="background:var(--color-danger-100);color:var(--color-danger-600);font-size:10px;margin-left:auto;">Required</span>
-      </div>
+  <!-- Left: Welcome panel -->
+  <div class="pw-welcome">
+    <div class="pw-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Onboarding
+    </div>
+    <h1 class="pw-heading">Welcome to<br><span class="pw-org">Summit Financial<br>Partners</span></h1>
+    <p class="pw-desc">Complete the steps on the right to finish onboarding. We'll guide you through each section — most producers wrap up in under 15 minutes.</p>
+  </div>
+
+  <!-- Right: Task card -->
+  <div class="pw-card">
+
+    <div class="pw-card-header">
+      <div class="pw-card-title">Complete your onboarding</div>
+      <p class="pw-card-sub">Provide the following information to onboard with <strong>Summit Financial Partners</strong>.</p>
     </div>
 
-    <button class="btn btn--primary btn--lg" onclick="go('screen-p-aot-tasks')">View My Tasks →</button>
+    <div class="pw-task-list">
+
+      <div class="pw-task-item">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">Contact Info</span>
+      </div>
+
+      <div class="pw-task-item">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">Contact Details</span>
+      </div>
+
+      <div class="pw-task-item">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">ID Document</span>
+      </div>
+
+      <div class="pw-task-item context-agency-only">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">Employment History</span>
+      </div>
+
+      <div class="pw-task-item">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">Background Questions</span>
+      </div>
+
+      <div class="pw-task-item context-agency-only">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">NIPR Attestation</span>
+      </div>
+
+      <div class="pw-task-item">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">Direct Deposit</span>
+      </div>
+
+      <div class="pw-task-item">
+        <span class="pw-task-num"></span>
+        <span class="pw-task-name">E-Signature</span>
+      </div>
+
+    </div>
+
+    <div class="pw-progress">
+      <div class="pw-progress-track">
+        <div class="pw-progress-fill"></div>
+      </div>
+      <span class="pw-progress-label">
+        0 of <span class="context-agency-only">8</span><span class="context-carrier-only">6</span> complete
+      </span>
+    </div>
+
+    <div class="pw-card-footer">
+      <button class="pw-cta" onclick="go('screen-p-aot-tasks')">Let's get started</button>
+    </div>
+
   </div>
+
 </div>
